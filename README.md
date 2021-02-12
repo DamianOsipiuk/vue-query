@@ -2,7 +2,7 @@
 
 # vue-react-query
 
-Vue bindings for react-query
+Vue bindings for [react-query](https://github.com/tannerlinsley/react-query)
 
 # Usage
 
