@@ -1,24 +1,32 @@
 import { QueriesObserver } from "react-query/core";
-import { computed, onUnmounted, readonly, ref, ToRefs, toRefs } from "vue";
+import {
+  onUnmounted,
+  reactive,
+  readonly,
+  ToRefs,
+  toRefs,
+  watchEffect,
+} from "vue";
 
 import type { UseQueryOptions, UseQueryResult } from "react-query/types";
 
 import { useQueryClient } from "./useQueryClient";
+import { updateState } from "./utils";
 
 export function useQueries(
   queries: UseQueryOptions[]
 ): ToRefs<Readonly<UseQueryResult[]>> {
   const queryClient = useQueryClient();
-  const observer = computed(() => new QueriesObserver(queryClient, queries));
+  const observer = new QueriesObserver(queryClient, queries);
+  const state = reactive(observer.getCurrentResult());
+  const unsubscribe = observer.subscribe((result) => {
+    state.forEach((stateEntry, index) => {
+      updateState(stateEntry, result[index]);
+    });
+  });
 
-  if (observer.value.hasListeners()) {
-    observer.value.setQueries(queries);
-  }
-
-  const state = ref(observer.value.getCurrentResult());
-
-  const unsubscribe = observer.value.subscribe((result) => {
-    state.value = result;
+  watchEffect(() => {
+    observer.setQueries(queries);
   });
 
   onUnmounted(() => {

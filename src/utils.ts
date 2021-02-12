@@ -1,4 +1,9 @@
-import type { QueryFunction, QueryKey, QueryOptions } from "react-query/types";
+import type {
+  QueryFunction,
+  QueryKey,
+  QueryObserverResult,
+  QueryOptions,
+} from "react-query/types";
 
 export function isQueryKey(value: unknown): value is QueryKey {
   return typeof value === "string" || Array.isArray(value);
@@ -19,4 +24,14 @@ export function parseQueryArgs<TOptions extends QueryOptions<any, any, any>>(
   }
 
   return { ...arg2, queryKey: arg1 } as TOptions;
+}
+
+export function updateState(
+  state: Record<string, unknown>,
+  update: QueryObserverResult
+): void {
+  Object.keys(state).forEach((key) => {
+    // @ts-expect-error Typing issue
+    state[key] = update[key];
+  });
 }

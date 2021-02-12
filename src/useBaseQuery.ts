@@ -1,26 +1,36 @@
-import { onUnmounted, toRefs, readonly, ToRefs, ref, computed } from "vue";
+import {
+  onUnmounted,
+  toRefs,
+  readonly,
+  ToRefs,
+  reactive,
+  watchEffect,
+} from "vue";
 
-import type { QueryObserver } from "react-query/core";
+import type { QueryObserver, QueryObserverResult } from "react-query/core";
 import type { UseBaseQueryOptions, UseQueryResult } from "react-query/types";
 
 import { useQueryClient } from "./useQueryClient";
+import { updateState } from "./utils";
 
 export function useBaseQuery<TQueryFnData, TError, TData, TQueryData>(
   options: UseBaseQueryOptions<TQueryFnData, TError, TData, TQueryData>,
   Observer: typeof QueryObserver
 ): ToRefs<Readonly<UseQueryResult<TData, TError>>> {
   const queryClient = useQueryClient();
-  const defaultedOptions = computed(() =>
+  const observer = new Observer(
+    queryClient,
     queryClient.defaultQueryObserverOptions(options)
   );
-
-  const observer = computed(
-    () => new Observer(queryClient, defaultedOptions.value)
+  const state = reactive(observer.getCurrentResult());
+  const unsubscribe = observer.subscribe(
+    (result: QueryObserverResult<TData, TError>) => {
+      updateState(state, result);
+    }
   );
-  const state = ref(observer.value.getCurrentResult());
 
-  const unsubscribe = observer.value.subscribe((result) => {
-    state.value = result as never;
+  watchEffect(() => {
+    observer.setOptions(queryClient.defaultQueryObserverOptions(options));
   });
 
   onUnmounted(() => {

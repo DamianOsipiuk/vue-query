@@ -1,4 +1,4 @@
-# vue-query
+# vue-react-query
 
 Vue bindings for react-query
 
@@ -6,17 +6,16 @@ Vue bindings for react-query
 
 1. Installation
 
-   `npm install vue-query`
+   `npm install vue-react-query`
 
-2. Attach vue-query to your Vue application
+2. Attach vue-react-query to your Vue application
 
    ```
-   import { QueryClient } from "vue-query";
+   import { QueryClient } from "vue-react-query";
    import { createApp } from "vue";
    import App from "./App.vue";
 
    const app = createApp(App);
-
    const queryClient = new QueryClient();
 
    app.provide("queryClient", queryClient);
@@ -27,6 +26,24 @@ Vue bindings for react-query
 3. Use query
 
    ```
-   import { useQuery } from 'vue-query'
-   const query = useQuery('todos', getTodos)
+   import { useQuery } from "vue-react-query";
+   const query = useQuery("todos", getTodos);
+   ```
+
+   If you need to update options on your query dynamically, make sure to pass it as reactive property
+
+   ```
+   const id = ref(1);
+   const queryKey = reactive(["todos", { id }]);
+   const queryFunction = () => getTodos(id),
+   const options = reactive({
+      staleTime: 60 * 60,
+      onSuccess: () => {},
+    });
+
+   const query = useQuery(
+     queryKey,
+     queryFunction,
+     options
+   );
    ```

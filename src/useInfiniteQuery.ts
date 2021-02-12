@@ -1,5 +1,5 @@
 import { InfiniteQueryObserver } from "react-query/core";
-import { computed, ToRefs } from "vue";
+import { ToRefs } from "vue";
 
 import type {
   QueryObserver,
@@ -43,9 +43,9 @@ export function useInfiniteQuery<TQueryFnData, TError, TData = TQueryFnData>(
     | UseInfiniteQueryOptions<TQueryFnData, TError, TData>,
   arg3?: UseInfiniteQueryOptions<TQueryFnData, TError, TData>
 ): ToRefs<UseInfiniteQueryResult<TData, TError>> {
-  const parsedOptions = computed(() => parseQueryArgs(arg1, arg2, arg3));
+  const parsedOptions = parseQueryArgs(arg1, arg2, arg3);
   return useBaseQuery(
-    parsedOptions.value,
+    parsedOptions,
     InfiniteQueryObserver as typeof QueryObserver
   ) as ToRefs<UseInfiniteQueryResult<TData, TError>>;
 }

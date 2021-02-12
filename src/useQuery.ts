@@ -1,5 +1,5 @@
 import { QueryObserver } from "react-query/core";
-import { computed, ToRefs } from "vue";
+import { ToRefs } from "vue";
 
 import type {
   QueryFunction,
@@ -42,6 +42,6 @@ export function useQuery<TQueryFnData, TError, TData = TQueryFnData>(
     | UseQueryOptions<TQueryFnData, TError, TData>,
   arg3?: UseQueryOptions<TQueryFnData, TError, TData>
 ): ToRefs<UseQueryResult<TData, TError>> {
-  const parsedOptions = computed(() => parseQueryArgs(arg1, arg2, arg3));
-  return useBaseQuery(parsedOptions.value, QueryObserver);
+  const parsedOptions = parseQueryArgs(arg1, arg2, arg3);
+  return useBaseQuery(parsedOptions, QueryObserver);
 }
