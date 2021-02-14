@@ -1,15 +1,19 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import type {
+  MutationFunction,
+  MutationKey,
+  MutationOptions,
   QueryFunction,
   QueryKey,
   QueryObserverResult,
   QueryOptions,
 } from "react-query/types";
+import type { QueryFilters } from "react-query/types/core/utils";
 
 export function isQueryKey(value: unknown): value is QueryKey {
   return typeof value === "string" || Array.isArray(value);
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function parseQueryArgs<TOptions extends QueryOptions<any, any, any>>(
   arg1: QueryKey | TOptions,
   arg2?: QueryFunction | TOptions,
@@ -24,6 +28,40 @@ export function parseQueryArgs<TOptions extends QueryOptions<any, any, any>>(
   }
 
   return { ...arg2, queryKey: arg1 } as TOptions;
+}
+
+export function parseFilterArgs<
+  TFilters extends QueryFilters,
+  TOptions = unknown
+>(
+  arg1?: QueryKey | TFilters,
+  arg2?: TFilters | TOptions,
+  arg3?: TOptions
+): [TFilters, TOptions | undefined] {
+  return (isQueryKey(arg1)
+    ? [{ ...arg2, queryKey: arg1 }, arg3]
+    : [arg1 || {}, arg2]) as [TFilters, TOptions];
+}
+
+export function parseMutationArgs<
+  TOptions extends MutationOptions<any, any, any, any>
+>(
+  arg1: MutationKey | MutationFunction<any, any> | TOptions,
+  arg2?: MutationFunction<any, any> | TOptions,
+  arg3?: TOptions
+): TOptions {
+  if (isQueryKey(arg1)) {
+    if (typeof arg2 === "function") {
+      return { ...arg3, mutationKey: arg1, mutationFn: arg2 } as TOptions;
+    }
+    return { ...arg2, mutationKey: arg1 } as TOptions;
+  }
+
+  if (typeof arg1 === "function") {
+    return { ...arg2, mutationFn: arg1 } as TOptions;
+  }
+
+  return { ...arg1 } as TOptions;
 }
 
 export function updateState(
