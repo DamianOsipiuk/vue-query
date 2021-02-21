@@ -1,5 +1,4 @@
 import { onUnmounted, reactive, ref, watchEffect } from "vue";
-import { parseMutationArgs } from "react-query/types/core/utils";
 import { MutateOptions, MutationObserver } from "react-query/core";
 import {
   UseMutationOptions,
@@ -7,6 +6,7 @@ import {
   MutationFunction,
   MutationKey,
 } from "react-query/types";
+import { parseMutationArgs } from "./utils";
 import { useQueryClient } from "./useQueryClient";
 
 export function useMutation<
