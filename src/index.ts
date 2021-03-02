@@ -1,6 +1,6 @@
 export { QueryClient } from "react-query/core";
 
-export { useQueryClient } from "./useQueryClient";
+export { useQueryClient, VUE_REACT_QUERY_CLIENT } from "./useQueryClient";
 
 export { useQuery } from "./useQuery";
 export { useQueries } from "./useQueries";

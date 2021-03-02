@@ -13,14 +13,14 @@ Vue bindings for [react-query](https://github.com/tannerlinsley/react-query)
 2. Attach vue-react-query to your Vue application
 
    ```
-   import { QueryClient } from "vue-react-query";
+   import { QueryClient, VUE_REACT_QUERY_CLIENT } from "vue-react-query";
    import { createApp } from "vue";
    import App from "./App.vue";
 
    const app = createApp(App);
    const queryClient = new QueryClient();
 
-   app.provide("queryClient", queryClient);
+   app.provide(VUE_REACT_QUERY_CLIENT, queryClient);
 
    app.mount("#app");
    ```

@@ -33,7 +33,5 @@ export function useQueries(
     unsubscribe();
   });
 
-  return (toRefs(readonly(state)) as unknown) as ToRefs<
-    Readonly<UseQueryResult[]>
-  >;
+  return toRefs(readonly(state)) as ToRefs<Readonly<UseQueryResult[]>>;
 }

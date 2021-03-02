@@ -37,7 +37,7 @@ export function useBaseQuery<TQueryFnData, TError, TData, TQueryData>(
     unsubscribe();
   });
 
-  return (toRefs(readonly(state)) as unknown) as ToRefs<
+  return toRefs(readonly(state)) as ToRefs<
     Readonly<UseQueryResult<TData, TError>>
   >;
 }
