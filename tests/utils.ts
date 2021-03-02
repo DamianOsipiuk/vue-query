@@ -12,6 +12,18 @@ export function simpleFetcher(): Promise<string> {
   });
 }
 
+export function infiniteFetcher({
+  pageParam = 0,
+}: {
+  pageParam?: number;
+}): Promise<string> {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      return resolve("data on page " + pageParam);
+    }, 0);
+  });
+}
+
 export function rejectFetcher(): Promise<Error> {
   return new Promise((resolve, reject) => {
     setTimeout(() => {

@@ -1,4 +1,4 @@
-import { ref } from "vue";
+import { computed, reactive, ref, onUnmounted } from "vue";
 import { QueryClient, QueryObserver, setLogger } from "react-query/core";
 import { useQuery } from "../src/useQuery";
 import { useBaseQuery } from "../src/useBaseQuery";
@@ -8,7 +8,7 @@ jest.mock("vue", () => {
   const vue = jest.requireActual("vue");
   return {
     ...vue,
-    onUnmounted: jest.fn((fn) => setTimeout(fn, 0)),
+    onUnmounted: jest.fn(),
   };
 });
 
@@ -33,7 +33,7 @@ describe("useQuery", () => {
     setLogger({ log: noop, warn: noop, error: noop });
   });
 
-  afterEach(() => {
+  beforeEach(() => {
     jest.clearAllMocks();
   });
 
@@ -169,5 +169,50 @@ describe("useQuery", () => {
     await flushPromises();
 
     expect(spy).toBeCalledTimes(1);
+  });
+
+  test("should properly execute dependant queries", async () => {
+    const { data } = useQuery("dependant1", simpleFetcher);
+
+    const enabled = computed(() => !!data.value);
+
+    const { status } = useQuery(
+      reactive({
+        queryKey: "dependant2",
+        queryFn: simpleFetcher,
+        enabled,
+      })
+    );
+
+    expect(data.value).toStrictEqual(undefined);
+    expect(status.value).toStrictEqual("idle");
+
+    await flushPromises();
+
+    expect(data.value).toStrictEqual("Some data");
+    expect(status.value).toStrictEqual("loading");
+
+    await flushPromises();
+
+    expect(status.value).toStrictEqual("success");
+  });
+
+  test("should stop listening to changes on onUnmount", async () => {
+    const onUnmountedMock = onUnmounted as jest.MockedFunction<
+      typeof onUnmounted
+    >;
+    onUnmountedMock.mockImplementationOnce((fn) => fn());
+
+    const { status } = useQuery("onUnmounted", simpleFetcher);
+
+    expect(status.value).toStrictEqual("loading");
+
+    await flushPromises();
+
+    expect(status.value).toStrictEqual("loading");
+
+    await flushPromises();
+
+    expect(status.value).toStrictEqual("loading");
   });
 });
