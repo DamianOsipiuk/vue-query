@@ -8,7 +8,15 @@ Vue bindings for [react-query](https://github.com/tannerlinsley/react-query)
 
 1. Installation
 
-   `npm install vue-react-query`
+   ```
+   npm install vue-react-query
+   ```
+
+   or
+
+   ```
+   yarn add vue-react-query
+   ```
 
 2. Attach vue-react-query to your Vue application
 
