@@ -5,7 +5,6 @@ import type {
   MutationOptions,
   QueryFunction,
   QueryKey,
-  QueryObserverResult,
   QueryOptions,
 } from "react-query/types";
 import type { QueryFilters } from "react-query/types/core/utils";
@@ -72,10 +71,9 @@ export function parseMutationArgs<
 
 export function updateState(
   state: Record<string, unknown>,
-  update: QueryObserverResult
+  update: Record<string, any>
 ): void {
   Object.keys(state).forEach((key) => {
-    // @ts-expect-error Typing issue
     state[key] = update[key];
   });
 }

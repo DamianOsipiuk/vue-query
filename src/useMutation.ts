@@ -1,4 +1,4 @@
-import { onUnmounted, reactive, ref, watchEffect } from "vue";
+import { onUnmounted, reactive, watchEffect } from "vue";
 import { MutateOptions, MutationObserver } from "react-query/core";
 import {
   UseMutationOptions,
@@ -6,7 +6,7 @@ import {
   MutationFunction,
   MutationKey,
 } from "react-query/types";
-import { parseMutationArgs } from "./utils";
+import { parseMutationArgs, updateState } from "./utils";
 import { useQueryClient } from "./useQueryClient";
 
 export function useMutation<
@@ -60,8 +60,6 @@ export function useMutation<
     | UseMutationOptions<TData, TError, TVariables, TContext>,
   arg3?: UseMutationOptions<TData, TError, TVariables, TContext>
 ): UseMutationResult<TData, TError, TVariables, TContext> {
-  const forceUpdate = ref(0);
-
   const options = parseMutationArgs(arg1, arg2, arg3);
   const queryClient = useQueryClient();
   const observer = new MutationObserver(queryClient, options);
@@ -69,7 +67,10 @@ export function useMutation<
   const state = reactive(observer.getCurrentResult());
 
   const unsubscribe = observer.subscribe(() => {
-    forceUpdate.value = forceUpdate.value + 1;
+    updateState(state, observer.getCurrentResult());
+    if (state.error && observer.options.useErrorBoundary) {
+      throw state.error;
+    }
   });
 
   const mutate = (
@@ -80,10 +81,6 @@ export function useMutation<
     observer.mutate(variables, mutateOptions).catch(() => {});
   };
 
-  if (state.error && observer.options.useErrorBoundary) {
-    throw state.error;
-  }
-
   watchEffect(() => {
     observer.setOptions(options);
   });
@@ -92,10 +89,8 @@ export function useMutation<
     unsubscribe();
   });
 
-  return { ...state, mutate, mutateAsync: state.mutate } as UseMutationResult<
-    TData,
-    TError,
-    TVariables,
-    TContext
-  >;
+  return Object.assign(state, {
+    mutate,
+    mutateAsync: state.mutate,
+  }) as UseMutationResult<TData, TError, TVariables, TContext>;
 }
