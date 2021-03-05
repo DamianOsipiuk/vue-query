@@ -4,6 +4,10 @@ export function flushPromises(timeout = 0): Promise<unknown> {
   });
 }
 
+export function noop(): undefined {
+  return undefined;
+}
+
 export function simpleFetcher(): Promise<string> {
   return new Promise((resolve) => {
     setTimeout(() => {
@@ -32,6 +36,19 @@ export function rejectFetcher(): Promise<Error> {
   });
 }
 
-export function noop(): undefined {
-  return undefined;
+export function successMutator<T>(param: T): Promise<T> {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      return resolve(param);
+    }, 0);
+  });
+}
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export function errorMutator<T>(param: T): Promise<Error> {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      return reject(new Error("Some error"));
+    }, 0);
+  });
 }
