@@ -4,6 +4,9 @@
 
 Vue bindings for [react-query](https://github.com/tannerlinsley/react-query)
 
+# Examples
+- [Basic](https://github.com/DamianOsipiuk/vue-react-query/tree/main/examples/basic)
+
 # Usage
 
 1. Installation
