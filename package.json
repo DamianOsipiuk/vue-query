@@ -37,7 +37,7 @@
   },
   "devDependencies": {
     "@rollup/plugin-node-resolve": "^11.2.0",
-    "@types/jest": "^26.0.20",
+    "@types/jest": "^26.0.21",
     "@typescript-eslint/eslint-plugin": "^4.16.1",
     "@typescript-eslint/parser": "^4.16.1",
     "@vue/compiler-sfc": "^3.0.7",
@@ -55,6 +55,7 @@
     "rollup-plugin-typescript2": "^0.30.0",
     "rollup-plugin-vue": "^6.0.0",
     "ts-jest": "^26.5.4",
+    "ts-node": "^9.1.1",
     "typescript": "^4.2.3"
   },
   "eslintConfig": {
@@ -76,13 +77,5 @@
       "no-console": "warn",
       "no-debugger": "warn"
     }
-  },
-  "jest": {
-    "preset": "ts-jest",
-    "moduleFileExtensions": [
-      "js",
-      "ts"
-    ],
-    "collectCoverage": true
   }
 }
