@@ -1,4 +1,4 @@
-import { QueryClient, VUE_REACT_QUERY_CLIENT } from "vue-react-query";
+import { QueryClient, VUE_REACT_QUERY_CLIENT } from "../../../lib";
 import { createApp } from "vue";
 import App from "./App.vue";
 

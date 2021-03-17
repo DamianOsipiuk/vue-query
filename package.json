@@ -9,7 +9,7 @@
   "scripts": {
     "build": "tsc",
     "lint": "eslint ./src/** ./tests/**",
-    "prepare": "npm install vue@next --no-save && npm run build",
+    "prepare": "npm run build",
     "test": "jest"
   },
   "repository": {
@@ -31,7 +31,9 @@
   },
   "homepage": "https://github.com/DamianOsipiuk/vue-query#readme",
   "dependencies": {
-    "react-query": "^3.12.0"
+    "match-sorter": "^6.3.0",
+    "react-query": "^3.12.0",
+    "vue": "^3.0.7"
   },
   "devDependencies": {
     "@types/jest": "^26.0.20",
@@ -47,9 +49,6 @@
     "prettier": "^2.2.1",
     "ts-jest": "^26.5.2",
     "typescript": "^4.2.2"
-  },
-  "peerDependencies": {
-    "vue": "^3.0.7"
   },
   "eslintConfig": {
     "root": true,

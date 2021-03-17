@@ -1,6 +1,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import { useQuery } from "vue-react-query";
+import { VueQueryDevTools } from "../../../lib";
 
 interface Todo {
   userId: number;
@@ -16,12 +17,15 @@ const todoFetcher = async (): Promise<Todo[]> =>
 
 export default defineComponent({
   name: "App",
+  components: { VueQueryDevTools },
   setup() {
     const { isLoading, isError, isFetching, data, error, refetch } = useQuery(
       "todos",
       todoFetcher,
       {
         retry: 0,
+        staleTime: 1000,
+        cacheTime: 2000,
       }
     );
 
@@ -50,6 +54,7 @@ export default defineComponent({
     </button>
   </div>
   <div v-else>Nothing to see here...</div>
+  <VueQueryDevTools :initialIsOpen="true" />
 </template>
 
 <style>
