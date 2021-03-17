@@ -2,26 +2,31 @@
 
 # vue-react-query
 
-Vue bindings for [react-query](https://github.com/tannerlinsley/react-query)
+Hooks for fetching, caching and updating asynchronous data in Vue.
+
+Based on [react-query](https://github.com/tannerlinsley/react-query)
 
 # Examples
+
 - [Basic](https://github.com/DamianOsipiuk/vue-react-query/tree/main/examples/basic)
+
+# Installation
+
+**_This library requires Vue 3 to work properly_**
+
+```
+npm install vue-react-query
+```
+
+or
+
+```
+yarn add vue-react-query
+```
 
 # Usage
 
-1. Installation
-
-   ```
-   npm install vue-react-query
-   ```
-
-   or
-
-   ```
-   yarn add vue-react-query
-   ```
-
-2. Attach vue-react-query to your Vue application
+1. Attach vue-react-query to your Vue application
 
    ```
    import { QueryClient, VUE_REACT_QUERY_CLIENT } from "vue-react-query";
@@ -36,14 +41,14 @@ Vue bindings for [react-query](https://github.com/tannerlinsley/react-query)
    app.mount("#app");
    ```
 
-3. Use query
+2. Use query
 
    ```
    import { useQuery } from "vue-react-query";
    const query = useQuery("todos", getTodos);
    ```
 
-   If you need to update options on your query dynamically, make sure to pass it as reactive property
+3. If you need to update options on your query dynamically, make sure to pass it as reactive property
 
    ```
    const id = ref(1);
@@ -60,3 +65,29 @@ Vue bindings for [react-query](https://github.com/tannerlinsley/react-query)
      options
    );
    ```
+
+# DevTools
+
+This package provides built-in devtools in form of a Vue component.  
+Use DevTools component in the entry component of your application.
+
+Check [Examples section](#examples).
+
+**_Disclaimer: you have to manually hide this component from production builds as of now._**
+
+```
+<script lang="ts">
+import { defineComponent } from "vue";
+import { VueQueryDevTools } from "vue-react-query";
+
+export default defineComponent({
+  name: "App",
+  components: { VueQueryDevTools },
+});
+</script>
+
+<template>
+  <VueQueryDevTools />
+</template>
+
+```
