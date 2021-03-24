@@ -1,11 +1,9 @@
-import { QueryClient, VUE_REACT_QUERY_CLIENT } from "../../../lib";
 import { createApp } from "vue";
+import { QueryClient, VUE_REACT_QUERY_CLIENT } from "../../../lib";
+
 import App from "./App.vue";
 
-const app = createApp(App);
 const queryClient = new QueryClient();
 queryClient.mount();
 
-app.provide(VUE_REACT_QUERY_CLIENT, queryClient);
-
-app.mount("#app");
+createApp(App).provide(VUE_REACT_QUERY_CLIENT, queryClient).mount("#app");
