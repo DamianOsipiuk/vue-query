@@ -9,6 +9,10 @@ Based on [react-query](https://github.com/tannerlinsley/react-query)
 # Examples
 
 - [Basic](https://github.com/DamianOsipiuk/vue-react-query/tree/main/examples/basic)
+- [Multi-Page](https://github.com/DamianOsipiuk/vue-react-query/tree/main/examples/multi-page)
+  - Caching - throttle network and then switch between pages
+  - Deduping requests - click `change page` in quick succession and monitor Network tab in devtools.
+  - Garbage collection - click `remove page`
 
 # Installation
 
