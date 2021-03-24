@@ -35,6 +35,7 @@ yarn add vue-react-query
 
    const app = createApp(App);
    const queryClient = new QueryClient();
+   queryClient.mount()
 
    app.provide(VUE_REACT_QUERY_CLIENT, queryClient);
 
