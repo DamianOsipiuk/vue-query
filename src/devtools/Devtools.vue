@@ -1,5 +1,5 @@
 <script lang="ts">
-import { defineComponent, PropType, ref } from "vue";
+import { defineComponent, PropType, ref } from "vue-demi";
 
 import CloseButton from "./CloseButton.vue";
 import DevtoolsPanel from "./DevtoolsPanel.vue";

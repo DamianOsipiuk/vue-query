@@ -6,7 +6,7 @@ import {
   ToRefs,
   toRefs,
   watchEffect,
-} from "vue";
+} from "vue-demi";
 
 import type { UseQueryOptions, UseQueryResult } from "react-query/types";
 

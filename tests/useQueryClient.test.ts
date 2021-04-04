@@ -1,4 +1,4 @@
-import * as vue from "vue";
+import * as vue from "vue-demi";
 import { useQueryClient, VUE_REACT_QUERY_CLIENT } from "../src/useQueryClient";
 
 describe("useQueryClient", () => {

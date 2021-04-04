@@ -1,4 +1,4 @@
-import { onUnmounted, Ref, ref, watchEffect } from "vue";
+import { onUnmounted, Ref, ref, watchEffect } from "vue-demi";
 import { QueryKey } from "react-query/types";
 import { QueryFilters } from "react-query/types/core/utils";
 import { useQueryClient } from "./useQueryClient";

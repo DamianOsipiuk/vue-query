@@ -1,5 +1,5 @@
 import { QueryObserver } from "react-query/core";
-import { ToRefs } from "vue";
+import { ToRefs } from "vue-demi";
 
 import type {
   QueryFunction,
