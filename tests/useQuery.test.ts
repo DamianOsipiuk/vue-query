@@ -1,11 +1,11 @@
-import { computed, reactive, ref, onUnmounted } from "vue";
+import { computed, reactive, ref, onUnmounted } from "vue-demi";
 import { QueryClient, QueryObserver, setLogger } from "react-query/core";
 import { useQuery } from "../src/useQuery";
 import { useBaseQuery } from "../src/useBaseQuery";
 import { flushPromises, rejectFetcher, simpleFetcher, noop } from "./utils";
 
 jest.mock("vue", () => {
-  const vue = jest.requireActual("vue");
+  const vue = jest.requireActual("vue-demi");
   return {
     ...vue,
     onUnmounted: jest.fn(),

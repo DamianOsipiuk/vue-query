@@ -82,7 +82,7 @@ Check [Examples section](#examples).
 ```
 <script lang="ts">
 import { defineComponent } from "vue";
-import { VueQueryDevTools } from "vue-react-query";
+import { VueQueryDevTools } from "vue-react-query/devtools";
 
 export default defineComponent({
   name: "App",

@@ -3,15 +3,7 @@ import autoExternal from "rollup-plugin-auto-external";
 import postcss from "rollup-plugin-postcss";
 import typescript from "rollup-plugin-typescript2";
 import vue from "rollup-plugin-vue";
-
-export default {
-  input: "src/index.ts",
-  output: {
-    dir: "lib",
-    name: "VueQuery",
-    format: "esm",
-    sourcemap: true,
-  },
+const common = {
   plugins: [
     resolve(),
     autoExternal(),
@@ -27,4 +19,26 @@ export default {
     include: "src/**",
     exclude: ["node_modules/**", "tests"],
   },
-};
+}
+export default [
+  {
+    input: "src/index.ts",
+    output: {
+      dir: "lib",
+      name: "VueQuery",
+      format: "esm",
+      sourcemap: true
+    },
+    ...common
+  },
+  {
+    input: "src/devtools/index.ts",
+    output: {
+      file: 'lib/devtools.js',
+      name: "VueQuery",
+      format: "esm",
+      sourcemap: true
+    },
+    ...common
+  }
+];
