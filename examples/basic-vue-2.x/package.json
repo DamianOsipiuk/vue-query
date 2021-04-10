@@ -2,7 +2,7 @@
   "name": "basic-vue-2.x",
   "version": "1.0.0",
   "scripts": {
-    "start": "vite",
+    "dev": "vite",
     "build": "vite build"
   },
   "dependencies": {
