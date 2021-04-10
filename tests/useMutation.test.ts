@@ -4,7 +4,7 @@ import { errorMutator, flushPromises, noop, successMutator } from "./utils";
 import { useMutation } from "../src/useMutation";
 
 jest.mock("vue", () => {
-  const vue = jest.requireActual("vue-demi");
+  const vue = jest.requireActual("vue");
   return {
     ...vue,
     onUnmounted: jest.fn(),

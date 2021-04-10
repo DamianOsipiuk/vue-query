@@ -5,7 +5,7 @@ import { useIsFetching } from "../src/useIsFetching";
 import { flushPromises, simpleFetcher, noop } from "./utils";
 
 jest.mock("vue", () => {
-  const vue = jest.requireActual("vue-demi");
+  const vue = jest.requireActual("vue");
   return {
     ...vue,
     onUnmounted: jest.fn(),

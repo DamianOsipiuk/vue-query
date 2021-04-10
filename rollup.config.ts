@@ -35,7 +35,7 @@ export default [
     input: "src/devtools/index.ts",
     output: {
       file: 'lib/devtools.js',
-      name: "VueQuery",
+      name: "VueQueryDevtools",
       format: "esm",
       sourcemap: true
     },

@@ -3,7 +3,7 @@ import { useInfiniteQuery } from "../src/useInfiniteQuery";
 import { noop, infiniteFetcher, flushPromises } from "./utils";
 
 jest.mock("vue", () => {
-  const vue = jest.requireActual("vue-demi");
+  const vue = jest.requireActual("vue");
   return {
     ...vue,
     onUnmounted: jest.fn(),
