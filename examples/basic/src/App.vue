@@ -1,7 +1,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
-import { useQuery } from "../../../lib";
-import { VueQueryDevTools } from "../../../lib/devtools";
+import { useQuery } from "vue-react-query";
+import { VueQueryDevTools } from "vue-react-query/devtools";
 
 interface Todo {
   userId: number;

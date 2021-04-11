@@ -1,7 +1,7 @@
 <script lang="ts">
 import { defineComponent, ref } from "vue";
 
-import { VueQueryDevTools } from "../../../lib/devtools";
+import { VueQueryDevTools } from "vue-react-query/devtools";
 import Page from "./Page.vue";
 
 export default defineComponent({
