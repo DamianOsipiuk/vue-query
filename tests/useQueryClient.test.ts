@@ -1,16 +1,25 @@
-import * as vue from "vue-demi";
+import { inject } from "vue-demi";
 import { useQueryClient, VUE_REACT_QUERY_CLIENT } from "../src/useQueryClient";
 
+jest.mock("vue-demi", () => {
+  const vue = jest.requireActual("vue-demi");
+  return {
+    ...vue,
+    inject: jest.fn(),
+  };
+});
+
 describe("useQueryClient", () => {
+  const injectSpy = inject as jest.Mock;
+
   beforeEach(() => {
     jest.restoreAllMocks();
+    jest.clearAllMocks();
   });
 
   test("should return queryClient when it is provided in the context", () => {
     const queryClientMock = { name: "Mocked client" };
-    const injectSpy = jest
-      .spyOn(vue, "inject")
-      .mockReturnValue(queryClientMock);
+    injectSpy.mockReturnValueOnce(queryClientMock);
 
     const queryClient = useQueryClient();
 
@@ -20,7 +29,7 @@ describe("useQueryClient", () => {
   });
 
   test("should throw an error when queryClient does not exist in the context", () => {
-    const injectSpy = jest.spyOn(vue, "inject").mockReturnValue(undefined);
+    injectSpy.mockReturnValueOnce(undefined);
 
     expect(useQueryClient).toThrowError(
       Error(
