@@ -1,4 +1,4 @@
-import { computed, reactive, ref, onUnmounted } from "vue";
+import { computed, reactive, ref, onUnmounted } from "vue-demi";
 import { QueryClient, QueryObserver, setLogger } from "react-query/core";
 import { useQuery } from "../src/useQuery";
 import { useBaseQuery } from "../src/useBaseQuery";

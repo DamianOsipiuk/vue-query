@@ -1,4 +1,4 @@
-import { inject } from "vue";
+import { inject } from "vue-demi";
 
 const theme = {
   background: "#0b1521",

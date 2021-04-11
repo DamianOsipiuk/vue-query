@@ -1,4 +1,4 @@
-import { onUnmounted } from "vue";
+import { onUnmounted } from "vue-demi";
 import { QueryClient, setLogger } from "react-query/core";
 import { useQuery } from "../src/useQuery";
 import { useIsFetching } from "../src/useIsFetching";

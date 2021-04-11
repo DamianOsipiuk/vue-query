@@ -1,5 +1,5 @@
 <script lang="ts">
-import { computed, defineComponent, PropType } from "vue";
+import { computed, defineComponent, PropType } from "vue-demi";
 import Logo from "./Logo.vue";
 
 import { Position } from "./utils";

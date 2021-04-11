@@ -1,4 +1,4 @@
-import { onUnmounted, reactive, watchEffect } from "vue";
+import { onUnmounted, reactive, watchEffect } from "vue-demi";
 import { MutateOptions, MutationObserver } from "react-query/core";
 import {
   UseMutationOptions,

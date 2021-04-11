@@ -5,7 +5,7 @@ import {
   ToRefs,
   reactive,
   watchEffect,
-} from "vue";
+} from "vue-demi";
 
 import type { QueryObserver, QueryObserverResult } from "react-query/core";
 import type { UseBaseQueryOptions, UseQueryResult } from "react-query/types";

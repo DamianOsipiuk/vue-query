@@ -4,19 +4,22 @@
 
 Hooks for fetching, caching and updating asynchronous data in Vue.
 
+these hooks support Vue2.x too!
+
 Based on [react-query](https://github.com/tannerlinsley/react-query)
 
 # Examples
-
-- [Basic](https://github.com/DamianOsipiuk/vue-react-query/tree/main/examples/basic)
-- [Multi-Page](https://github.com/DamianOsipiuk/vue-react-query/tree/main/examples/multi-page)
-  - Caching - throttle network and then switch between pages
-  - Deduping requests - click `change page` in quick succession and monitor Network tab in devtools.
-  - Garbage collection - click `remove page`
-
+- 3.x
+    - [Basic](https://github.com/DamianOsipiuk/vue-react-query/tree/main/examples/basic)
+    - [Multi-Page](https://github.com/DamianOsipiuk/vue-react-query/tree/main/examples/multi-page)
+        - Caching - throttle network and then switch between pages
+        - Deduping requests - click `change page` in quick succession and monitor Network tab in devtools.
+        - Garbage collection - click `remove page`
+- 2.x
+    - [Basic](https://github.com/DamianOsipiuk/vue-react-query/tree/main/examples/basic-vue2.x)    
+    
 # Installation
 
-**_This library requires Vue 3 to work properly_**
 
 ```
 npm install vue-react-query
@@ -79,10 +82,12 @@ Check [Examples section](#examples).
 
 **_Disclaimer: you have to manually hide this component from production builds as of now._**
 
+Tips: Devtool is **not supported on Vue 2.x**
+
 ```
 <script lang="ts">
 import { defineComponent } from "vue";
-import { VueQueryDevTools } from "vue-react-query";
+import { VueQueryDevTools } from "vue-react-query/devtools";
 
 export default defineComponent({
   name: "App",
