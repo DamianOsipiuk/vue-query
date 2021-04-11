@@ -4,22 +4,22 @@
 
 Hooks for fetching, caching and updating asynchronous data in Vue.
 
-these hooks support Vue2.x too!
+These hooks support Vue 2.x too via [vue-demi](https://github.com/vueuse/vue-demi)
 
 Based on [react-query](https://github.com/tannerlinsley/react-query)
 
 # Examples
-- 3.x
-    - [Basic](https://github.com/DamianOsipiuk/vue-react-query/tree/main/examples/basic)
-    - [Multi-Page](https://github.com/DamianOsipiuk/vue-react-query/tree/main/examples/multi-page)
-        - Caching - throttle network and then switch between pages
-        - Deduping requests - click `change page` in quick succession and monitor Network tab in devtools.
-        - Garbage collection - click `remove page`
-- 2.x
-    - [Basic](https://github.com/DamianOsipiuk/vue-react-query/tree/main/examples/basic-vue2.x)    
-    
-# Installation
 
+- 3.x
+  - [Basic](https://github.com/DamianOsipiuk/vue-react-query/tree/main/examples/basic)
+  - [Multi-Page](https://github.com/DamianOsipiuk/vue-react-query/tree/main/examples/multi-page)
+    - Caching - throttle network and then switch between pages
+    - Deduping requests - click `change page` in quick succession and monitor Network tab in devtools.
+    - Garbage collection - click `remove page`
+- 2.x
+  - [Basic](https://github.com/DamianOsipiuk/vue-react-query/tree/main/examples/basic-vue2.x)
+
+# Installation
 
 ```
 npm install vue-react-query
@@ -37,14 +37,14 @@ yarn add vue-react-query
 
    ```
    import { createApp } from "vue";
-   import { QueryClient, VUE_REACT_QUERY_CLIENT } from "../../../lib";
+   import { QueryClient, VUE_QUERY_CLIENT } from "vue-react-query";
 
    import App from "./App.vue";
 
    const queryClient = new QueryClient();
    queryClient.mount();
 
-   createApp(App).provide(VUE_REACT_QUERY_CLIENT, queryClient).mount("#app");
+   createApp(App).provide(VUE_QUERY_CLIENT, queryClient).mount("#app");
    ```
 
 2. Use query
@@ -80,9 +80,9 @@ Use DevTools component in the entry component of your application.
 
 Check [Examples section](#examples).
 
-**_Disclaimer: you have to manually hide this component from production builds as of now._**
-
-Tips: Devtool is **not supported on Vue 2.x**
+**Disclaimer:**  
+**_You have to manually remove this component from production builds as of now._**  
+**_Devtools are not supported on Vue 2.x_**
 
 ```
 <script lang="ts">
