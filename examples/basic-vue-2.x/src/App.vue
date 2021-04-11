@@ -1,6 +1,7 @@
 <script lang="ts">
 import { defineComponent } from "@vue/composition-api";
-import {useQuery} from '../../../lib'
+import { useQuery } from "../../../lib";
+
 interface Todo {
   userId: number;
   id: number;
@@ -9,24 +10,25 @@ interface Todo {
 }
 
 const todoFetcher = async (): Promise<Todo[]> =>
-    await fetch("https://jsonplaceholder.typicode.com/todos").then((response) =>
-        response.json()
-    );
+  await fetch("https://jsonplaceholder.typicode.com/todos").then((response) =>
+    response.json()
+  );
+
 export default defineComponent({
   setup() {
     const { isLoading, isError, isFetching, data, error, refetch } = useQuery(
-        "todos",
-        todoFetcher,
-        {
-          retry: 0,
-          staleTime: 1000,
-          cacheTime: 2000,
-        }
+      "todos",
+      todoFetcher,
+      {
+        retry: 0,
+        staleTime: 1000,
+        cacheTime: 2000,
+      }
     );
 
     return { isLoading, isError, isFetching, data, error, refetch };
-  }
-})
+  },
+});
 </script>
 
 <template>
@@ -52,6 +54,7 @@ export default defineComponent({
     <div v-else>Nothing to see here...</div>
   </div>
 </template>
+
 <style>
 ul {
   list-style: none;
