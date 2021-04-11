@@ -4,7 +4,8 @@
   "description": "Vue bindings for react-query",
   "main": "lib/index.js",
   "files": [
-    "/lib"
+    "/lib",
+    "/devtools"
   ],
   "scripts": {
     "build": "rollup -c rollup.config.ts",
