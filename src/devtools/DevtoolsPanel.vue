@@ -8,7 +8,7 @@ import {
   PropType,
   Ref,
   ref,
-} from "vue-demi";
+} from "vue";
 import { useQueryClient } from "../useQueryClient";
 import {
   getQueryStatusLabel,

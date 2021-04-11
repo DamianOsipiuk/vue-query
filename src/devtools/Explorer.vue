@@ -1,5 +1,5 @@
 <script lang="ts">
-import { defineComponent, PropType, ref, watchEffect } from "vue-demi";
+import { defineComponent, PropType, ref, watchEffect } from "vue";
 import { useTheme } from "./useTheme";
 
 type DefaultExpanded = Record<string, unknown> | boolean;
