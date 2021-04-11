@@ -75,14 +75,12 @@ yarn add vue-react-query
 
 # DevTools
 
-This package provides built-in devtools in form of a Vue component.  
-Use DevTools component in the entry component of your application.
+This package provides built-in devtools in the form of a Vue component.  
+Use VueQueryDevTools component in the entry component of your application.
 
 Check [Examples section](#examples).
 
-**Disclaimer:**  
-**_You have to manually remove this component from production builds as of now._**  
-**_Devtools are not supported on Vue 2.x_**
+**_Disclaimer: Devtools not supported on Vue 2.x_**
 
 ```
 <script lang="ts">
