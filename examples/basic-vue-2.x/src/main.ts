@@ -3,7 +3,7 @@ import { createApp, h } from "@vue/composition-api";
 import VueCompositionApi from "@vue/composition-api";
 
 import App from "./App.vue";
-import { QueryClient, VUE_REACT_QUERY_CLIENT } from "../../../lib";
+import { QueryClient, VUE_QUERY_CLIENT } from "../../../lib";
 
 Vue.use(VueCompositionApi);
 
@@ -12,7 +12,7 @@ queryClient.mount();
 
 createApp({
   provide: {
-    [VUE_REACT_QUERY_CLIENT]: queryClient,
+    [VUE_QUERY_CLIENT]: queryClient,
   },
   render() {
     return h(App);

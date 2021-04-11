@@ -24,7 +24,7 @@ export default defineComponent({
 </script>
 
 <template>
-  <h1>vue-react-query example</h1>
+  <h1>vue-query example</h1>
   <button @click="changePage">Change Page</button>
   <button @click="remove">Remove page</button>
   <Page v-if="firstPage === 1" title="Page1" />

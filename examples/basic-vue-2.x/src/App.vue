@@ -33,7 +33,7 @@ export default defineComponent({
 
 <template>
   <div>
-    <h1>vue-react-query example</h1>
+    <h1>vue-query example</h1>
     <p>Turn on <b>Slow 3G</b> or <b>Offline</b> in dev-tools and hit Refetch</p>
     <button @click="refetch" :disabled="isFetching">
       {{ isFetching ? "Refetching..." : "Refetch" }}
