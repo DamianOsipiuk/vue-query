@@ -8,6 +8,19 @@ These hooks support Vue 2.x too via [vue-demi](https://github.com/vueuse/vue-dem
 
 Based on [react-query](https://github.com/tannerlinsley/react-query)
 
+# Quick Features
+
+- Transport/protocol/backend agnostic data fetching (REST, GraphQL, promises, whatever!)
+- Auto Caching + Refetching (stale-while-revalidate, Window Refocus, Polling/Realtime)
+- Parallel + Dependent Queries
+- Mutations + Reactive Query Refetching
+- Multi-layer Cache + Automatic Garbage Collection
+- Paginated + Cursor-based Queries
+- Load-More + Infinite Scroll Queries w/ Scroll Recovery
+- Request Cancellation
+- Dedicated Devtools
+- [![npm bundle size](https://img.shields.io/bundlephobia/minzip/vue-react-query)](https://bundlephobia.com/result?p=vue-react-query) (depending on features imported)
+
 # Examples
 
 - 3.x
