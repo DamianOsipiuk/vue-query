@@ -16,8 +16,8 @@ import {
   SortFn,
   sortFns,
 } from "./utils";
-import Logo from "./Logo.vue";
-import Explorer from "./Explorer.vue";
+import Logo from "./components/Logo.vue";
+import Explorer from "./components/Explorer.vue";
 import { useTheme } from "./useTheme";
 
 interface PanelProps {

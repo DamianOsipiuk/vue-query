@@ -1,9 +1,9 @@
 <script lang="ts">
 import { defineComponent, PropType, ref } from "vue";
 
-import CloseButton from "./CloseButton.vue";
 import DevtoolsPanel from "./DevtoolsPanel.vue";
-import ToggleButton from "./ToggleButton.vue";
+import CloseButton from "./components/CloseButton.vue";
+import ToggleButton from "./components/ToggleButton.vue";
 import { Position } from "./utils";
 
 import type { ButtonProps, PanelProps } from "./types";

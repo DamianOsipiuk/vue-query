@@ -2,8 +2,8 @@
 import { computed, defineComponent, PropType } from "vue";
 import Logo from "./Logo.vue";
 
-import { Position } from "./utils";
-import type { ButtonProps } from "./types";
+import { Position } from "../utils";
+import type { ButtonProps } from "../types";
 
 export default defineComponent({
   name: "ToggleButton",
