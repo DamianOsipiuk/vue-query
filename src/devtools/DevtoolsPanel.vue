@@ -1,6 +1,6 @@
 <script lang="ts">
 import { matchSorter } from "match-sorter";
-import { Query } from "react-query/core";
+import type { Query } from "react-query/core";
 import { computed, defineComponent, PropType, reactive, Ref, ref } from "vue";
 
 import { sortFns, getQueryState } from "./utils";
@@ -31,57 +31,27 @@ export default defineComponent({
       default: {},
     },
   },
-  setup(props) {
+  setup(props, { emit }) {
     const theme = useTheme();
-    const devToolsHeight = ref(400);
+
+    const devtoolsPanelStyles = computed(() => ({
+      backgroundColor: theme.background,
+      color: theme.foreground,
+    }));
 
     const options = reactive({
       filter: "",
       sortDesc: false,
       sortFn: sortFns["Status > Last Updated"],
     });
+    const onOptionsChange = (newOptions: Options) => {
+      Object.assign(options, newOptions);
+    };
 
-    const devtoolsPanelStyles = computed(() => ({
-      display: "flex",
-      position: "fixed",
-      bottom: "0",
-      right: "0",
-      background: "#0b1521",
-      color: "#fff",
-      zIndex: "99999",
-      width: "100%",
-      height: (devToolsHeight.value ?? 500) + "px",
-      maxHeight: "90%",
-      boxShadow: "0 0 20px rgba(0,0,0,.3)",
-      borderTop: `1px solid ${theme.gray}`,
-      transformOrigin: "top",
-      ...(props.panelProps.style || {}),
-      transition: `all .2s ease`,
-      ...(props.isOpen
-        ? {
-            opacity: 1,
-            pointerEvents: "all",
-            transform: `translateY(0) scale(1)`,
-          }
-        : {
-            opacity: 0,
-            pointerEvents: "none",
-            transform: `translateY(15px) scale(1.02)`,
-          }),
-    }));
-
-    const queryClient = useQueryClient();
-    const queryCache = queryClient.getQueryCache();
-    queryCache.subscribe(() => {
-      unsortedQueries.value = Object.values(queryCache.getAll());
-    });
-
-    const unsortedQueries = (ref(
-      Object.values(queryCache.findAll())
-    ) as unknown) as Ref<Query[]>;
-
-    const queries = computed(() => {
-      const sorted = [...unsortedQueries.value].sort(options.sortFn);
+    const queries: Ref<Query[]> = ref([]);
+    const getSortedQueries = () => {
+      const queries = queryCache.getAll();
+      const sorted = [...queries].sort(options.sortFn);
 
       if (options.sortDesc) {
         sorted.reverse();
@@ -94,10 +64,14 @@ export default defineComponent({
       return matchSorter(sorted, options.filter, {
         keys: ["queryHash"],
       }).filter((d) => d.queryHash);
+    };
+    const queryClient = useQueryClient();
+    const queryCache = queryClient.getQueryCache();
+    queryCache.subscribe(() => {
+      queries.value = getSortedQueries();
     });
 
     const activeQuery = ref<Query>();
-
     const selectQuery = (queryHash: string) => {
       if (activeQuery.value?.queryHash === queryHash) {
         activeQuery.value = undefined;
@@ -106,19 +80,19 @@ export default defineComponent({
       }
     };
 
-    const onOptionsChange = (newOptions: Options) => {
-      Object.assign(options, newOptions);
+    const handleDragStart = (event: MouseEvent) => {
+      emit("handleDragStart", event);
     };
 
     return {
       theme,
       devtoolsPanelStyles,
       queries,
-      activeQuery,
       getQueryState,
-
       onOptionsChange,
+      activeQuery,
       selectQuery,
+      handleDragStart,
     };
   },
 });
@@ -126,6 +100,7 @@ export default defineComponent({
 
 <template>
   <div class="VueQueryDevtoolsPanel" :style="devtoolsPanelStyles">
+    <div class="resize-bar" @mousedown="handleDragStart"></div>
     <div
       class="query-panel"
       :style="{
@@ -176,20 +151,49 @@ export default defineComponent({
 </template>
 
 <style scoped>
+.VueQueryDevtoolsPanel {
+  display: flex;
+  font-family: sans-serif;
+  font-size: clamp(12px, 1.5vw, 14px);
+}
+
+@media (max-width: 1000px) {
+  .VueQueryDevtoolsPanel {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 600px) {
+  .VueQueryDevtoolsPanel {
+    font-size: 0.9rem;
+  }
+}
+
+.resize-bar {
+  cursor: row-resize;
+  height: 4px;
+  left: 0;
+  margin-bottom: -4px;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  z-index: 100000;
+}
+
 .query-panel {
-  flex: 1 1 500px;
-  min-height: 40%;
-  max-height: 100%;
-  overflow: auto;
   display: flex;
   flex-direction: column;
+  flex: 1 1 500px;
+  max-height: 100%;
+  min-height: 40%;
+  overflow: auto;
 }
 
 .query-panel-header {
-  padding: 0.5rem;
+  align-items: center;
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  padding: 0.5rem;
 }
 
 .query-list {
