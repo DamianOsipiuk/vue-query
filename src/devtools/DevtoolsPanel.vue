@@ -9,18 +9,18 @@ import {
   Ref,
   ref,
 } from "vue";
-import { useQueryClient } from "../useQueryClient";
+
 import {
   getQueryStatusLabel,
   getQueryStatusColor,
   SortFn,
   sortFns,
 } from "./utils";
-import Logo from "./components/Logo.vue";
-import Explorer from "./components/Explorer.vue";
-import QueryActions from "./components/QueryActions.vue";
-import QueryDetails from "./components/QueryDetails.vue";
 import { useTheme } from "./useTheme";
+import { useQueryClient } from "../useQueryClient";
+
+import Logo from "./components/Logo.vue";
+import ActiveQueryPanel from "./components/ActiveQueryPanel.vue";
 
 interface PanelProps {
   style?: CSSStyleDeclaration;
@@ -29,7 +29,7 @@ interface PanelProps {
 
 export default defineComponent({
   name: "DevtoolsPanel",
-  components: { Logo, Explorer, QueryActions, QueryDetails },
+  components: { Logo, ActiveQueryPanel },
   props: {
     isOpen: {
       type: Boolean,
@@ -357,65 +357,7 @@ export default defineComponent({
         </div>
       </div>
     </div>
-    <div
-      v-if="activeQuery"
-      :style="{
-        flex: '1 1 500px',
-        display: 'flex',
-        flexDirection: 'column',
-        overflow: 'auto',
-        height: '100%',
-      }"
-    >
-      <QueryDetails :query="activeQuery" />
-      <QueryActions :query="activeQuery" />
-      <div
-        :style="{
-          background: theme.backgroundAlt,
-          padding: '.5rem',
-          position: 'sticky',
-          top: 0,
-          zIndex: 1,
-        }"
-      >
-        Data Explorer
-      </div>
-      <div
-        :style="{
-          padding: '.5rem',
-        }"
-      >
-        <Explorer
-          label="Data"
-          :value="activeQuery?.state?.data"
-          :defaultExpanded="{}"
-        />
-      </div>
-      <div
-        :style="{
-          background: theme.backgroundAlt,
-          padding: '.5rem',
-          position: 'sticky',
-          top: 0,
-          zIndex: 1,
-        }"
-      >
-        Query Explorer
-      </div>
-      <div
-        :style="{
-          padding: '.5rem',
-        }"
-      >
-        <Explorer
-          label="Query"
-          :value="activeQuery"
-          :defaultExpanded="{
-            queryKey: true,
-          }"
-        />
-      </div>
-    </div>
+    <ActiveQueryPanel v-if="activeQuery" :query="activeQuery" />
   </div>
 </template>
 
