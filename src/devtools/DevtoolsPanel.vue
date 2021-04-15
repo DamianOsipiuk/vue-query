@@ -18,6 +18,7 @@ import {
 } from "./utils";
 import Logo from "./components/Logo.vue";
 import Explorer from "./components/Explorer.vue";
+import QueryDetails from "./components/QueryDetails.vue";
 import { useTheme } from "./useTheme";
 
 interface PanelProps {
@@ -27,7 +28,7 @@ interface PanelProps {
 
 export default defineComponent({
   name: "DevtoolsPanel",
-  components: { Logo, Explorer },
+  components: { Logo, Explorer, QueryDetails },
   props: {
     isOpen: {
       type: Boolean,
@@ -35,7 +36,7 @@ export default defineComponent({
     },
     panelProps: {
       type: Object as PropType<PanelProps>,
-      default: () => ({} as PanelProps),
+      default: {},
     },
   },
   setup(props) {
@@ -365,84 +366,7 @@ export default defineComponent({
         height: '100%',
       }"
     >
-      <div
-        :style="{
-          padding: '.5rem',
-          background: theme.backgroundAlt,
-          position: 'sticky',
-          top: 0,
-          zIndex: 1,
-        }"
-      >
-        Query Details
-      </div>
-      <div
-        :style="{
-          padding: '.5rem',
-        }"
-      >
-        <div
-          :style="{
-            marginBottom: '.5rem',
-            display: 'flex',
-            alignItems: 'stretch',
-            justifyContent: 'space-between',
-          }"
-        >
-          <code
-            :style="{
-              lineHeight: '1.8rem',
-              fontSize: '.9em',
-            }"
-          >
-            <pre
-              :style="{
-                margin: 0,
-                padding: 0,
-                overflow: 'auto',
-              }"
-              >{{ JSON.stringify(activeQuery.queryKey, null, 2) }}</pre
-            >
-          </code>
-          <span
-            :style="{
-              padding: '0.3rem .6rem',
-              borderRadius: '0.4rem',
-              fontWeight: 'bold',
-              textShadow: '0 2px 10px black',
-              background: getQueryStatusColor(activeQuery, theme),
-              flexShrink: 0,
-            }"
-          >
-            {{ getQueryStatusLabel(activeQuery) }}
-          </span>
-        </div>
-        <div
-          :style="{
-            marginBottom: '.5rem',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-          }"
-        >
-          Observers:
-          <code :style="{ fontSize: '.9em' }">{{
-            activeQuery.observers.length
-          }}</code>
-        </div>
-        <div
-          :style="{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-          }"
-        >
-          Last Updated:{{ " " }}
-          <code :style="{ fontSize: '.9em' }">
-            {{ new Date(activeQuery.state.dataUpdatedAt).toLocaleTimeString() }}
-          </code>
-        </div>
-      </div>
+      <QueryDetails :query="activeQuery" />
       <div
         :style="{
           background: theme.backgroundAlt,
