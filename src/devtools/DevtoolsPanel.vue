@@ -18,6 +18,7 @@ import {
 } from "./utils";
 import Logo from "./components/Logo.vue";
 import Explorer from "./components/Explorer.vue";
+import QueryActions from "./components/QueryActions.vue";
 import QueryDetails from "./components/QueryDetails.vue";
 import { useTheme } from "./useTheme";
 
@@ -28,7 +29,7 @@ interface PanelProps {
 
 export default defineComponent({
   name: "DevtoolsPanel",
-  components: { Logo, Explorer, QueryDetails },
+  components: { Logo, Explorer, QueryActions, QueryDetails },
   props: {
     isOpen: {
       type: Boolean,
@@ -367,65 +368,7 @@ export default defineComponent({
       }"
     >
       <QueryDetails :query="activeQuery" />
-      <div
-        :style="{
-          background: theme.backgroundAlt,
-          padding: '.5rem',
-          position: 'sticky',
-          top: 0,
-          zIndex: 1,
-        }"
-      >
-        Actions
-      </div>
-      <div
-        :style="{
-          padding: '0.5rem',
-        }"
-      >
-        <button
-          class="button"
-          type="button"
-          @click="() => activeQuery?.fetch()"
-          :disabled="activeQuery.state.isFetching"
-          :style="{
-            background: theme.active,
-          }"
-        >
-          Refetch</button
-        >{{ " " }}
-        <button
-          class="button"
-          type="button"
-          @click="() => queryClient.invalidateQueries(activeQuery)"
-          :style="{
-            background: theme.warning,
-            color: theme.inputTextColor,
-          }"
-        >
-          Invalidate</button
-        >{{ " " }}
-        <button
-          class="button"
-          type="button"
-          @click="() => queryClient.resetQueries(activeQuery)"
-          :style="{
-            background: theme.gray,
-          }"
-        >
-          Reset</button
-        >{{ " " }}
-        <button
-          class="button"
-          type="button"
-          @click="() => queryClient.removeQueries(activeQuery)"
-          :style="{
-            background: theme.danger,
-          }"
-        >
-          Remove
-        </button>
-      </div>
+      <QueryActions :query="activeQuery" />
       <div
         :style="{
           background: theme.backgroundAlt,
