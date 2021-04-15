@@ -9,6 +9,7 @@ import { useQueryClient } from "../useQueryClient";
 
 import Logo from "./components/Logo.vue";
 import ActiveQueryPanel from "./components/ActiveQueryPanel.vue";
+import QueryItem from "./components/QueryItem.vue";
 import QueryOptions, { Options } from "./components/QueryOptions.vue";
 import QueryStates from "./components/QueryStates.vue";
 
@@ -19,7 +20,7 @@ interface PanelProps {
 
 export default defineComponent({
   name: "DevtoolsPanel",
-  components: { Logo, ActiveQueryPanel, QueryOptions, QueryStates },
+  components: { Logo, ActiveQueryPanel, QueryItem, QueryOptions, QueryStates },
   props: {
     isOpen: {
       type: Boolean,
@@ -104,9 +105,9 @@ export default defineComponent({
       unsortedQueries.value = Object.values(queryCache.getAll());
     });
 
-    const onQueryClick = (query: Query) => {
+    const selectQuery = (queryHash: string) => {
       activeQueryHash.value =
-        activeQueryHash.value === query.queryHash ? "" : query.queryHash;
+        activeQueryHash.value === queryHash ? "" : queryHash;
     };
 
     const onOptionsChange = (newOptions: Options) => {
@@ -120,10 +121,10 @@ export default defineComponent({
       theme,
       getQueryStatusColor,
       getQueryStatusLabel,
-      onQueryClick,
       queryClient,
 
       onOptionsChange,
+      selectQuery,
     };
   },
 });
@@ -132,23 +133,15 @@ export default defineComponent({
 <template>
   <div class="VueQueryDevtoolsPanel" :style="devtoolsPanelStyles">
     <div
+      class="query-panel"
       :style="{
-        flex: '1 1 500px',
-        minHeight: '40%',
-        maxHeight: '100%',
-        overflow: 'auto',
         borderRight: `1px solid ${theme.grayAlt}`,
-        display: 'flex',
-        flexDirection: 'column',
       }"
     >
       <div
+        class="query-panel-header"
         :style="{
-          padding: '.5rem',
           background: theme.backgroundAlt,
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
         }"
       >
         <Logo
@@ -167,58 +160,46 @@ export default defineComponent({
           <QueryOptions @optionsChange="onOptionsChange" />
         </div>
       </div>
-      <div
-        :style="{
-          overflowY: 'auto',
-          flex: '1',
-        }"
-      >
-        <div
+      <div class="query-list">
+        <QueryItem
           v-for="query in queries"
-          :key="query.queryHash"
-          @click="() => onQueryClick(query)"
+          @selectQuery="selectQuery"
+          :key="query.state.dataUpdatedAt"
+          :query="query"
           :style="{
-            display: 'flex',
-            borderBottom: `solid 1px ${theme.grayAlt}`,
-            cursor: 'pointer',
             background:
               query === activeQuery ? 'rgba(255,255,255,.1)' : undefined,
           }"
-        >
-          <div
-            :style="{
-              flex: '0 0 auto',
-              width: '2rem',
-              height: '2rem',
-              background: getQueryStatusColor(query, theme),
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              fontWeight: 'bold',
-              textShadow:
-                getQueryStatusLabel(query) === 'stale' ? '0' : '0 0 10px black',
-              color: getQueryStatusLabel(query) === 'stale' ? 'black' : 'white',
-            }"
-          >
-            {{ query.observers.length }}
-          </div>
-          <code
-            class="code"
-            :style="{
-              padding: '.5rem',
-            }"
-          >
-            {{ query.queryHash }}
-          </code>
-        </div>
+        />
       </div>
     </div>
-    <ActiveQueryPanel v-if="activeQuery" :query="activeQuery" />
+    <ActiveQueryPanel
+      v-if="activeQuery"
+      :key="activeQuery.state.dataUpdatedAt"
+      :query="activeQuery"
+    />
   </div>
 </template>
 
 <style scoped>
-.code {
-  font-size: 0.9em;
+.query-panel {
+  flex: 1 1 500px;
+  min-height: 40%;
+  max-height: 100%;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.query-panel-header {
+  padding: 0.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.query-list {
+  flex: 1;
+  overflow-y: auto;
 }
 </style>
