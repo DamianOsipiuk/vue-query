@@ -3,7 +3,7 @@ import { matchSorter } from "match-sorter";
 import { Query } from "react-query/core";
 import { computed, defineComponent, PropType, reactive, Ref, ref } from "vue";
 
-import { getQueryStatusLabel, getQueryStatusColor, sortFns } from "./utils";
+import { sortFns, getQueryState } from "./utils";
 import { useTheme } from "./useTheme";
 import { useQueryClient } from "../useQueryClient";
 
@@ -41,8 +41,6 @@ export default defineComponent({
       sortFn: sortFns["Status > Last Updated"],
     });
 
-    const activeQueryHash = ref("");
-
     const devtoolsPanelStyles = computed(() => ({
       display: "flex",
       position: "fixed",
@@ -74,6 +72,9 @@ export default defineComponent({
 
     const queryClient = useQueryClient();
     const queryCache = queryClient.getQueryCache();
+    queryCache.subscribe(() => {
+      unsortedQueries.value = Object.values(queryCache.getAll());
+    });
 
     const unsortedQueries = (ref(
       Object.values(queryCache.findAll())
@@ -95,19 +96,14 @@ export default defineComponent({
       }).filter((d) => d.queryHash);
     });
 
-    const activeQuery = computed(() => {
-      return queries.value.find(
-        (query) => query.queryHash === activeQueryHash.value
-      );
-    });
-
-    queryCache.subscribe(() => {
-      unsortedQueries.value = Object.values(queryCache.getAll());
-    });
+    const activeQuery = ref<Query>();
 
     const selectQuery = (queryHash: string) => {
-      activeQueryHash.value =
-        activeQueryHash.value === queryHash ? "" : queryHash;
+      if (activeQuery.value?.queryHash === queryHash) {
+        activeQuery.value = undefined;
+      } else {
+        activeQuery.value = queryCache.get(queryHash);
+      }
     };
 
     const onOptionsChange = (newOptions: Options) => {
@@ -115,13 +111,11 @@ export default defineComponent({
     };
 
     return {
+      theme,
       devtoolsPanelStyles,
       queries,
       activeQuery,
-      theme,
-      getQueryStatusColor,
-      getQueryStatusLabel,
-      queryClient,
+      getQueryState,
 
       onOptionsChange,
       selectQuery,
@@ -164,7 +158,7 @@ export default defineComponent({
         <QueryItem
           v-for="query in queries"
           @selectQuery="selectQuery"
-          :key="query.state.dataUpdatedAt"
+          :key="getQueryState(query) + query.state.dataUpdatedAt"
           :query="query"
           :style="{
             background:
@@ -175,7 +169,7 @@ export default defineComponent({
     </div>
     <ActiveQueryPanel
       v-if="activeQuery"
-      :key="activeQuery.state.dataUpdatedAt"
+      :key="getQueryState(activeQuery) + activeQuery.state.dataUpdatedAt"
       :query="activeQuery"
     />
   </div>

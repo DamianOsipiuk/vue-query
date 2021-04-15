@@ -41,10 +41,10 @@ export default defineComponent({
 
 <style scoped>
 .active-query-panel {
-  flex: 1 1 500px;
   display: flex;
   flex-direction: column;
-  overflow: auto;
+  flex: 1 1 500px;
   height: 100%;
+  overflow: auto;
 }
 </style>

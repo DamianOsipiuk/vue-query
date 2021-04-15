@@ -57,10 +57,8 @@ export default defineComponent({
     return {
       theme,
       sorFnKeys,
-
       sort,
       options,
-
       onInput,
       onKeyDown,
       onSortFnChange,
@@ -110,8 +108,8 @@ export default defineComponent({
 
 <style scoped>
 .options-wrapper {
-  display: flex;
   align-items: center;
+  display: flex;
 }
 
 input {

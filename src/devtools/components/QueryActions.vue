@@ -43,7 +43,6 @@ export default defineComponent({
     return {
       theme,
       isFetching,
-
       doFetch,
       doInvalidate,
       doReset,
@@ -100,13 +99,13 @@ export default defineComponent({
 <style scoped>
 button {
   appearance: none;
+  border-radius: 0.3em;
+  border: 0;
+  color: white;
+  cursor: pointer;
   font-size: 0.9em;
   font-weight: bold;
-  border: 0;
-  border-radius: 0.3em;
-  color: white;
   padding: 0.5em;
-  cursor: pointer;
 }
 
 button:not(:last-of-type) {

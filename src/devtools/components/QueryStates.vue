@@ -37,7 +37,6 @@ export default defineComponent({
 
     return {
       theme,
-
       fresh,
       fetching,
       stale,
@@ -93,17 +92,17 @@ export default defineComponent({
 <style scoped>
 .query-states {
   display: flex;
-  justify-content: flex-end;
   font-size: 0.9em;
+  justify-content: flex-end;
   margin-bottom: 0.5rem;
 }
 .query-state {
-  margin-left: 5px;
-  display: inline-flex;
   align-items: center;
-  padding: 0.2em 0.4em;
-  font-weight: bold;
-  text-shadow: 0 0 10px black;
   border-radius: 0.2em;
+  display: inline-flex;
+  font-weight: bold;
+  margin-left: 5px;
+  padding: 0.2em 0.4em;
+  text-shadow: 0 0 10px black;
 }
 </style>

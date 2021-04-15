@@ -1,15 +1,10 @@
 <script lang="ts">
-import { computed, defineComponent, PropType, ref } from "vue";
+import { computed, defineComponent, PropType } from "vue";
 
 import type { Query } from "react-query/types";
 
 import { useTheme } from "../useTheme";
-import {
-  getQueryState,
-  getQueryStatusLabel,
-  getQueryStatusColor,
-  QueryState,
-} from "../utils";
+import { getQueryState, getQueryStatusColor, QueryState } from "../utils";
 
 export default defineComponent({
   name: "QueryItem",
@@ -26,6 +21,7 @@ export default defineComponent({
     const isStale = computed(
       () => getQueryState(props.query) === QueryState.Stale
     );
+    const stateColor = computed(() => getQueryStatusColor(props.query, theme));
 
     const onQueryClick = () => {
       emit("selectQuery", props.query.queryHash);
@@ -33,16 +29,10 @@ export default defineComponent({
 
     return {
       theme,
-
       observerCount,
       isStale,
-
+      stateColor,
       onQueryClick,
-
-      getQueryState,
-      QueryState,
-      getQueryStatusLabel,
-      getQueryStatusColor,
     };
   },
 });
@@ -60,7 +50,7 @@ export default defineComponent({
     <div
       class="query-state"
       :style="{
-        background: getQueryStatusColor(query, theme),
+        background: stateColor,
         textShadow: isStale ? '0' : '0 0 10px black',
         color: isStale ? 'black' : 'white',
       }"
