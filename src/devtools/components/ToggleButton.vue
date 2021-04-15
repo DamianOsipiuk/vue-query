@@ -1,5 +1,6 @@
 <script lang="ts">
 import { computed, defineComponent, PropType } from "vue";
+
 import Logo from "./Logo.vue";
 
 import { Position } from "../utils";
@@ -25,6 +26,20 @@ export default defineComponent({
       props.buttonProps.click?.();
     };
 
+    const position = computed(() => {
+      if (props.position === Position.TR) {
+        return { top: 0, right: 0 };
+      }
+      if (props.position === Position.TL) {
+        return { top: 0, left: 0 };
+      }
+      if (props.position === Position.BR) {
+        return { bottom: 0, right: 0 };
+      }
+
+      return { bottom: 0, left: 0 };
+    });
+
     const buttonStyles = computed(() => ({
       background: "none",
       border: 0,
@@ -36,25 +51,7 @@ export default defineComponent({
       margin: ".5rem",
       cursor: "pointer",
       width: "fit-content",
-      ...(props.position === Position.TR
-        ? {
-            top: "0",
-            right: "0",
-          }
-        : props.position === Position.TL
-        ? {
-            top: "0",
-            left: "0",
-          }
-        : props.position === Position.BR
-        ? {
-            bottom: "0",
-            right: "0",
-          }
-        : {
-            bottom: "0",
-            left: "0",
-          }),
+      ...position.value,
       ...props.buttonProps.style,
     }));
 

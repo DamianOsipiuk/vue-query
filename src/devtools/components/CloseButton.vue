@@ -8,7 +8,7 @@ export default defineComponent({
   name: "CloseButton",
   props: {
     position: {
-      type: String,
+      type: String as PropType<Position>,
       required: true,
     },
     buttonProps: {
@@ -26,9 +26,9 @@ export default defineComponent({
     const position = computed(() => {
       if (props.position === Position.TR || props.position === Position.BR) {
         return { right: 0 };
-      } else {
-        return { left: 0 };
       }
+
+      return { left: 0 };
     });
 
     const buttonStyles = computed(() => ({
