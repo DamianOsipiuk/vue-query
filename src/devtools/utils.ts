@@ -9,37 +9,63 @@ export enum Position {
   BL = "bottom-left",
 }
 
+export enum QueryState {
+  Fetching = 0,
+  Fresh,
+  Stale,
+  Inactive,
+}
+
+export function getQueryState(query: Query): QueryState {
+  if (query.isFetching()) {
+    return QueryState.Fetching;
+  }
+  // @ts-expect-error Invalid types
+  if (!query.observers.length) {
+    return QueryState.Inactive;
+  }
+  if (query.isStale()) {
+    return QueryState.Stale;
+  }
+
+  return QueryState.Fresh;
+}
+
 export function getQueryStatusColor(query: Query, theme: Theme): string {
-  return query.isFetching()
-    ? theme.active
-    : query.isStale()
-    ? theme.warning
-    : // @ts-expect-error Invalid types
-    !query.observers.length
-    ? theme.gray
-    : theme.success;
+  const queryState = getQueryState(query);
+
+  if (queryState === QueryState.Fetching) {
+    return theme.active;
+  }
+  if (queryState === QueryState.Stale) {
+    return theme.warning;
+  }
+  if (queryState === QueryState.Inactive) {
+    return theme.gray;
+  }
+
+  return theme.success;
 }
 
 export function getQueryStatusLabel(query: Query): string {
-  return query.isFetching()
-    ? "fetching"
-    : // @ts-expect-error Invalid types
-    !query.observers.length
-    ? "inactive"
-    : query.isStale()
-    ? "stale"
-    : "fresh";
+  const queryState = getQueryState(query);
+
+  if (queryState === QueryState.Fetching) {
+    return "fetching";
+  }
+  if (queryState === QueryState.Stale) {
+    return "inactive";
+  }
+  if (queryState === QueryState.Inactive) {
+    return "stale";
+  }
+
+  return "fresh";
 }
 
-export const getStatusRank = (query: Query): number =>
-  query.state.isFetching
-    ? 0
-    : // @ts-expect-error Invalid types
-    !query.observers.length
-    ? 3
-    : query.isStale()
-    ? 2
-    : 1;
+export const getStatusRank = (query: Query): number => {
+  return getQueryState(query);
+};
 
 export type SortFn = (a: Query, b: Query) => number;
 
