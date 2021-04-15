@@ -1,26 +1,15 @@
 <script lang="ts">
 import { matchSorter } from "match-sorter";
 import { Query } from "react-query/core";
-import {
-  computed,
-  ComputedRef,
-  defineComponent,
-  PropType,
-  Ref,
-  ref,
-} from "vue";
+import { computed, defineComponent, PropType, reactive, Ref, ref } from "vue";
 
-import {
-  getQueryStatusLabel,
-  getQueryStatusColor,
-  SortFn,
-  sortFns,
-} from "./utils";
+import { getQueryStatusLabel, getQueryStatusColor, sortFns } from "./utils";
 import { useTheme } from "./useTheme";
 import { useQueryClient } from "../useQueryClient";
 
 import Logo from "./components/Logo.vue";
 import ActiveQueryPanel from "./components/ActiveQueryPanel.vue";
+import QueryOptions, { Options } from "./components/QueryOptions.vue";
 import QueryStates from "./components/QueryStates.vue";
 
 interface PanelProps {
@@ -30,7 +19,7 @@ interface PanelProps {
 
 export default defineComponent({
   name: "DevtoolsPanel",
-  components: { Logo, ActiveQueryPanel, QueryStates },
+  components: { Logo, ActiveQueryPanel, QueryOptions, QueryStates },
   props: {
     isOpen: {
       type: Boolean,
@@ -44,12 +33,14 @@ export default defineComponent({
   setup(props) {
     const theme = useTheme();
     const devToolsHeight = ref(400);
-    const sort = ref(Object.keys(sortFns)[0]);
-    const filter = ref("");
-    const sortDesc = ref(false);
-    const activeQueryHash = ref("");
 
-    const sortFn: ComputedRef<SortFn> = computed(() => sortFns[sort.value]);
+    const options = reactive({
+      filter: "",
+      sortDesc: false,
+      sortFn: sortFns["Status > Last Updated"],
+    });
+
+    const activeQueryHash = ref("");
 
     const devtoolsPanelStyles = computed(() => ({
       display: "flex",
@@ -86,20 +77,21 @@ export default defineComponent({
     const unsortedQueries = (ref(
       Object.values(queryCache.findAll())
     ) as unknown) as Ref<Query[]>;
-    const queries = computed(() => {
-      const sorted = [...unsortedQueries.value].sort(sortFn.value);
 
-      if (sortDesc.value) {
+    const queries = computed(() => {
+      const sorted = [...unsortedQueries.value].sort(options.sortFn);
+
+      if (options.sortDesc) {
         sorted.reverse();
       }
 
-      if (!filter.value) {
+      if (!options.filter) {
         return sorted;
       }
 
-      return matchSorter(sorted, filter.value, { keys: ["queryHash"] }).filter(
-        (d) => d.queryHash
-      );
+      return matchSorter(sorted, options.filter, {
+        keys: ["queryHash"],
+      }).filter((d) => d.queryHash);
     });
 
     const activeQuery = computed(() => {
@@ -112,48 +104,26 @@ export default defineComponent({
       unsortedQueries.value = Object.values(queryCache.getAll());
     });
 
-    const onChange = (event: KeyboardEvent) => {
-      // @ts-expect-error Fixme
-      filter.value = event.target?.value;
-    };
-
-    const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        filter.value = "";
-      }
-    };
-
-    const onSortChange = (event: Event) => {
-      // @ts-expect-error Fixme
-      sort.value = event.target?.value;
-    };
-
-    const onSortDescChange = () => {
-      sortDesc.value = !sortDesc.value;
-    };
-
     const onQueryClick = (query: Query) => {
       activeQueryHash.value =
         activeQueryHash.value === query.queryHash ? "" : query.queryHash;
+    };
+
+    const onOptionsChange = (newOptions: Options) => {
+      Object.assign(options, newOptions);
     };
 
     return {
       devtoolsPanelStyles,
       queries,
       activeQuery,
-      filter,
-      sort,
-      sortFns,
-      sortDesc,
       theme,
       getQueryStatusColor,
       getQueryStatusLabel,
-      onChange,
-      onKeyDown,
-      onSortChange,
-      onSortDescChange,
       onQueryClick,
       queryClient,
+
+      onOptionsChange,
     };
   },
 });
@@ -194,60 +164,7 @@ export default defineComponent({
           }"
         >
           <QueryStates />
-          <div
-            :style="{
-              display: 'flex',
-              alignItems: 'center',
-            }"
-          >
-            <input
-              class="input"
-              placeholder="Filter"
-              :value="filter ?? ''"
-              @input="onChange"
-              @keydown="onKeyDown"
-              :style="{
-                flex: '1',
-                marginRight: '.5rem',
-                backgroundColor: theme.inputBackgroundColor,
-                color: theme.inputTextColor,
-              }"
-            />
-            <div>
-              <select
-                class="select"
-                v-if="!filter"
-                :value="sort"
-                @change="onSortChange"
-                :style="{
-                  flex: '1',
-                  minWidth: 75,
-                  marginRight: '.5rem',
-                  backgroundColor: theme.inputBackgroundColor,
-                  color: theme.inputTextColor,
-                }"
-              >
-                <option
-                  v-for="key in Object.keys(sortFns)"
-                  :key="key"
-                  :value="key"
-                >
-                  Sort by {{ key }}
-                </option>
-              </select>
-              <button
-                class="button"
-                type="button"
-                @click="onSortDescChange"
-                :style="{
-                  padding: '.3rem .4rem',
-                  background: theme.gray,
-                }"
-              >
-                {{ sortDesc ? "⬇ Desc" : "⬆ Asc" }}
-              </button>
-            </div>
-          </div>
+          <QueryOptions @optionsChange="onOptionsChange" />
         </div>
       </div>
       <div
@@ -303,40 +220,5 @@ export default defineComponent({
 <style scoped>
 .code {
   font-size: 0.9em;
-}
-.input {
-  border: 0;
-  border-radius: 0.2em;
-  font-size: 0.9em;
-  line-height: 1.3;
-  padding: 0.3em 0.4em;
-}
-.button {
-  background: #3f4e60;
-  appearance: none;
-  font-size: 0.9em;
-  font-weight: bold;
-  border: 0;
-  border-radius: 0.3em;
-  color: white;
-  padding: 0.5em;
-  cursor: pointer;
-}
-.select {
-  display: inline-block;
-  font-size: 0.9em;
-  font-family: sans-serif;
-  font-weight: normal;
-  line-height: 1.3;
-  padding: 0.3em 1.5em 0.3em 0.5em;
-  height: auto;
-  border: 0;
-  border-radius: 0.2em;
-  appearance: none;
-  --webkit-appearance: none;
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' fill='%23444444'><polygon points='0,25 100,25 50,75'/></svg>");
-  background-repeat: no-repeat;
-  background-position: right 0.55em center;
-  background-size: 0.65em auto, 100%;
 }
 </style>
