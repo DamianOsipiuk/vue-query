@@ -28,7 +28,7 @@ export default defineComponent({
     const statusBackground = ref("");
 
     const stateUpdater = () => {
-      formattedQueryKey.value = JSON.stringify(props.query.queryKey, null, 2);
+      formattedQueryKey.value = props.query.queryHash;
       queryStatusLabel.value = getQueryStatusLabel(props.query);
       // @ts-expect-error Accessing private property
       observersCount.value = props.query.observers.length;
