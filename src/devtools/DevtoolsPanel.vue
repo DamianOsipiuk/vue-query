@@ -21,6 +21,7 @@ import { useQueryClient } from "../useQueryClient";
 
 import Logo from "./components/Logo.vue";
 import ActiveQueryPanel from "./components/ActiveQueryPanel.vue";
+import QueryStates from "./components/QueryStates.vue";
 
 interface PanelProps {
   style?: CSSStyleDeclaration;
@@ -29,7 +30,7 @@ interface PanelProps {
 
 export default defineComponent({
   name: "DevtoolsPanel",
-  components: { Logo, ActiveQueryPanel },
+  components: { Logo, ActiveQueryPanel, QueryStates },
   props: {
     isOpen: {
       type: Boolean,
@@ -107,23 +108,6 @@ export default defineComponent({
       );
     });
 
-    const hasFresh = computed(() => {
-      return queries.value.filter((q) => getQueryStatusLabel(q) === "fresh")
-        .length;
-    });
-    const hasFetching = computed(() => {
-      return queries.value.filter((q) => getQueryStatusLabel(q) === "fetching")
-        .length;
-    });
-    const hasStale = computed(() => {
-      return queries.value.filter((q) => getQueryStatusLabel(q) === "stale")
-        .length;
-    });
-    const hasInactive = computed(() => {
-      return queries.value.filter((q) => getQueryStatusLabel(q) === "inactive")
-        .length;
-    });
-
     queryCache.subscribe(() => {
       unsortedQueries.value = Object.values(queryCache.getAll());
     });
@@ -161,10 +145,6 @@ export default defineComponent({
       sort,
       sortFns,
       sortDesc,
-      hasFresh,
-      hasFetching,
-      hasStale,
-      hasInactive,
       theme,
       getQueryStatusColor,
       getQueryStatusLabel,
@@ -213,48 +193,7 @@ export default defineComponent({
             flexDirection: 'column',
           }"
         >
-          <span class="query-keys">
-            <span
-              class="query-key"
-              :style="{
-                background: theme.success,
-                opacity: hasFresh ? 1 : 0.3,
-              }"
-            >
-              fresh <code class="code">{{ hasFresh }}</code>
-            </span>
-            <span
-              class="query-key"
-              :style="{
-                background: theme.active,
-                opacity: hasFetching ? 1 : 0.3,
-              }"
-            >
-              fetching
-              <code class="code">{{ hasFetching }}</code>
-            </span>
-            <span
-              class="query-key"
-              :style="{
-                background: theme.warning,
-                color: 'black',
-                textShadow: '0',
-                opacity: hasStale ? 1 : 0.3,
-              }"
-            >
-              stale <code class="code">{{ hasStale }}</code>
-            </span>
-            <span
-              class="query-key"
-              :style="{
-                background: theme.gray,
-                opacity: hasInactive ? 1 : 0.3,
-              }"
-            >
-              inactive
-              <code class="code">{{ hasInactive }}</code>
-            </span>
-          </span>
+          <QueryStates />
           <div
             :style="{
               display: 'flex',
@@ -362,25 +301,6 @@ export default defineComponent({
 </template>
 
 <style scoped>
-.query-keys {
-  display: inline-block;
-  font-size: 0.9em;
-  margin-bottom: 0.5rem;
-}
-.query-keys .query-key {
-  margin-left: 5px;
-}
-.query-key {
-  display: inline-flex;
-  align-items: center;
-  padding: 0.2em 0.4em;
-  font-weight: bold;
-  text-shadow: 0 0 10px black;
-  border-radius: 0.2em;
-}
-.query-key .code {
-  padding-left: 5px;
-}
 .code {
   font-size: 0.9em;
 }

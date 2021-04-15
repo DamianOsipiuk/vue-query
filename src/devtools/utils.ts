@@ -16,6 +16,13 @@ export enum QueryState {
   Inactive,
 }
 
+export const QueryStateLabel = {
+  [QueryState.Fetching]: "fetching",
+  [QueryState.Fresh]: "fresh",
+  [QueryState.Stale]: "stale",
+  [QueryState.Inactive]: "inactive",
+};
+
 export function getQueryState(query: Query): QueryState {
   if (query.isFetching()) {
     return QueryState.Fetching;
@@ -48,19 +55,7 @@ export function getQueryStatusColor(query: Query, theme: Theme): string {
 }
 
 export function getQueryStatusLabel(query: Query): string {
-  const queryState = getQueryState(query);
-
-  if (queryState === QueryState.Fetching) {
-    return "fetching";
-  }
-  if (queryState === QueryState.Stale) {
-    return "inactive";
-  }
-  if (queryState === QueryState.Inactive) {
-    return "stale";
-  }
-
-  return "fresh";
+  return QueryStateLabel[getQueryState(query)];
 }
 
 export const getStatusRank = (query: Query): number => {
