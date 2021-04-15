@@ -1,12 +1,11 @@
 <script lang="ts">
-import { defineComponent, PropType, ref } from "vue";
+import { computed, defineComponent, PropType } from "vue";
 
 import type { Query } from "react-query/types";
 
 import InfoPanel from "./InfoPanel.vue";
 
 import { useTheme } from "../useTheme";
-import { useQueryCacheUpdater } from "../useQueryCacheUpdater";
 import { useQueryClient } from "../../useQueryClient";
 
 export default defineComponent({
@@ -21,11 +20,7 @@ export default defineComponent({
   setup(props) {
     const theme = useTheme();
     const queryClient = useQueryClient();
-    const isFetching = ref(false);
-
-    useQueryCacheUpdater(props.query.queryHash, () => {
-      isFetching.value = props.query.state.isFetching;
-    });
+    const isFetching = computed(() => props.query.state.isFetching);
 
     const doFetch = () => {
       props.query.fetch();

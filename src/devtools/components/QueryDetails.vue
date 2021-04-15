@@ -1,12 +1,11 @@
 <script lang="ts">
-import { defineComponent, PropType, ref } from "vue";
+import { computed, defineComponent, PropType } from "vue";
 
 import type { Query } from "react-query/types";
 
 import InfoPanel from "./InfoPanel.vue";
 
 import { useTheme } from "../useTheme";
-import { useQueryCacheUpdater } from "../useQueryCacheUpdater";
 import { getQueryStatusColor, getQueryStatusLabel } from "../utils";
 
 export default defineComponent({
@@ -21,24 +20,16 @@ export default defineComponent({
   setup(props) {
     const theme = useTheme();
 
-    const formattedQueryKey = ref("");
-    const queryStatusLabel = ref("");
-    const observersCount = ref("");
-    const updateDate = ref("");
-    const statusBackground = ref("");
-
-    const stateUpdater = () => {
-      formattedQueryKey.value = props.query.queryHash;
-      queryStatusLabel.value = getQueryStatusLabel(props.query);
-      // @ts-expect-error Accessing private property
-      observersCount.value = props.query.observers.length;
-      updateDate.value = new Date(
-        props.query.state.dataUpdatedAt
-      ).toLocaleTimeString();
-      statusBackground.value = getQueryStatusColor(props.query, theme);
-    };
-
-    useQueryCacheUpdater(props.query.queryHash, stateUpdater);
+    const formattedQueryKey = computed(() => props.query.queryHash);
+    const queryStatusLabel = computed(() => getQueryStatusLabel(props.query));
+    // @ts-expect-error Accessing private property
+    const observersCount = computed(() => props.query.observers.length);
+    const updateDate = computed(() =>
+      new Date(props.query.state.dataUpdatedAt).toLocaleTimeString()
+    );
+    const statusBackground = computed(() =>
+      getQueryStatusColor(props.query, theme)
+    );
 
     return {
       formattedQueryKey,
