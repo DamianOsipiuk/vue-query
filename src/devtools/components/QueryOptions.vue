@@ -1,14 +1,9 @@
 <script lang="ts">
 import { defineComponent, reactive, ref } from "vue";
 
+import type { Options } from "../types";
 import { useTheme } from "../useTheme";
-import { SortFn, sortFns } from "../utils";
-
-export interface Options {
-  filter: string;
-  sortFn: SortFn;
-  sortDesc: boolean;
-}
+import { sortFns } from "../utils";
 
 export default defineComponent({
   name: "QueryOptions",

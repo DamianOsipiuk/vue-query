@@ -1,5 +1,6 @@
 import type { Query } from "react-query/types";
 
+import type { SortFn } from "./types";
 import type { Theme } from "./useTheme";
 
 export enum Position {
@@ -61,8 +62,6 @@ export function getQueryStatusLabel(query: Query): string {
 export const getStatusRank = (query: Query): number => {
   return getQueryState(query);
 };
-
-export type SortFn = (a: Query, b: Query) => number;
 
 const queryHashSort: SortFn = (a, b) => (a.queryHash > b.queryHash ? 1 : -1);
 

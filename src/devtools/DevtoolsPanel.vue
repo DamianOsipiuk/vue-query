@@ -10,8 +10,9 @@ import { useQueryClient } from "../useQueryClient";
 import Logo from "./components/Logo.vue";
 import ActiveQueryPanel from "./components/ActiveQueryPanel.vue";
 import QueryItem from "./components/QueryItem.vue";
-import QueryOptions, { Options } from "./components/QueryOptions.vue";
+import QueryOptions from "./components/QueryOptions.vue";
 import QueryStates from "./components/QueryStates.vue";
+import type { Options } from "./types";
 
 interface PanelProps {
   style?: CSSStyleDeclaration;
