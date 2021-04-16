@@ -18,7 +18,7 @@ interface SubEntry {
 }
 
 export default defineComponent({
-  name: "Explorer",
+  name: "ExplorerTree",
   props: {
     label: {},
     defaultExpanded: {
@@ -177,7 +177,7 @@ export default defineComponent({
         borderLeft: '2px solid rgba(0,0,0,.15)',
       }"
     >
-      <Explorer
+      <ExplorerTree
         v-for="entry of subEntries"
         :key="entry.label"
         :label="entry.label"
@@ -226,7 +226,7 @@ export default defineComponent({
               borderLeft: '2px solid rgba(0,0,0,.15)',
             }"
           >
-            <Explorer
+            <ExplorerTree
               v-for="entry of entries"
               :key="entry.label"
               :label="entry.label"
