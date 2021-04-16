@@ -48,7 +48,6 @@ export default defineComponent({
     };
 
     const handleDragStart = (event: MouseEvent) => {
-      console.log("drag start", panelRef.value);
       if (event.button !== 0) return; // Only allow left click for drag
 
       isResizing.value = true;

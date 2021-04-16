@@ -9,7 +9,7 @@
   ],
   "scripts": {
     "build": "rollup -c rollup.config.ts",
-    "lint": "eslint ./src/** ./tests/**",
+    "lint": "eslint ./src/**/*.{ts,vue} ./tests/**/*.{ts,vue}",
     "prepare": "npm run build",
     "test": "jest"
   },
@@ -69,25 +69,5 @@
     "typescript": "^4.2.3",
     "vue": "^3.0.7",
     "vue-jest": "^5.0.0-alpha.7"
-  },
-  "eslintConfig": {
-    "root": true,
-    "env": {
-      "node": true
-    },
-    "extends": [
-      "plugin:vue/vue3-essential",
-      "eslint:recommended",
-      "@vue/typescript/recommended",
-      "@vue/prettier",
-      "@vue/prettier/@typescript-eslint"
-    ],
-    "parserOptions": {
-      "ecmaVersion": 2020
-    },
-    "rules": {
-      "no-console": "warn",
-      "no-debugger": "warn"
-    }
   }
 }

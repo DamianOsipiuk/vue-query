@@ -8,6 +8,7 @@ import { sortFns } from "../utils";
 export default defineComponent({
   name: "QueryOptions",
   emits: {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     optionsChange: (_options: Options) => true,
   },
   setup(_props, { emit }) {

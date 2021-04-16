@@ -2,7 +2,7 @@ import { onUnmounted } from "vue-demi";
 import { QueryClient, setLogger } from "react-query/core";
 import { useMutation } from "../src/useMutation";
 import { useIsMutating } from "../src/useIsMutating";
-import { flushPromises, simpleFetcher, noop, successMutator } from "./utils";
+import { flushPromises, noop, successMutator } from "./utils";
 
 jest.mock("vue", () => {
   const vue = jest.requireActual("vue");
