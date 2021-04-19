@@ -48,7 +48,7 @@ yarn add vue-react-query
 
 1. Attach vue-react-query to your Vue application
 
-   ```
+   ```ts
    import { createApp } from "vue";
    import { QueryClient, VUE_QUERY_CLIENT } from "vue-react-query";
 
@@ -62,7 +62,7 @@ yarn add vue-react-query
 
 2. Use query
 
-   ```
+   ```ts
    import { useQuery } from "vue-react-query";
 
    const query = useQuery("todos", getTodos);
@@ -70,7 +70,7 @@ yarn add vue-react-query
 
 3. If you need to update options on your query dynamically, make sure to pass it as reactive property
 
-   ```
+   ```ts
    const id = ref(1);
    const queryKey = reactive(["todos", { id }]);
    const queryFunction = () => getTodos(id),
@@ -95,7 +95,7 @@ Check [Examples section](#examples).
 
 **_Disclaimer: Devtools not supported on Vue 2.x_**
 
-```
+```vue
 <script lang="ts">
 import { defineComponent } from "vue";
 import { VueQueryDevTools } from "vue-react-query/devtools";
