@@ -1,14 +1,14 @@
 {
-  "name": "basic-vue-2.x",
-  "version": "1.0.0",
+  "private": true,
   "scripts": {
     "dev": "vite",
-    "build": "vite build"
+    "build": "vite build",
+    "serve": "vite preview"
   },
   "dependencies": {
     "@vue/composition-api": "^1.0.0-rc.6",
     "vue": "^2.6.12",
-    "vue-react-query": "^0.3.3"
+    "vue-query": ">=1.0.0"
   },
   "devDependencies": {
     "typescript": "^4.2.4",

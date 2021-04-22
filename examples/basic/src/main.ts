@@ -1,5 +1,5 @@
 import { createApp } from "vue";
-import { QueryClient, VUE_QUERY_CLIENT } from "vue-react-query";
+import { QueryClient, VUE_QUERY_CLIENT } from "vue-query";
 
 import App from "./App.vue";
 

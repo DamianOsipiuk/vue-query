@@ -1,6 +1,8 @@
-[![NPM](https://img.shields.io/npm/v/vue-react-query)](https://www.npmjs.com/package/vue-react-query) [![NPM](https://img.shields.io/npm/l/vue-react-query)](https://github.com/DamianOsipiuk/vue-react-query/blob/main/LICENSE)
+[![NPM](https://img.shields.io/npm/v/vue-query)](https://www.npmjs.com/package/vue-query)
+[![NPM](https://img.shields.io/npm/l/vue-query)](https://github.com/DamianOsipiuk/vue-query/blob/main/LICENSE)
+[![npm bundle size](https://img.shields.io/bundlephobia/minzip/vue-query)](https://bundlephobia.com/result?p=vue-query)
 
-# vue-react-query
+# vue-query
 
 Hooks for fetching, caching and updating asynchronous data in Vue.
 
@@ -19,38 +21,38 @@ Based on [react-query](https://github.com/tannerlinsley/react-query)
 - Load-More + Infinite Scroll Queries w/ Scroll Recovery
 - Request Cancellation
 - Dedicated Devtools
-- [![npm bundle size](https://img.shields.io/bundlephobia/minzip/vue-react-query)](https://bundlephobia.com/result?p=vue-react-query) (depending on features imported)
+- [![npm bundle size](https://img.shields.io/bundlephobia/minzip/vue-query)](https://bundlephobia.com/result?p=vue-query) (depending on features imported)
 
 # Examples
 
 - 3.x
-  - [Basic](https://github.com/DamianOsipiuk/vue-react-query/tree/main/examples/basic)
-  - [Multi-Page](https://github.com/DamianOsipiuk/vue-react-query/tree/main/examples/multi-page)
+  - [Basic](https://github.com/DamianOsipiuk/vue-query/tree/main/examples/basic)
+  - [Multi-Page](https://github.com/DamianOsipiuk/vue-query/tree/main/examples/multi-page)
     - Caching - throttle network and then switch between pages
     - Deduping requests - click `change page` in quick succession and monitor Network tab in devtools.
     - Garbage collection - click `remove page`
 - 2.x
-  - [Basic](https://github.com/DamianOsipiuk/vue-react-query/tree/main/examples/basic-vue2.x)
+  - [Basic](https://github.com/DamianOsipiuk/vue-query/tree/main/examples/basic-vue-2.x)
 
 # Installation
 
 ```
-npm install vue-react-query
+npm install vue-query
 ```
 
 or
 
 ```
-yarn add vue-react-query
+yarn add vue-query
 ```
 
 # Usage
 
-1. Attach vue-react-query to your Vue application
+1. Attach vue-query to your Vue application
 
    ```ts
    import { createApp } from "vue";
-   import { QueryClient, VUE_QUERY_CLIENT } from "vue-react-query";
+   import { QueryClient, VUE_QUERY_CLIENT } from "vue-query";
 
    import App from "./App.vue";
 
@@ -63,7 +65,7 @@ yarn add vue-react-query
 2. Use query
 
    ```ts
-   import { useQuery } from "vue-react-query";
+   import { useQuery } from "vue-query";
 
    const query = useQuery("todos", getTodos);
    ```
@@ -98,7 +100,7 @@ Check [Examples section](#examples).
 ```vue
 <script lang="ts">
 import { defineComponent } from "vue";
-import { VueQueryDevTools } from "vue-react-query/devtools";
+import { VueQueryDevTools } from "vue-query/devtools";
 
 export default defineComponent({
   name: "App",

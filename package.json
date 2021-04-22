@@ -1,7 +1,7 @@
 {
-  "name": "vue-react-query",
-  "version": "0.4.0",
-  "description": "Vue bindings for react-query",
+  "name": "vue-query",
+  "version": "1.0.0",
+  "description": "Hooks for fetching, caching and updating asynchronous data in Vue",
   "main": "lib/index.js",
   "files": [
     "/lib",
@@ -20,7 +20,6 @@
   "keywords": [
     "vue",
     "query",
-    "react-query",
     "vue-query",
     "vue-react-query",
     "server-cache"
