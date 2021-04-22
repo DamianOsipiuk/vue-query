@@ -1,0 +1,17 @@
+name: Test workflow
+
+on:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - name: GitHub event
+      env:
+        GITHUB_CONTEXT: ${{ toJSON(github.event) }}
+      run: echo "$GITHUB_CONTEXT"
+    - name: GitHub event name
+      env:
+        GITHUB_CONTEXT2: ${{ toJSON(github.event_name) }}
+      run: echo "$GITHUB_CONTEXT2"
