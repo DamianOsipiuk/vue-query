@@ -1,24 +1,27 @@
-# This workflow will run tests using node and then publish a package to GitHub Packages when a release is created
-# For more information see: https://help.github.com/actions/language-and-framework-guides/publishing-nodejs-packages
-
-name: Node.js Package
+name: CI
 
 on:
+  push:
+    branches:
+      - main
   release:
-    types: [created]
+    types:
+      - created
+  pull_request:
 
 jobs:
-  build:
+  verify:
     runs-on: ubuntu-latest
 
     strategy:
       matrix:
-        node-version: [12.x, 14.x]
+        node-version: [12, 14, 16]
 
+    name: "Verify (Node ${{ matrix.node-version }})"
     steps:
       - uses: actions/checkout@v2
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node-version }}
       - run: npm ci
@@ -28,14 +31,17 @@ jobs:
         env:
           CI: true
 
-  publish-npm:
-    needs: build
+  publish:
+    if: github.event_name == 'release' && github.event.action == 'created'
+    needs: verify
     runs-on: ubuntu-latest
+
+    name: "Publish to NPM"
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
+      - uses: actions/setup-node@v2
         with:
-          node-version: 12
+          node-version: 14
           registry-url: https://registry.npmjs.org/
       - run: npm ci
       - run: npm publish
