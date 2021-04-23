@@ -21,12 +21,7 @@ export default defineComponent({
   setup() {
     const { isLoading, isError, isFetching, data, error, refetch } = useQuery(
       "todos",
-      todoFetcher,
-      {
-        retry: 0,
-        staleTime: 1000,
-        cacheTime: 2000,
-      }
+      todoFetcher
     );
 
     return { isLoading, isError, isFetching, data, error, refetch };
@@ -49,9 +44,6 @@ export default defineComponent({
         {{ item.completed ? "🗹" : "☐" }} {{ item.title }}
       </li>
     </ul>
-    <button @click="refetch" :disabled="isFetching">
-      {{ isFetching ? "Refetching..." : "Refetch" }}
-    </button>
   </div>
   <div v-else>Nothing to see here...</div>
   <VueQueryDevTools :initialIsOpen="true" />

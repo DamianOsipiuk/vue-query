@@ -51,9 +51,6 @@ export default defineComponent({
         {{ item.completed ? "🗹" : "☐" }} {{ item.title }}
       </li>
     </ul>
-    <button @click="refetch" :disabled="isFetching">
-      {{ isFetching ? "Refetching..." : "Refetch" }}
-    </button>
   </div>
   <div v-else>Nothing to see here...</div>
 </template>
