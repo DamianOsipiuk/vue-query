@@ -11,7 +11,7 @@ interface Todo {
 }
 
 const todoFetcher = async (): Promise<Todo[]> =>
-  await fetch("https://jsonplaceholder.typicode.com/todos").then((response) =>
+  await fetch("https://jsonplaceholder.cypress.io/todos").then((response) =>
     response.json()
   );
 
