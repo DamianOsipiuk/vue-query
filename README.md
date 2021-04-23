@@ -1,6 +1,6 @@
 [![NPM](https://img.shields.io/npm/v/vue-query)](https://www.npmjs.com/package/vue-query)
 [![NPM](https://img.shields.io/npm/l/vue-query)](https://github.com/DamianOsipiuk/vue-query/blob/main/LICENSE)
-[![npm bundle size](https://img.shields.io/bundlephobia/minzip/vue-query)](https://bundlephobia.com/result?p=vue-query)
+[![npm bundle size](https://img.shields.io/bundlephobia/minzip/vue-react-query)](https://bundlephobia.com/result?p=vue-query)
 
 # vue-query
 
@@ -21,7 +21,7 @@ Based on [react-query](https://github.com/tannerlinsley/react-query)
 - Load-More + Infinite Scroll Queries w/ Scroll Recovery
 - Request Cancellation
 - Dedicated Devtools
-- [![npm bundle size](https://img.shields.io/bundlephobia/minzip/vue-query)](https://bundlephobia.com/result?p=vue-query) (depending on features imported)
+- [![npm bundle size](https://img.shields.io/bundlephobia/minzip/vue-react-query)](https://bundlephobia.com/result?p=vue-query) (depending on features imported)
 
 # Examples
 
