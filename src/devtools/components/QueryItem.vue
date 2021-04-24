@@ -1,5 +1,5 @@
 <script lang="ts">
-import { computed, defineComponent, PropType } from "vue";
+import { computed, defineComponent, PropType, h } from "vue-demi";
 
 import type { Query } from "react-query/types";
 
@@ -17,7 +17,7 @@ export default defineComponent({
   setup(props, { emit }) {
     const theme = useTheme();
     // @ts-expect-error Accessing private property
-    const observerCount = computed(() => props.query.observers.length);
+    const observerCount = computed<number>(() => props.query.observers.length);
     const isStale = computed(
       () => getQueryState(props.query) === QueryState.Stale
     );
@@ -35,33 +35,41 @@ export default defineComponent({
       onQueryClick,
     };
   },
+  render() {
+    return h(
+      "div",
+      {
+        style: {
+          display: "flex",
+          borderBottom: `solid 1px ${this.theme.grayAlt}`,
+          cursor: "pointer",
+        },
+        // Vue3
+        onClick: this.onQueryClick,
+        // Vue2
+        on: {
+          click: this.onQueryClick,
+        },
+      },
+      [
+        h(
+          "div",
+          {
+            class: "query-state",
+            style: {
+              background: this.stateColor,
+              textShadow: this.isStale ? "0" : "0 0 10px black",
+              color: this.isStale ? "black" : "white",
+            },
+          },
+          this.observerCount
+        ),
+        h("code", this.$props.query.queryHash),
+      ]
+    );
+  },
 });
 </script>
-
-<template>
-  <div
-    @click="onQueryClick"
-    :style="{
-      display: 'flex',
-      borderBottom: `solid 1px ${theme.grayAlt}`,
-      cursor: 'pointer',
-    }"
-  >
-    <div
-      class="query-state"
-      :style="{
-        background: stateColor,
-        textShadow: isStale ? '0' : '0 0 10px black',
-        color: isStale ? 'black' : 'white',
-      }"
-    >
-      {{ observerCount }}
-    </div>
-    <code>
-      {{ query.queryHash }}
-    </code>
-  </div>
-</template>
 
 <style scoped>
 .query-state {

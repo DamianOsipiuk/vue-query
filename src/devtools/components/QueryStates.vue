@@ -1,26 +1,23 @@
 <script lang="ts">
-import { computed, defineComponent, Ref, ref } from "vue";
+import { computed, defineComponent, PropType, h } from "vue-demi";
 import type { Query } from "react-query/types";
 
 import { useTheme } from "../useTheme";
-import { useQueryClient } from "../../useQueryClient";
 import { getQueryState, QueryState, QueryStateLabel } from "../utils";
 
 export default defineComponent({
   name: "QueryStates",
-  setup() {
+  props: {
+    queries: {
+      type: Array as PropType<Query[]>,
+      required: true,
+    },
+  },
+  setup(props) {
     const theme = useTheme();
-    const queries: Ref<Query[]> = ref([]);
-
-    const queryClient = useQueryClient();
-    const queryCache = queryClient.getQueryCache();
-
-    queryCache.subscribe(() => {
-      queries.value = Object.values(queryCache.getAll());
-    });
 
     const getQueryStateData = (state: QueryState) => {
-      const count = queries.value.filter((q) => getQueryState(q) === state)
+      const count = props.queries.filter((q) => getQueryState(q) === state)
         .length;
 
       return {
@@ -43,51 +40,67 @@ export default defineComponent({
       inactive,
     };
   },
+  render() {
+    const freshState = h(
+      "span",
+      {
+        class: "query-state",
+        style: {
+          background: this.theme.success,
+          opacity: this.fresh.opacity,
+        },
+      },
+      `${this.fresh.label} ${this.fresh.count}`
+    );
+
+    const fetchingState = h(
+      "span",
+      {
+        class: "query-state",
+        style: {
+          background: this.theme.active,
+          opacity: this.fetching.opacity,
+        },
+      },
+      `${this.fetching.label} ${this.fetching.count}`
+    );
+
+    const staleState = h(
+      "span",
+      {
+        class: "query-state",
+        style: {
+          background: this.theme.warning,
+          color: "black",
+          textShadow: "0",
+          opacity: this.stale.opacity,
+        },
+      },
+      `${this.stale.label} ${this.stale.count}`
+    );
+
+    const inactiveState = h(
+      "span",
+      {
+        class: "query-state",
+        style: {
+          background: this.theme.gray,
+          opacity: this.inactive.opacity,
+        },
+      },
+      `${this.inactive.label} ${this.inactive.count}`
+    );
+
+    return h(
+      "div",
+      {
+        class: "query-states",
+      },
+      [freshState, fetchingState, staleState, inactiveState]
+    );
+  },
 });
 </script>
-
-<template>
-  <span class="query-states">
-    <span
-      class="query-state"
-      :style="{
-        background: theme.success,
-        opacity: fresh.opacity,
-      }"
-    >
-      {{ fresh.label }} {{ fresh.count }}
-    </span>
-    <span
-      class="query-state"
-      :style="{
-        background: theme.active,
-        opacity: fetching.opacity,
-      }"
-    >
-      {{ fetching.label }} {{ fetching.count }}
-    </span>
-    <span
-      class="query-state"
-      :style="{
-        background: theme.warning,
-        color: 'black',
-        textShadow: '0',
-        opacity: stale.opacity,
-      }"
-    >
-      {{ stale.label }} {{ stale.count }}
-    </span>
-    <span
-      class="query-state"
-      :style="{
-        background: theme.gray,
-        opacity: inactive.opacity,
-      }"
-    >
-      {{ inactive.label }} {{ inactive.count }}
-    </span>
-  </span>
-</template>
 
 <style scoped>
 .query-states {

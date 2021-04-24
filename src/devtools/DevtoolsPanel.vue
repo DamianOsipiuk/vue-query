@@ -1,14 +1,22 @@
 <script lang="ts">
 import { matchSorter } from "match-sorter";
 import type { Query } from "react-query/core";
-import { computed, defineComponent, PropType, reactive, Ref, ref } from "vue";
+import {
+  computed,
+  defineComponent,
+  PropType,
+  reactive,
+  Ref,
+  ref,
+  h,
+} from "vue-demi";
 
 import { sortFns, getQueryState } from "./utils";
 import { useTheme } from "./useTheme";
 import { useQueryClient } from "../useQueryClient";
 
 import Logo from "./components/Logo.vue";
-import ActiveQueryPanel from "./components/ActiveQueryPanel.vue";
+import ActiveQueryPanel from "./active-query-panel/ActiveQueryPanel.vue";
 import QueryItem from "./components/QueryItem.vue";
 import QueryOptions from "./components/QueryOptions.vue";
 import QueryStates from "./components/QueryStates.vue";
@@ -21,7 +29,6 @@ interface PanelProps {
 
 export default defineComponent({
   name: "DevtoolsPanel",
-  components: { Logo, ActiveQueryPanel, QueryItem, QueryOptions, QueryStates },
   props: {
     isOpen: {
       type: Boolean,
@@ -29,7 +36,7 @@ export default defineComponent({
     },
     panelProps: {
       type: Object as PropType<PanelProps>,
-      default: {},
+      default: () => ({}),
     },
   },
   setup(props, { emit }) {
@@ -47,6 +54,7 @@ export default defineComponent({
     });
     const onOptionsChange = (newOptions: Options) => {
       Object.assign(options, newOptions);
+      queries.value = getSortedQueries();
     };
 
     const queries: Ref<Query[]> = ref([]);
@@ -96,60 +104,106 @@ export default defineComponent({
       handleDragStart,
     };
   },
+  render() {
+    const queryList = this.queries.map((query, index) => {
+      return h(QueryItem, {
+        key: getQueryState(query) + query.state.dataUpdatedAt + index,
+        style: {
+          background:
+            query === this.activeQuery ? "rgba(255,255,255,.1)" : undefined,
+        },
+        // Vue3
+        query: query,
+        onSelectQuery: this.selectQuery,
+        // Vue2
+        props: {
+          query: query,
+        },
+        on: {
+          selectQuery: this.selectQuery,
+        },
+      });
+    });
+
+    return h(
+      "div",
+      {
+        class: "VueQueryDevtoolsPanel",
+        style: this.devtoolsPanelStyles,
+      },
+      [
+        h("div", {
+          class: "resize-bar",
+          // Vue3
+          onMousedown: this.handleDragStart,
+          // Vue2
+          on: {
+            mousedown: this.handleDragStart,
+          },
+        }),
+        h(
+          "div",
+          {
+            class: "query-panel",
+            style: {
+              borderRight: `1px solid ${this.theme.grayAlt}`,
+            },
+          },
+          [
+            h(
+              "div",
+              {
+                class: "query-panel-header",
+                style: {
+                  background: this.theme.backgroundAlt,
+                },
+              },
+              [
+                h(Logo, {
+                  ariaHidden: true,
+                  style: { marginRight: ".5rem" },
+                }),
+                h("div", { class: "vertical-list" }, [
+                  h(QueryStates, {
+                    // Vue3
+                    queries: this.queries,
+                    // Vue2
+                    props: {
+                      queries: this.queries,
+                    },
+                  }),
+                  h(QueryOptions, {
+                    // Vue3
+                    onOptionsChange: this.onOptionsChange,
+                    // Vue2
+                    on: {
+                      optionsChange: this.onOptionsChange,
+                    },
+                  }),
+                ]),
+              ]
+            ),
+            h("div", { class: "query-list" }, queryList),
+          ]
+        ),
+        this.activeQuery
+          ? h(ActiveQueryPanel, {
+              key:
+                getQueryState(this.activeQuery) +
+                this.activeQuery.state.dataUpdatedAt,
+              // Vue3
+              query: this.activeQuery,
+              // Vue2
+              props: {
+                query: this.activeQuery,
+              },
+            })
+          : undefined,
+      ]
+    );
+  },
 });
 </script>
-
-<template>
-  <div class="VueQueryDevtoolsPanel" :style="devtoolsPanelStyles">
-    <div class="resize-bar" @mousedown="handleDragStart"></div>
-    <div
-      class="query-panel"
-      :style="{
-        borderRight: `1px solid ${theme.grayAlt}`,
-      }"
-    >
-      <div
-        class="query-panel-header"
-        :style="{
-          background: theme.backgroundAlt,
-        }"
-      >
-        <Logo
-          aria-hidden
-          :style="{
-            marginRight: '.5rem',
-          }"
-        />
-        <div
-          :style="{
-            display: 'flex',
-            flexDirection: 'column',
-          }"
-        >
-          <QueryStates />
-          <QueryOptions @optionsChange="onOptionsChange" />
-        </div>
-      </div>
-      <div class="query-list">
-        <QueryItem
-          v-for="query in queries"
-          @selectQuery="selectQuery"
-          :key="getQueryState(query) + query.state.dataUpdatedAt"
-          :query="query"
-          :style="{
-            background:
-              query === activeQuery ? 'rgba(255,255,255,.1)' : undefined,
-          }"
-        />
-      </div>
-    </div>
-    <ActiveQueryPanel
-      v-if="activeQuery"
-      :key="getQueryState(activeQuery) + activeQuery.state.dataUpdatedAt"
-      :query="activeQuery"
-    />
-  </div>
-</template>
 
 <style scoped>
 .VueQueryDevtoolsPanel {
@@ -179,6 +233,11 @@ export default defineComponent({
   top: 0;
   width: 100%;
   z-index: 100000;
+}
+
+.vertical-list {
+  display: flex;
+  flex-direction: column;
 }
 
 .query-panel {

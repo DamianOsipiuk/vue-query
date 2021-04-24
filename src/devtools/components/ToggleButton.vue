@@ -1,5 +1,5 @@
 <script lang="ts">
-import { computed, defineComponent, PropType } from "vue";
+import { computed, defineComponent, PropType, h } from "vue-demi";
 
 import Logo from "./Logo.vue";
 
@@ -8,7 +8,6 @@ import type { ButtonProps } from "../types";
 
 export default defineComponent({
   name: "ToggleButton",
-  components: { Logo },
   props: {
     position: {
       type: String as PropType<Position>,
@@ -16,7 +15,7 @@ export default defineComponent({
     },
     buttonProps: {
       type: Object as PropType<ButtonProps>,
-      default: {},
+      default: () => ({}),
     },
   },
   emits: ["click"],
@@ -60,16 +59,26 @@ export default defineComponent({
       buttonStyles,
     };
   },
+  render() {
+    return h(
+      "button",
+      {
+        style: this.buttonStyles,
+        // Vue3
+        type: "button",
+        ariaLabel: "Open Vue Query Devtools",
+        onClick: this.onClick,
+        // Vue2
+        attrs: {
+          type: "button",
+          ariaLabel: "Open Vue Query Devtools",
+        },
+        on: {
+          click: this.onClick,
+        },
+      },
+      [h(Logo)]
+    );
+  },
 });
 </script>
-
-<template>
-  <button
-    type="button"
-    aria-label="Open Vue Query Devtools"
-    @click="onClick"
-    :style="buttonStyles"
-  >
-    <logo />
-  </button>
-</template>

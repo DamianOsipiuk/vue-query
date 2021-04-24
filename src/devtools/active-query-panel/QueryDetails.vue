@@ -1,5 +1,5 @@
 <script lang="ts">
-import { computed, defineComponent, PropType } from "vue";
+import { computed, defineComponent, PropType, h } from "vue-demi";
 
 import type { Query } from "react-query/types";
 
@@ -10,7 +10,6 @@ import { getQueryStatusColor, getQueryStatusLabel } from "../utils";
 
 export default defineComponent({
   name: "QueryDetails",
-  components: { InfoPanel },
   props: {
     query: {
       type: Object as PropType<Query>,
@@ -39,29 +38,39 @@ export default defineComponent({
       statusBackground,
     };
   },
+  render() {
+    return h(
+      InfoPanel,
+      {
+        // Vue3
+        title: "Query Details",
+        // Vue2
+        attrs: {
+          title: "Query Details",
+        },
+      },
+      [
+        h("div", { class: "info-line" }, [
+          h("code", [h("pre", this.formattedQueryKey)]),
+          h(
+            "span",
+            { style: { background: this.statusBackground } },
+            this.queryStatusLabel
+          ),
+        ]),
+        h("div", { class: "info-line" }, [
+          "Observers:",
+          h("code", this.observersCount),
+        ]),
+        h("div", { class: "info-line" }, [
+          "Last Updated:",
+          h("code", this.updateDate),
+        ]),
+      ]
+    );
+  },
 });
 </script>
-
-<template>
-  <InfoPanel title="Query Details">
-    <div class="info-line">
-      <code>
-        <pre>{{ formattedQueryKey }}</pre>
-      </code>
-      <span :style="{ background: statusBackground }">
-        {{ queryStatusLabel }}
-      </span>
-    </div>
-    <div class="info-line">
-      Observers:
-      <code>{{ observersCount }}</code>
-    </div>
-    <div class="info-line">
-      Last Updated:
-      <code>{{ updateDate }}</code>
-    </div>
-  </InfoPanel>
-</template>
 
 <style scoped>
 .info-line {
