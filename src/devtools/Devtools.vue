@@ -1,5 +1,5 @@
 <script lang="ts">
-import { defineComponent, PropType, ref } from "vue";
+import { defineComponent, PropType, ref, h } from "vue-demi";
 
 import DevtoolsPanel from "./DevtoolsPanel.vue";
 import CloseButton from "./components/CloseButton.vue";
@@ -10,7 +10,6 @@ import type { ButtonProps, PanelProps } from "./types";
 
 export default defineComponent({
   name: "VueQueryDevTools",
-  components: { CloseButton, DevtoolsPanel, ToggleButton },
   props: {
     initialIsOpen: {
       type: Boolean,
@@ -18,15 +17,15 @@ export default defineComponent({
     },
     panelProps: {
       type: Object as PropType<PanelProps>,
-      default: {},
+      default: () => ({}),
     },
     closeButtonProps: {
       type: Object as PropType<ButtonProps>,
-      default: {},
+      default: () => ({}),
     },
     toggleButtonProps: {
       type: Object as PropType<ButtonProps>,
-      default: {},
+      default: () => ({}),
     },
     position: {
       type: String as PropType<Position>,
@@ -89,36 +88,68 @@ export default defineComponent({
       handleDragStart,
     };
   },
+  render() {
+    const devtoolsPanel = h(DevtoolsPanel, {
+      class: {
+        "devtools-panel": true,
+        resizing: this.isResizing,
+        open: this.isOpen,
+      },
+      style: {
+        height: this.devtoolsHeight,
+      },
+      ref: this.panelRef,
+      // Vue3
+      isOpen: this.isOpen,
+      panelProps: this.panelProps as never,
+      onHandleDragStart: this.handleDragStart,
+      // Vue2
+      props: {
+        isOpen: this.isOpen,
+        panelProps: this.panelProps,
+      },
+      on: {
+        handleDragStart: this.handleDragStart,
+      },
+    });
+
+    const closeButton = h(CloseButton, {
+      // Vue3
+      position: this.position,
+      buttonProps: this.closeButtonProps,
+      onClick: this.onToggleClick,
+      // Vue2
+      props: {
+        position: this.position,
+        buttonProps: this.closeButtonProps,
+      },
+      on: {
+        click: this.onToggleClick,
+      },
+    });
+
+    const toggleButton = h(ToggleButton, {
+      // Vue3
+      position: this.position,
+      buttonProps: this.toggleButtonProps,
+      onClick: this.onToggleClick,
+      // Vue2
+      props: {
+        position: this.position,
+        buttonProps: this.toggleButtonProps,
+      },
+      on: {
+        click: this.onToggleClick,
+      },
+    });
+
+    return h("div", { class: "VueQueryDevtools" }, [
+      devtoolsPanel,
+      this.isOpen ? closeButton : toggleButton,
+    ]);
+  },
 });
 </script>
-
-<template>
-  <div class="VueQueryDevtools">
-    <DevtoolsPanel
-      class="devtools-panel"
-      ref="panelRef"
-      @handleDragStart="handleDragStart"
-      :class="{ resizing: isResizing, open: isOpen }"
-      :style="{
-        height: devtoolsHeight,
-      }"
-      :isOpen="isOpen"
-      :panelProps="panelProps"
-    />
-    <CloseButton
-      v-if="isOpen"
-      :position="position"
-      :buttonProps="closeButtonProps"
-      @click="onToggleClick"
-    />
-    <ToggleButton
-      v-if="!isOpen"
-      :position="position"
-      :buttonProps="toggleButtonProps"
-      @click="onToggleClick"
-    />
-  </div>
-</template>
 
 <style scoped>
 .devtools-panel {

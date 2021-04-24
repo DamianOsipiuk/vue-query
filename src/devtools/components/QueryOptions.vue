@@ -1,5 +1,5 @@
 <script lang="ts">
-import { defineComponent, reactive, ref } from "vue";
+import { defineComponent, reactive, ref, h } from "vue-demi";
 
 import type { Options } from "../types";
 import { useTheme } from "../useTheme";
@@ -8,14 +8,13 @@ import { sortFns } from "../utils";
 export default defineComponent({
   name: "QueryOptions",
   emits: {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    optionsChange: (_options: Options) => true,
+    optionsChange: (options: Options) => Boolean(options),
   },
   setup(_props, { emit }) {
     const theme = useTheme();
-    const sorFnKeys = Object.keys(sortFns);
+    const sortFnKeys = Object.keys(sortFns);
 
-    const sort = ref(sorFnKeys[0]);
+    const sort = ref(sortFnKeys[0]);
 
     const options = reactive({
       filter: "",
@@ -32,9 +31,8 @@ export default defineComponent({
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         options.filter = "";
+        emit("optionsChange", options);
       }
-
-      emit("optionsChange", options);
     };
 
     const onSortFnChange = (event: Event) => {
@@ -52,7 +50,7 @@ export default defineComponent({
 
     return {
       theme,
-      sorFnKeys,
+      sortFnKeys,
       sort,
       options,
       onInput,
@@ -61,46 +59,97 @@ export default defineComponent({
       onSortDescChange,
     };
   },
+  render() {
+    const input = h("input", {
+      style: {
+        backgroundColor: this.theme.inputBackgroundColor,
+        color: this.theme.inputTextColor,
+      },
+      // Vue3
+      placeholder: "Filter",
+      value: this.options.filter,
+      onInput: this.onInput,
+      onKeydown: this.onKeyDown,
+      // Vue2
+      attrs: {
+        placeholder: "Filter",
+        value: this.options.filter,
+      },
+      on: {
+        input: this.onInput,
+        keydown: this.onKeyDown,
+      },
+    });
+
+    const select = !this.options.filter
+      ? h(
+          "select",
+          {
+            style: {
+              backgroundColor: this.theme.inputBackgroundColor,
+              color: this.theme.inputTextColor,
+            },
+            // Vue3
+            value: this.sort,
+            onChange: this.onSortFnChange,
+            // Vue2
+            attrs: {
+              value: this.sort,
+            },
+            on: {
+              change: this.onSortFnChange,
+            },
+          },
+          this.sortFnKeys.map((key) => {
+            return h(
+              "option",
+              {
+                key: key,
+                // Vue3
+                value: key,
+                // Vue2
+                attrs: {
+                  value: key,
+                },
+              },
+              `Sort by ${key}`
+            );
+          })
+        )
+      : undefined;
+
+    const button = !this.options.filter
+      ? h(
+          "button",
+          {
+            style: {
+              background: this.theme.gray,
+            },
+            // Vue3
+            type: "button",
+            onClick: this.onSortDescChange,
+            // Vue2
+            attrs: {
+              type: "button",
+            },
+            on: {
+              click: this.onSortDescChange,
+            },
+          },
+          this.options.sortDesc ? "⬇ Desc" : "⬆ Asc"
+        )
+      : undefined;
+
+    return h(
+      "div",
+      {
+        class: "options-wrapper",
+      },
+      [input, select, button]
+    );
+  },
 });
 </script>
-
-<template>
-  <div class="options-wrapper">
-    <input
-      placeholder="Filter"
-      @input="onInput"
-      @keydown="onKeyDown"
-      :value="options.filter"
-      :style="{
-        backgroundColor: theme.inputBackgroundColor,
-        color: theme.inputTextColor,
-      }"
-    />
-    <select
-      v-if="!options.filter"
-      @change="onSortFnChange"
-      :value="sort"
-      :style="{
-        backgroundColor: theme.inputBackgroundColor,
-        color: theme.inputTextColor,
-      }"
-    >
-      <option v-for="key in sorFnKeys" :key="key" :value="key">
-        Sort by {{ key }}
-      </option>
-    </select>
-    <button
-      v-if="!options.filter"
-      type="button"
-      @click="onSortDescChange"
-      :style="{
-        background: theme.gray,
-      }"
-    >
-      {{ options.sortDesc ? "⬇ Desc" : "⬆ Asc" }}
-    </button>
-  </div>
-</template>
 
 <style scoped>
 .options-wrapper {
