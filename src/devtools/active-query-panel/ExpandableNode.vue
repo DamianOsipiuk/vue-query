@@ -9,6 +9,7 @@ export default defineComponent({
       default: false,
     },
     title: {
+      type: String,
       required: true,
     },
     subtitle: {
