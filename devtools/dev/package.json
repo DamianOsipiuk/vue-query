@@ -1,0 +1,6 @@
+{
+  "internal": true,
+  "main": "../../lib/devtools.js",
+  "module": "../../esm/devtools.js",
+  "types": "../../lib/devtools/index.d.ts"
+}
