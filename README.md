@@ -75,27 +75,22 @@ yarn add vue-query
    ```ts
    const id = ref(1);
    const queryKey = reactive(["todos", { id }]);
-   const queryFunction = () => getTodos(id),
+   const queryFunction = () => getTodos(id);
    const options = reactive({
-      staleTime: 60 * 60,
-      onSuccess: () => {},
-    });
+     staleTime: 60 * 60,
+     onSuccess: () => {},
+   });
 
-   const query = useQuery(
-     queryKey,
-     queryFunction,
-     options
-   );
+   const query = useQuery(queryKey, queryFunction, options);
    ```
 
 # DevTools
 
-This package provides built-in devtools in the form of a Vue component.  
-Use VueQueryDevTools component in the entry component of your application.
+This package provides built-in DevTools in the form of a Vue component.
+
+Use VueQueryDevTools component in the main component of your application.
 
 Check [Examples section](#examples).
-
-**_Disclaimer: Devtools not supported on Vue 2.x_**
 
 ```vue
 <script lang="ts">
@@ -111,5 +106,4 @@ export default defineComponent({
 <template>
   <VueQueryDevTools />
 </template>
-
 ```
