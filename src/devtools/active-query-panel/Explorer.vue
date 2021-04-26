@@ -276,7 +276,7 @@ export default defineComponent({
 });
 </script>
 
-<style scoped>
+<style>
 .explorer-tree {
   font-family: Menlo, monospace;
   font-size: 0.9rem;

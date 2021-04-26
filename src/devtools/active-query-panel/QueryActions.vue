@@ -58,6 +58,7 @@ export default defineComponent({
         h(
           "button",
           {
+            class: "action-button",
             style: {
               background: this.isFetching
                 ? this.theme.grayAlt
@@ -82,6 +83,7 @@ export default defineComponent({
         h(
           "button",
           {
+            class: "action-button",
             style: {
               background: this.theme.warning,
               color: this.theme.inputTextColor,
@@ -102,6 +104,7 @@ export default defineComponent({
         h(
           "button",
           {
+            class: "action-button",
             style: {
               background: this.theme.gray,
             },
@@ -121,6 +124,7 @@ export default defineComponent({
         h(
           "button",
           {
+            class: "action-button",
             style: {
               background: this.theme.danger,
             },
@@ -143,8 +147,8 @@ export default defineComponent({
 });
 </script>
 
-<style scoped>
-button {
+<style>
+.action-button {
   appearance: none;
   border-radius: 0.3em;
   border: 0;
@@ -155,7 +159,7 @@ button {
   padding: 0.5em;
 }
 
-button:not(:last-of-type) {
+.action-button:not(:last-of-type) {
   margin-right: 5px;
 }
 </style>

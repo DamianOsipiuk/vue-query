@@ -29,28 +29,28 @@ export default defineComponent({
       h(
         "div",
         {
-          class: "title",
+          class: "info-title",
           style: {
             background: this.theme.backgroundAlt,
           },
         },
         this.$props.title
       ),
-      h("div", { class: "panel" }, slot),
+      h("div", { class: "info-panel" }, slot),
     ]);
   },
 });
 </script>
 
-<style scoped>
-.title {
+<style>
+.info-title {
   padding: 0.5rem;
   position: sticky;
   top: 0;
   z-index: 1;
 }
 
-.panel {
+.info-panel {
   padding: 0.5rem;
 }
 </style>

@@ -50,21 +50,42 @@ export default defineComponent({
         },
       },
       [
-        h("div", { class: "info-line" }, [
-          h("code", [h("pre", this.formattedQueryKey)]),
+        h("div", { class: "details-info-line" }, [
+          h(
+            "code",
+            {
+              class: "details-code",
+            },
+            [h("pre", { class: "details-pre" }, this.formattedQueryKey)]
+          ),
           h(
             "span",
-            { style: { background: this.statusBackground } },
+            {
+              class: "details-span",
+              style: { background: this.statusBackground },
+            },
             this.queryStatusLabel
           ),
         ]),
-        h("div", { class: "info-line" }, [
+        h("div", { class: "details-info-line" }, [
           "Observers:",
-          h("code", this.observersCount),
+          h(
+            "code",
+            {
+              class: "details-code",
+            },
+            this.observersCount
+          ),
         ]),
-        h("div", { class: "info-line" }, [
+        h("div", { class: "details-info-line" }, [
           "Last Updated:",
-          h("code", this.updateDate),
+          h(
+            "code",
+            {
+              class: "details-code",
+            },
+            this.updateDate
+          ),
         ]),
       ]
     );
@@ -72,29 +93,29 @@ export default defineComponent({
 });
 </script>
 
-<style scoped>
-.info-line {
+<style>
+.details-info-line {
   align-items: stretch;
   display: flex;
   justify-content: space-between;
 }
 
-.info-line:not(:last-of-type) {
+.details-info-line:not(:last-of-type) {
   margin-bottom: 0.5rem;
 }
 
-code {
+.details-code {
   font-size: 0.9em;
   line-height: 1.8rem;
 }
 
-pre {
+.details-pre {
   margin: 0;
   overflow: auto;
   padding: 0;
 }
 
-span {
+.details-span {
   border-radius: 0.4rem;
   flex-shrink: 0;
   font-weight: bold;

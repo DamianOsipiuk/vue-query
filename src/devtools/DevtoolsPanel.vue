@@ -205,7 +205,7 @@ export default defineComponent({
 });
 </script>
 
-<style scoped>
+<style>
 .VueQueryDevtoolsPanel {
   display: flex;
   font-family: sans-serif;

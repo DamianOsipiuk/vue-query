@@ -55,7 +55,7 @@ export default defineComponent({
         h(
           "div",
           {
-            class: "query-state",
+            class: "query-item-state",
             style: {
               background: this.stateColor,
               textShadow: this.isStale ? "0" : "0 0 10px black",
@@ -64,15 +64,21 @@ export default defineComponent({
           },
           this.observerCount
         ),
-        h("code", this.$props.query.queryHash),
+        h(
+          "code",
+          {
+            class: "query-item-code",
+          },
+          this.$props.query.queryHash
+        ),
       ]
     );
   },
 });
 </script>
 
-<style scoped>
-.query-state {
+<style>
+.query-item-state {
   align-items: center;
   display: flex;
   flex: 0 0 auto;
@@ -82,7 +88,7 @@ export default defineComponent({
   width: 2rem;
 }
 
-code {
+.query-item-code {
   font-size: 0.9em;
   padding: 0.5rem;
 }

@@ -61,6 +61,7 @@ export default defineComponent({
   },
   render() {
     const input = h("input", {
+      class: "options-input",
       style: {
         backgroundColor: this.theme.inputBackgroundColor,
         color: this.theme.inputTextColor,
@@ -85,6 +86,7 @@ export default defineComponent({
       ? h(
           "select",
           {
+            class: "options-select",
             style: {
               backgroundColor: this.theme.inputBackgroundColor,
               color: this.theme.inputTextColor,
@@ -122,6 +124,7 @@ export default defineComponent({
       ? h(
           "button",
           {
+            class: "options-button",
             style: {
               background: this.theme.gray,
             },
@@ -151,13 +154,13 @@ export default defineComponent({
 });
 </script>
 
-<style scoped>
+<style>
 .options-wrapper {
   align-items: center;
   display: flex;
 }
 
-input {
+.options-input {
   border-radius: 0.2em;
   border: 0;
   flex: 1;
@@ -167,7 +170,7 @@ input {
   padding: 0.3em 0.4em;
 }
 
-button {
+.options-button {
   appearance: none;
   background: #3f4e60;
   border-radius: 0.3em;
@@ -179,7 +182,7 @@ button {
   padding: 0.3rem 0.4rem;
 }
 
-select {
+.options-select {
   --webkit-appearance: none;
   appearance: none;
   background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' fill='%23444444'><polygon points='0,25 100,25 50,75'/></svg>");

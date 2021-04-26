@@ -102,7 +102,7 @@ export default defineComponent({
 });
 </script>
 
-<style scoped>
+<style>
 .query-states {
   display: flex;
   font-size: 0.9em;

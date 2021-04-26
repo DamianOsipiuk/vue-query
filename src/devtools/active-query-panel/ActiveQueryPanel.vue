@@ -95,7 +95,7 @@ export default defineComponent({
 });
 </script>
 
-<style scoped>
+<style>
 .active-query-panel {
   display: flex;
   flex-direction: column;

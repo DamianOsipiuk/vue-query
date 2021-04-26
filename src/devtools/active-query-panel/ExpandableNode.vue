@@ -32,7 +32,7 @@ export default defineComponent({
       ? h(
           "span",
           {
-            class: "subtitle",
+            class: "expandable-subtitle",
           },
           this.subtitle
         )
@@ -53,7 +53,7 @@ export default defineComponent({
         h(
           "span",
           {
-            class: "arrow",
+            class: "expandable-arrow",
             style: {
               transform: `rotate(${this.$props.isExpanded ? 90 : 0}deg)`,
             },
@@ -68,19 +68,19 @@ export default defineComponent({
 });
 </script>
 
-<style scoped>
+<style>
 .expandable {
   cursor: pointer;
   color: white;
 }
 
-.arrow {
+.expandable-arrow {
   display: inline-block;
   margin-right: 10px;
   transition: all 0.1s ease;
 }
 
-.subtitle {
+.expandable-subtitle {
   color: grey;
   font-size: 0.7rem;
   margin-left: 10px;

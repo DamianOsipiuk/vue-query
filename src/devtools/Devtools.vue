@@ -92,8 +92,8 @@ export default defineComponent({
     const devtoolsPanel = h(DevtoolsPanel, {
       class: {
         "devtools-panel": true,
-        resizing: this.isResizing,
-        open: this.isOpen,
+        "devtools-resizing": this.isResizing,
+        "devtools-open": this.isOpen,
       },
       style: {
         height: this.devtoolsHeight,
@@ -151,7 +151,7 @@ export default defineComponent({
 });
 </script>
 
-<style scoped>
+<style>
 .devtools-panel {
   bottom: 0;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
@@ -167,11 +167,11 @@ export default defineComponent({
   z-index: 99999;
 }
 
-.resizing {
+.devtools-resizing {
   transition: none;
 }
 
-.open {
+.devtools-open {
   opacity: 1;
   pointer-events: all;
   transform: translateY(0) scale(1);
