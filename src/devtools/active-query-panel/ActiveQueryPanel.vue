@@ -54,12 +54,12 @@ export default defineComponent({
               // Vue3
               label: "Data",
               value: this.$props.query.state.data,
-              defaultExpanded: {},
+              defaultExpanded: true,
               // Vue2
               props: {
                 label: "Data",
                 value: this.$props.query.state.data,
-                defaultExpanded: {},
+                defaultExpanded: true,
               },
             }),
           ]
