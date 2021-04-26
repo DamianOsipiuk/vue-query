@@ -1,6 +1,8 @@
 <script lang="ts">
 import { defineComponent } from "@vue/composition-api";
+import { Component } from "vue";
 import { useQuery } from "vue-query";
+import { VueQueryDevTools } from "vue-query/devtools";
 
 interface Todo {
   userId: number;
@@ -15,11 +17,14 @@ const todoFetcher = async (): Promise<Todo[]> =>
   );
 
 export default defineComponent({
+  components: { VueQueryDevTools: VueQueryDevTools as Component },
   setup() {
     const { isLoading, isError, isFetching, data, error, refetch } = useQuery(
       "todos",
       todoFetcher
     );
+    useQuery("todos2", todoFetcher);
+    useQuery("todos3", todoFetcher);
 
     return { isLoading, isError, isFetching, data, error, refetch };
   },
@@ -44,6 +49,7 @@ export default defineComponent({
       </ul>
     </div>
     <div v-else>Nothing to see here...</div>
+    <VueQueryDevTools :initialIsOpen="true" />
   </div>
 </template>
 

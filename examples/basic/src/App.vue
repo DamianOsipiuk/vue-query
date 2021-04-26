@@ -23,6 +23,8 @@ export default defineComponent({
       "todos",
       todoFetcher
     );
+    useQuery("todos2", todoFetcher);
+    useQuery("todos3", todoFetcher);
 
     return { isLoading, isError, isFetching, data, error, refetch };
   },
