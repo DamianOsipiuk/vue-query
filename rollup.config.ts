@@ -5,17 +5,7 @@ import typescript from "rollup-plugin-typescript2";
 import vue from "rollup-plugin-vue";
 
 const common = {
-  plugins: [
-    resolve(),
-    autoExternal(),
-    typescript(),
-    vue({
-      cssModulesOptions: {
-        generateScopedName: "[local]___[hash:base64:5]",
-      },
-    }),
-    postcss(),
-  ],
+  plugins: [resolve(), autoExternal(), typescript(), vue(), postcss()],
   watch: {
     include: "src/**",
     exclude: ["node_modules/**", "tests"],
