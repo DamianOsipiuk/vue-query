@@ -4,5 +4,3 @@ node_modules
 coverage
 dist
 lib
-esm
-umd

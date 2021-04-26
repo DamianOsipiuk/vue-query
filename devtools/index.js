@@ -6,8 +6,7 @@ if (process.env.NODE_ENV === "production") {
     VueQueryDevToolsPanel: function () {
       return null;
     },
-    VUE_QUERY_DEVTOOLS_THEME: "",
   };
 } else {
-  module.exports = require("./dev");
+  module.exports = require("../lib/devtools-bundle");
 }
