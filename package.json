@@ -1,6 +1,6 @@
 {
   "name": "vue-query",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Hooks for fetching, caching and updating asynchronous data in Vue",
   "main": "lib/index.js",
   "files": [
