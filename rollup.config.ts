@@ -16,6 +16,24 @@ export default [
     input: "src/index.ts",
     output: {
       dir: "lib",
+      format: "cjs",
+      sourcemap: true,
+    },
+    ...common,
+  },
+  {
+    input: "src/devtools/index.ts",
+    output: {
+      file: "lib/devtools.js",
+      format: "cjs",
+      sourcemap: true,
+    },
+    ...common,
+  },
+  {
+    input: "src/index.ts",
+    output: {
+      dir: "esm",
       format: "esm",
       sourcemap: true,
     },
@@ -24,7 +42,7 @@ export default [
   {
     input: "src/devtools/index.ts",
     output: {
-      file: "lib/devtools-bundle.js",
+      file: "esm/devtools.js",
       format: "esm",
       sourcemap: true,
     },

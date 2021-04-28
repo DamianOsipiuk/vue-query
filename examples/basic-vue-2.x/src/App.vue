@@ -1,6 +1,5 @@
 <script lang="ts">
 import { defineComponent } from "@vue/composition-api";
-import { Component } from "vue";
 import { useQuery } from "vue-query";
 import { VueQueryDevTools } from "vue-query/devtools";
 
@@ -17,7 +16,7 @@ const todoFetcher = async (): Promise<Todo[]> =>
   );
 
 export default defineComponent({
-  components: { VueQueryDevTools: VueQueryDevTools as Component },
+  components: { VueQueryDevTools },
   setup() {
     const { isLoading, isError, isFetching, data, error, refetch } = useQuery(
       "todos",
