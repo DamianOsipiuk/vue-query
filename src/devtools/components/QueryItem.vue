@@ -16,8 +16,9 @@ export default defineComponent({
   },
   setup(props, { emit }) {
     const theme = useTheme();
-    // @ts-expect-error Accessing private property
-    const observerCount = computed<number>(() => props.query.observers.length);
+    const observerCount = computed<number>(() =>
+      props.query.getObserversCount()
+    );
     const isStale = computed(
       () => getQueryState(props.query) === QueryState.Stale
     );

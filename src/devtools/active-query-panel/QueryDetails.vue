@@ -21,8 +21,7 @@ export default defineComponent({
 
     const formattedQueryKey = computed(() => props.query.queryHash);
     const queryStatusLabel = computed(() => getQueryStatusLabel(props.query));
-    // @ts-expect-error Accessing private property
-    const observersCount = computed(() => props.query.observers.length);
+    const observersCount = computed(() => props.query.getObserversCount());
     const updateDate = computed(() =>
       new Date(props.query.state.dataUpdatedAt).toLocaleTimeString()
     );

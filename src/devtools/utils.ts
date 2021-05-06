@@ -28,8 +28,7 @@ export function getQueryState(query: Query): QueryState {
   if (query.isFetching()) {
     return QueryState.Fetching;
   }
-  // @ts-expect-error Invalid types
-  if (!query.observers.length) {
+  if (!query.getObserversCount()) {
     return QueryState.Inactive;
   }
   if (query.isStale()) {

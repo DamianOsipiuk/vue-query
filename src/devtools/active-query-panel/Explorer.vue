@@ -1,12 +1,12 @@
 <script lang="ts">
-import { computed, defineComponent, ref, h } from "vue-demi";
+import { computed, defineComponent, ref, h, PropType } from "vue-demi";
 import * as VueDemi from "vue-demi";
 
 import ExpandableNode from "./ExpandableNode.vue";
 
 import { useTheme } from "../useTheme";
 
-type DefaultExpanded = Record<string, unknown> | boolean;
+type DefaultExpanded = boolean | { [key: string]: DefaultExpanded };
 
 interface LabelWithValue {
   label: string;
@@ -30,6 +30,7 @@ export default defineComponent({
       required: true,
     },
     defaultExpanded: {
+      type: [Object, Boolean] as PropType<DefaultExpanded>,
       required: true,
     },
     pageSize: {
@@ -115,10 +116,7 @@ export default defineComponent({
           subDefaultExpanded = { [sub.label]: true };
         }
       } else if (props.defaultExpanded) {
-        // @ts-expect-error Typing
-        subDefaultExpanded = props.defaultExpanded[
-          sub.label
-        ] as DefaultExpanded;
+        subDefaultExpanded = props.defaultExpanded[sub.label];
       }
 
       return {
