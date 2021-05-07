@@ -14,7 +14,9 @@
     "build": "rollup -c rollup.config.ts",
     "lint": "eslint ./src/**/*.{ts,vue} ./tests/**/*.{ts,vue}",
     "prepare": "npm run build",
-    "test": "jest"
+    "test": "npm run test:2 && npm run test:3",
+    "test:2": "vue-demi-switch 2 vue2 && jest",
+    "test:3": "vue-demi-switch 3 && jest"
   },
   "repository": {
     "type": "git",
@@ -53,6 +55,7 @@
     "@typescript-eslint/eslint-plugin": "^4.16.1",
     "@typescript-eslint/parser": "^4.16.1",
     "@vue/compiler-sfc": "^3.0.7",
+    "@vue/composition-api": "^1.0.0-rc.8",
     "@vue/eslint-config-prettier": "^6.0.0",
     "@vue/eslint-config-typescript": "^7.0.0",
     "eslint": "^7.21.0",
@@ -70,6 +73,7 @@
     "ts-node": "^9.1.1",
     "typescript": "^4.2.3",
     "vue": "^3.0.7",
+    "vue2": "npm:vue@2",
     "vue-jest": "^5.0.0-alpha.8"
   }
 }
