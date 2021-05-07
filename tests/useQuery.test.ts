@@ -1,14 +1,26 @@
-import { computed, reactive, ref, onUnmounted } from "vue-demi";
+import {
+  computed,
+  reactive,
+  ref,
+  onUnmounted,
+  getCurrentInstance,
+} from "vue-demi";
 import { QueryClient, QueryObserver, setLogger } from "react-query/core";
 import { useQuery } from "../src/useQuery";
 import { useBaseQuery } from "../src/useBaseQuery";
-import { flushPromises, rejectFetcher, simpleFetcher, noop } from "./utils";
+import {
+  flushPromises,
+  rejectFetcher,
+  simpleFetcher,
+  noop,
+} from "./test-utils";
 
-jest.mock("vue", () => {
-  const vue = jest.requireActual("vue");
+jest.mock("vue-demi", () => {
+  const vue = jest.requireActual("vue-demi");
   return {
     ...vue,
     onUnmounted: jest.fn(),
+    getCurrentInstance: jest.fn(),
   };
 });
 
@@ -37,7 +49,7 @@ describe("useQuery", () => {
     jest.clearAllMocks();
   });
 
-  test("should properly execute query with all three parameters", () => {
+  test("should properly execute query", () => {
     useQuery("key0", simpleFetcher, { staleTime: 1000 });
 
     expect(useBaseQuery).toBeCalledWith(
@@ -50,106 +62,49 @@ describe("useQuery", () => {
     );
   });
 
-  test("should properly execute query with queryKey and options", () => {
-    useQuery("key01", { queryFn: simpleFetcher, staleTime: 1000 });
-
-    expect(useBaseQuery).toBeCalledWith(
-      {
-        queryFn: expect.anything(),
-        queryKey: "key01",
-        staleTime: 1000,
-      },
-      QueryObserver
-    );
-  });
-
-  test("should properly execute query with all three parameters", () => {
-    useQuery({
-      queryKey: "key02",
-      queryFn: simpleFetcher,
-      staleTime: 1000,
-    });
-
-    expect(useBaseQuery).toBeCalledWith(
-      {
-        queryFn: expect.anything(),
-        queryKey: "key02",
-        staleTime: 1000,
-      },
-      QueryObserver
-    );
-  });
-
   test("should return loading status initially", () => {
-    const { status, isLoading, isFetching } = useQuery("key1", simpleFetcher);
+    const query = useQuery("key1", simpleFetcher);
 
-    expect(status.value).toEqual("loading");
-    expect(isLoading.value).toEqual(true);
-    expect(isFetching.value).toEqual(true);
-  });
-
-  test("should be marked as stale initially", () => {
-    const { isStale } = useQuery("key2", simpleFetcher);
-
-    expect(isStale.value).toEqual(true);
-  });
-
-  test("should return false for other states initially", () => {
-    const { isSuccess, isError, isIdle, isFetched } = useQuery(
-      "key3",
-      simpleFetcher
-    );
-
-    expect(isSuccess.value).toEqual(false);
-    expect(isError.value).toEqual(false);
-    expect(isIdle.value).toEqual(false);
-    expect(isFetched.value).toEqual(false);
+    expect(query).toMatchObject({
+      status: { value: "loading" },
+      isLoading: { value: true },
+      isFetching: { value: true },
+      isStale: { value: true },
+    });
   });
 
   test("should resolve to success and update reactive state", async () => {
-    const {
-      status,
-      data,
-      isLoading,
-      isFetched,
-      isFetching,
-      isSuccess,
-    } = useQuery("key4", simpleFetcher);
+    const query = useQuery("key2", simpleFetcher);
 
     await flushPromises();
 
-    expect(status.value).toEqual("success");
-    expect(data.value).toEqual("Some data");
-    expect(isLoading.value).toEqual(false);
-    expect(isFetching.value).toEqual(false);
-    expect(isFetched.value).toEqual(true);
-    expect(isSuccess.value).toEqual(true);
+    expect(query).toMatchObject({
+      status: { value: "success" },
+      data: { value: "Some data" },
+      isLoading: { value: false },
+      isFetching: { value: false },
+      isFetched: { value: true },
+      isSuccess: { value: true },
+    });
   });
 
   test("should reject and update reactive state", async () => {
-    const {
-      status,
-      data,
-      error,
-      isLoading,
-      isFetched,
-      isFetching,
-      isError,
-      failureCount,
-    } = useQuery("key5", rejectFetcher, {
+    const query = useQuery("key3", rejectFetcher, {
       retry: false,
     });
 
     await flushPromises();
 
-    expect(status.value).toEqual("error");
-    expect(data.value).toEqual(undefined);
-    expect((error.value as Error).message).toEqual("Some error");
-    expect(isLoading.value).toEqual(false);
-    expect(isFetching.value).toEqual(false);
-    expect(isFetched.value).toEqual(true);
-    expect(isError.value).toEqual(true);
-    expect(failureCount.value).toEqual(1);
+    expect(query).toMatchObject({
+      status: { value: "error" },
+      data: { value: undefined },
+      error: { value: { message: "Some error" } },
+      isLoading: { value: false },
+      isFetching: { value: false },
+      isFetched: { value: true },
+      isError: { value: true },
+      failureCount: { value: 1 },
+    });
   });
 
   test("should update query on reactive prop change", async () => {
@@ -214,5 +169,24 @@ describe("useQuery", () => {
     await flushPromises();
 
     expect(status.value).toStrictEqual("loading");
+  });
+
+  describe("suspense", () => {
+    test("should return undefined by default", () => {
+      const query = useQuery("suspense1", simpleFetcher);
+      const result = query.suspense();
+
+      expect(result).toEqual(undefined);
+    });
+
+    test("should return a Promise when inside a Suspense boundary", () => {
+      const getCurrentInstanceSpy = getCurrentInstance as jest.Mock;
+      getCurrentInstanceSpy.mockImplementation(() => ({ suspense: {} }));
+
+      const query = useQuery("suspense1", simpleFetcher);
+      const result = query.suspense();
+
+      expect(result).toBeInstanceOf(Promise);
+    });
   });
 });

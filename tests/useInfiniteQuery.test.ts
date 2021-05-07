@@ -1,9 +1,9 @@
 import { QueryClient, setLogger } from "react-query/core";
 import { useInfiniteQuery } from "../src/useInfiniteQuery";
-import { noop, infiniteFetcher, flushPromises } from "./utils";
+import { noop, infiniteFetcher, flushPromises } from "./test-utils";
 
-jest.mock("vue", () => {
-  const vue = jest.requireActual("vue");
+jest.mock("vue-demi", () => {
+  const vue = jest.requireActual("vue-demi");
   return {
     ...vue,
     onUnmounted: jest.fn(),

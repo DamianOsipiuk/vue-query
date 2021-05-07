@@ -2,10 +2,10 @@ import { onUnmounted } from "vue-demi";
 import { QueryClient, setLogger } from "react-query/core";
 import { useMutation } from "../src/useMutation";
 import { useIsMutating } from "../src/useIsMutating";
-import { flushPromises, noop, successMutator } from "./utils";
+import { flushPromises, noop, successMutator } from "./test-utils";
 
-jest.mock("vue", () => {
-  const vue = jest.requireActual("vue");
+jest.mock("vue-demi", () => {
+  const vue = jest.requireActual("vue-demi");
   return {
     ...vue,
     onUnmounted: jest.fn(),
