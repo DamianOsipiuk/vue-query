@@ -40,9 +40,14 @@ export function parseFilterArgs<
   arg2: TFilters | TOptions = {} as TOptions,
   arg3: TOptions = {} as TOptions
 ): [TFilters, TOptions | undefined] {
-  return (isQueryKey(arg1)
-    ? [Object.assign(arg2, { queryKey: arg1 }), arg3]
-    : [arg1 || {}, arg2]) as [TFilters, TOptions];
+  if (isQueryKey(arg1)) {
+    return [Object.assign(arg2, { queryKey: arg1 }), arg3] as [
+      TFilters,
+      TOptions
+    ];
+  }
+
+  return [arg1 || {}, arg2] as [TFilters, TOptions];
 }
 
 export function parseMutationArgs<
@@ -66,7 +71,7 @@ export function parseMutationArgs<
     return Object.assign(arg2, { mutationFn: arg1 }) as TOptions;
   }
 
-  return Object.assign(arg1) as TOptions;
+  return arg1;
 }
 
 export function updateState(
