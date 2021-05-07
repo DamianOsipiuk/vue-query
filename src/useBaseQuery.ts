@@ -8,7 +8,7 @@ import {
   getCurrentInstance,
 } from "vue-demi";
 
-import type { QueryObserver, QueryObserverResult } from "react-query/core";
+import type { QueryObserver } from "react-query/core";
 import type { UseBaseQueryOptions, UseQueryResult } from "react-query/types";
 
 import { useQueryClient } from "./useQueryClient";
@@ -17,8 +17,8 @@ import { updateState } from "./utils";
 export type UseQueryReturnType<
   TData,
   TError,
-  Result = QueryObserverResult<TData, TError>
-> = ToRefs<Readonly<UseQueryResult<TData, TError>>> & {
+  Result = UseQueryResult<TData, TError>
+> = ToRefs<Readonly<Result>> & {
   suspense: () => Promise<Result> | void;
 };
 
