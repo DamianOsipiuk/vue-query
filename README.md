@@ -20,6 +20,7 @@ Based on [react-query](https://github.com/tannerlinsley/react-query)
 - Paginated + Cursor-based Queries
 - Load-More + Infinite Scroll Queries w/ Scroll Recovery
 - Request Cancellation
+- [Suspense](https://v3.vuejs.org/guide/migration/suspense.html#introduction) + Fetch-As-You-Render Query Prefetching
 - Dedicated Devtools
 - [![npm bundle size](https://img.shields.io/bundlephobia/minzip/vue-query)](https://bundlephobia.com/result?p=vue-query) (depending on features imported)
 
@@ -27,6 +28,7 @@ Based on [react-query](https://github.com/tannerlinsley/react-query)
 
 - 3.x
   - [Basic](https://github.com/DamianOsipiuk/vue-query/tree/main/examples/basic)
+  - [Suspense](https://github.com/DamianOsipiuk/vue-query/tree/main/examples/suspense)
   - [Multi-Page](https://github.com/DamianOsipiuk/vue-query/tree/main/examples/multi-page)
     - Caching - throttle network and then switch between pages
     - Deduping requests - click `change page` in quick succession and monitor Network tab in devtools.
