@@ -1,4 +1,4 @@
-import { QueryClient, setLogger } from "react-query/core";
+import { setLogger } from "react-query/core";
 
 import {
   errorMutator,
@@ -8,20 +8,7 @@ import {
 } from "./test-utils";
 import { useMutation } from "../src/useMutation";
 
-jest.mock("vue-demi", () => {
-  const vue = jest.requireActual("vue-demi");
-  return {
-    ...vue,
-    onUnmounted: jest.fn(),
-  };
-});
-
-jest.mock("../src/useQueryClient", () => {
-  const queryClient = new QueryClient();
-  return {
-    useQueryClient: jest.fn(() => queryClient),
-  };
-});
+jest.mock("../src/useQueryClient");
 
 describe("useMutation", () => {
   beforeAll(() => {

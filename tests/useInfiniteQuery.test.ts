@@ -1,30 +1,8 @@
-import { QueryClient, setLogger } from "react-query/core";
+import { setLogger } from "react-query/core";
 import { useInfiniteQuery } from "../src/useInfiniteQuery";
 import { noop, infiniteFetcher, flushPromises } from "./test-utils";
 
-jest.mock("vue-demi", () => {
-  const vue = jest.requireActual("vue-demi");
-  return {
-    ...vue,
-    onUnmounted: jest.fn(),
-  };
-});
-
-jest.mock("../src/useQueryClient", () => {
-  const queryClient = new QueryClient();
-  return {
-    useQueryClient: jest.fn(() => queryClient),
-  };
-});
-
-jest.mock("../src/useBaseQuery", () => {
-  const { useBaseQuery: originImpl } = jest.requireActual(
-    "../src/useBaseQuery"
-  );
-  return {
-    useBaseQuery: jest.fn(originImpl),
-  };
-});
+jest.mock("../src/useQueryClient");
 
 describe("useQuery", () => {
   beforeAll(() => {

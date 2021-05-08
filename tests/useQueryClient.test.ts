@@ -1,14 +1,6 @@
 import { inject } from "vue-demi";
 import { useQueryClient, VUE_QUERY_CLIENT } from "../src/useQueryClient";
 
-jest.mock("vue-demi", () => {
-  const vue = jest.requireActual("vue-demi");
-  return {
-    ...vue,
-    inject: jest.fn(),
-  };
-});
-
 describe("useQueryClient", () => {
   const injectSpy = inject as jest.Mock;
 

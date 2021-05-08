@@ -1,32 +1,10 @@
 import { onUnmounted } from "vue-demi";
-import { QueryClient, setLogger } from "react-query/core";
+import { setLogger } from "react-query/core";
 import { useMutation } from "../src/useMutation";
 import { useIsMutating } from "../src/useIsMutating";
 import { flushPromises, noop, successMutator } from "./test-utils";
 
-jest.mock("vue-demi", () => {
-  const vue = jest.requireActual("vue-demi");
-  return {
-    ...vue,
-    onUnmounted: jest.fn(),
-  };
-});
-
-jest.mock("../src/useQueryClient", () => {
-  const queryClient = new QueryClient();
-  return {
-    useQueryClient: jest.fn(() => queryClient),
-  };
-});
-
-jest.mock("../src/useBaseQuery", () => {
-  const { useBaseQuery: originImpl } = jest.requireActual(
-    "../src/useBaseQuery"
-  );
-  return {
-    useBaseQuery: jest.fn(originImpl),
-  };
-});
+jest.mock("../src/useQueryClient");
 
 describe("useIsMutating", () => {
   beforeAll(() => {

@@ -5,7 +5,7 @@ import {
   onUnmounted,
   getCurrentInstance,
 } from "vue-demi";
-import { QueryClient, QueryObserver, setLogger } from "react-query/core";
+import { QueryObserver, setLogger } from "react-query/core";
 import { useQuery } from "../src/useQuery";
 import { useBaseQuery } from "../src/useBaseQuery";
 import {
@@ -15,30 +15,8 @@ import {
   noop,
 } from "./test-utils";
 
-jest.mock("vue-demi", () => {
-  const vue = jest.requireActual("vue-demi");
-  return {
-    ...vue,
-    onUnmounted: jest.fn(),
-    getCurrentInstance: jest.fn(),
-  };
-});
-
-jest.mock("../src/useQueryClient", () => {
-  const queryClient = new QueryClient();
-  return {
-    useQueryClient: jest.fn(() => queryClient),
-  };
-});
-
-jest.mock("../src/useBaseQuery", () => {
-  const { useBaseQuery: originImpl } = jest.requireActual(
-    "../src/useBaseQuery"
-  );
-  return {
-    useBaseQuery: jest.fn(originImpl),
-  };
-});
+jest.mock("../src/useQueryClient");
+jest.mock("../src/useBaseQuery");
 
 describe("useQuery", () => {
   beforeAll(() => {
