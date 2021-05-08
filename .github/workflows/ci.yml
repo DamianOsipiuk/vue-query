@@ -4,12 +4,19 @@ on:
   push:
     branches:
       - main
-  release:
-    types:
-      - created
   pull_request:
 
 jobs:
+  commitlint:
+    runs-on: ubuntu-latest
+
+    name: "Lint commit message"
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - uses: wagoid/commitlint-github-action@v3
+
   verify:
     runs-on: ubuntu-latest
 
@@ -32,8 +39,9 @@ jobs:
           CI: true
 
   publish:
-    if: github.event_name == 'release' && github.event.action == 'created'
-    needs: verify
+    # publish only when merged in master on original repo, not on PR
+    if: github.repository == 'DamianOsipiuk/vue-query' && github.ref == 'refs/heads/main'
+    needs: [verify, commitlint]
     runs-on: ubuntu-latest
 
     name: "Publish to NPM"
@@ -44,6 +52,7 @@ jobs:
           node-version: 14
           registry-url: https://registry.npmjs.org/
       - run: npm ci
-      - run: npm publish
+      - run: npx semantic-release@17 --branches main
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_AUTOMATION_TOKEN}}
+          GH_TOKEN: ${{secrets.GITHUB_TOKEN}}
