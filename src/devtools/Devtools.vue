@@ -98,7 +98,7 @@ export default defineComponent({
       style: {
         height: this.devtoolsHeight,
       },
-      ref: this.panelRef,
+      ref: "panelRef",
       // Vue3
       isOpen: this.isOpen,
       panelProps: this.panelProps as never,
