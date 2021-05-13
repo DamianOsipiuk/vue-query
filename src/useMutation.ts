@@ -1,13 +1,41 @@
-import { onUnmounted, reactive, watchEffect } from "vue-demi";
-import { MutateOptions, MutationObserver } from "react-query/core";
+import {
+  onUnmounted,
+  reactive,
+  watchEffect,
+  readonly,
+  ToRefs,
+  toRefs,
+} from "vue-demi";
+import {
+  MutateOptions,
+  MutationObserver,
+  MutationObserverResult,
+} from "react-query/core";
 import {
   UseMutationOptions,
-  UseMutationResult,
   MutationFunction,
   MutationKey,
+  UseMutateFunction,
+  UseMutateAsyncFunction,
 } from "react-query/types";
 import { parseMutationArgs, updateState } from "./utils";
 import { useQueryClient } from "./useQueryClient";
+
+type MutationResult<TData, TError, TVariables, TContext> = Omit<
+  MutationObserverResult<TData, TError, TVariables, TContext>,
+  "mutate"
+>;
+
+export type UseMutationReturnType<
+  TData,
+  TError,
+  TVariables,
+  TContext,
+  Result = MutationResult<TData, TError, TVariables, TContext>
+> = ToRefs<Readonly<Result>> & {
+  mutate: UseMutateFunction<TData, TError, TVariables, TContext>;
+  mutateAsync: UseMutateAsyncFunction<TData, TError, TVariables, TContext>;
+};
 
 export function useMutation<
   TData = unknown,
@@ -16,7 +44,7 @@ export function useMutation<
   TContext = unknown
 >(
   options: UseMutationOptions<TData, TError, TVariables, TContext>
-): UseMutationResult<TData, TError, TVariables, TContext>;
+): UseMutationReturnType<TData, TError, TVariables, TContext>;
 export function useMutation<
   TData = unknown,
   TError = unknown,
@@ -25,7 +53,7 @@ export function useMutation<
 >(
   mutationFn: MutationFunction<TData, TVariables>,
   options?: UseMutationOptions<TData, TError, TVariables, TContext>
-): UseMutationResult<TData, TError, TVariables, TContext>;
+): UseMutationReturnType<TData, TError, TVariables, TContext>;
 export function useMutation<
   TData = unknown,
   TError = unknown,
@@ -34,7 +62,7 @@ export function useMutation<
 >(
   mutationKey: MutationKey,
   options?: UseMutationOptions<TData, TError, TVariables, TContext>
-): UseMutationResult<TData, TError, TVariables, TContext>;
+): UseMutationReturnType<TData, TError, TVariables, TContext>;
 export function useMutation<
   TData = unknown,
   TError = unknown,
@@ -44,7 +72,7 @@ export function useMutation<
   mutationKey: MutationKey,
   mutationFn?: MutationFunction<TData, TVariables>,
   options?: UseMutationOptions<TData, TError, TVariables, TContext>
-): UseMutationResult<TData, TError, TVariables, TContext>;
+): UseMutationReturnType<TData, TError, TVariables, TContext>;
 export function useMutation<
   TData = unknown,
   TError = unknown,
@@ -59,7 +87,7 @@ export function useMutation<
     | MutationFunction<TData, TVariables>
     | UseMutationOptions<TData, TError, TVariables, TContext>,
   arg3?: UseMutationOptions<TData, TError, TVariables, TContext>
-): UseMutationResult<TData, TError, TVariables, TContext> {
+): UseMutationReturnType<TData, TError, TVariables, TContext> {
   const options = parseMutationArgs(arg1, arg2, arg3);
   const queryClient = useQueryClient();
   const observer = new MutationObserver(queryClient, options);
@@ -75,7 +103,7 @@ export function useMutation<
 
   const mutate = (
     variables: TVariables,
-    mutateOptions: MutateOptions<TData, TError, TVariables, TContext>
+    mutateOptions?: MutateOptions<TData, TError, TVariables, TContext>
   ) => {
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     observer.mutate(variables, mutateOptions).catch(() => {});
@@ -89,8 +117,13 @@ export function useMutation<
     unsubscribe();
   });
 
-  return Object.assign(state, {
+  const resultRefs = toRefs(readonly(state)) as ToRefs<
+    Readonly<MutationObserverResult<TData, TError, TVariables, TContext>>
+  >;
+
+  return {
+    ...resultRefs,
     mutate,
     mutateAsync: state.mutate,
-  }) as UseMutationResult<TData, TError, TVariables, TContext>;
+  };
 }
