@@ -23,10 +23,10 @@ describe("useMutation", () => {
     const mutation = useMutation((params) => successMutator(params));
 
     expect(mutation).toMatchObject({
-      isIdle: true,
-      isLoading: false,
-      isError: false,
-      isSuccess: false,
+      isIdle: { value: true },
+      isLoading: { value: false },
+      isError: { value: false },
+      isSuccess: { value: false },
     });
   });
 
@@ -37,12 +37,12 @@ describe("useMutation", () => {
     mutation.mutate(result);
 
     expect(mutation).toMatchObject({
-      isIdle: false,
-      isLoading: true,
-      isError: false,
-      isSuccess: false,
-      data: undefined,
-      error: null,
+      isIdle: { value: false },
+      isLoading: { value: true },
+      isError: { value: false },
+      isSuccess: { value: false },
+      data: { value: undefined },
+      error: { value: null },
     });
   });
 
@@ -54,12 +54,12 @@ describe("useMutation", () => {
     await flushPromises(10);
 
     expect(mutation).toMatchObject({
-      isIdle: false,
-      isLoading: false,
-      isError: true,
-      isSuccess: false,
-      data: undefined,
-      error: Error("Some error"),
+      isIdle: { value: false },
+      isLoading: { value: false },
+      isError: { value: true },
+      isSuccess: { value: false },
+      data: { value: undefined },
+      error: { value: Error("Some error") },
     });
   });
 
@@ -72,12 +72,12 @@ describe("useMutation", () => {
     await flushPromises(10);
 
     expect(mutation).toMatchObject({
-      isIdle: false,
-      isLoading: false,
-      isError: false,
-      isSuccess: true,
-      data: "Mock data",
-      error: null,
+      isIdle: { value: false },
+      isLoading: { value: false },
+      isError: { value: false },
+      isSuccess: { value: true },
+      data: { value: "Mock data" },
+      error: { value: null },
     });
   });
 
@@ -88,15 +88,15 @@ describe("useMutation", () => {
 
     await flushPromises(10);
 
-    mutation.reset();
+    mutation.reset.value();
 
     expect(mutation).toMatchObject({
-      isIdle: true,
-      isLoading: false,
-      isError: false,
-      isSuccess: false,
-      data: undefined,
-      error: null,
+      isIdle: { value: true },
+      isLoading: { value: false },
+      isError: { value: false },
+      isSuccess: { value: false },
+      data: { value: undefined },
+      error: { value: null },
     });
   });
 
@@ -218,12 +218,12 @@ describe("useMutation", () => {
       await expect(mutation.mutateAsync(result)).resolves.toBe(result);
 
       expect(mutation).toMatchObject({
-        isIdle: false,
-        isLoading: false,
-        isError: false,
-        isSuccess: true,
-        data: "Mock data",
-        error: null,
+        isIdle: { value: false },
+        isLoading: { value: false },
+        isError: { value: false },
+        isSuccess: { value: true },
+        data: { value: "Mock data" },
+        error: { value: null },
       });
     });
 
@@ -233,12 +233,12 @@ describe("useMutation", () => {
       await expect(mutation.mutateAsync()).rejects.toThrowError("Some error");
 
       expect(mutation).toMatchObject({
-        isIdle: false,
-        isLoading: false,
-        isError: true,
-        isSuccess: false,
-        data: undefined,
-        error: Error("Some error"),
+        isIdle: { value: false },
+        isLoading: { value: false },
+        isError: { value: true },
+        isSuccess: { value: false },
+        data: { value: undefined },
+        error: { value: Error("Some error") },
       });
     });
   });
