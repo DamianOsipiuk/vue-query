@@ -13,7 +13,6 @@
   "scripts": {
     "build": "rollup -c rollup.config.ts",
     "lint": "eslint ./src/**/*.{ts,vue} ./tests/**/*.{ts,vue}",
-    "prepare": "npm run build",
     "test": "npm run test:2 && npm run test:3",
     "test:2": "vue-demi-switch 2 vue2 && jest",
     "test:3": "vue-demi-switch 3 && jest",
