@@ -1,5 +1,5 @@
 <script lang="ts">
-import { computed, defineComponent, PropType, h } from "vue-demi";
+import { computed, defineComponent, PropType, h, isVue2 } from "vue-demi";
 
 import type { Query } from "react-query/types";
 
@@ -44,6 +44,96 @@ export default defineComponent({
     };
   },
   render() {
+    const actions = [
+      h(
+        "button",
+        {
+          class: "action-button",
+          style: {
+            background: this.isFetching
+              ? this.theme.grayAlt
+              : this.theme.active,
+            cursor: this.isFetching ? "not-allowed" : "pointer",
+          },
+          // Vue3
+          type: "button",
+          disabled: this.isFetching,
+          onClick: this.doFetch,
+          // Vue2
+          attrs: {
+            type: "button",
+            disabled: this.isFetching,
+          },
+          on: {
+            click: this.doFetch,
+          },
+        },
+        "Refetch"
+      ),
+      h(
+        "button",
+        {
+          class: "action-button",
+          style: {
+            background: this.theme.warning,
+            color: this.theme.inputTextColor,
+          },
+          // Vue3
+          type: "button",
+          onClick: this.doInvalidate,
+          // Vue2
+          attrs: {
+            type: "button",
+          },
+          on: {
+            click: this.doInvalidate,
+          },
+        },
+        "Invalidate"
+      ),
+      h(
+        "button",
+        {
+          class: "action-button",
+          style: {
+            background: this.theme.gray,
+          },
+          // Vue3
+          type: "button",
+          onClick: this.doReset,
+          // Vue2
+          attrs: {
+            type: "button",
+          },
+          on: {
+            click: this.doReset,
+          },
+        },
+        "Reset"
+      ),
+      h(
+        "button",
+        {
+          class: "action-button",
+          style: {
+            background: this.theme.danger,
+          },
+          // Vue3
+          type: "button",
+          onClick: this.doRemove,
+          // Vue2
+          attrs: {
+            type: "button",
+          },
+          on: {
+            click: this.doRemove,
+          },
+        },
+        "Remove"
+      ),
+    ];
+    const actionsSlot = isVue2 ? actions : { default: () => actions };
+
     return h(
       InfoPanel,
       {
@@ -54,94 +144,7 @@ export default defineComponent({
           title: "Actions",
         },
       },
-      [
-        h(
-          "button",
-          {
-            class: "action-button",
-            style: {
-              background: this.isFetching
-                ? this.theme.grayAlt
-                : this.theme.active,
-              cursor: this.isFetching ? "not-allowed" : "pointer",
-            },
-            // Vue3
-            type: "button",
-            disabled: this.isFetching,
-            onClick: this.doFetch,
-            // Vue2
-            attrs: {
-              type: "button",
-              disabled: this.isFetching,
-            },
-            on: {
-              click: this.doFetch,
-            },
-          },
-          "Refetch"
-        ),
-        h(
-          "button",
-          {
-            class: "action-button",
-            style: {
-              background: this.theme.warning,
-              color: this.theme.inputTextColor,
-            },
-            // Vue3
-            type: "button",
-            onClick: this.doInvalidate,
-            // Vue2
-            attrs: {
-              type: "button",
-            },
-            on: {
-              click: this.doInvalidate,
-            },
-          },
-          "Invalidate"
-        ),
-        h(
-          "button",
-          {
-            class: "action-button",
-            style: {
-              background: this.theme.gray,
-            },
-            // Vue3
-            type: "button",
-            onClick: this.doReset,
-            // Vue2
-            attrs: {
-              type: "button",
-            },
-            on: {
-              click: this.doReset,
-            },
-          },
-          "Reset"
-        ),
-        h(
-          "button",
-          {
-            class: "action-button",
-            style: {
-              background: this.theme.danger,
-            },
-            // Vue3
-            type: "button",
-            onClick: this.doRemove,
-            // Vue2
-            attrs: {
-              type: "button",
-            },
-            on: {
-              click: this.doRemove,
-            },
-          },
-          "Remove"
-        ),
-      ]
+      actionsSlot
     );
   },
 });
