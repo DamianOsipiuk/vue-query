@@ -1,5 +1,5 @@
 <script lang="ts">
-import { computed, defineComponent, PropType, h } from "vue-demi";
+import { computed, defineComponent, PropType, h, isVue2 } from "vue-demi";
 
 import type { Query } from "react-query/types";
 
@@ -38,6 +38,46 @@ export default defineComponent({
     };
   },
   render() {
+    const details = [
+      h("div", { class: "details-info-line" }, [
+        h(
+          "code",
+          {
+            class: "details-code",
+          },
+          [h("pre", { class: "details-pre" }, this.formattedQueryKey)]
+        ),
+        h(
+          "span",
+          {
+            class: "details-span",
+            style: { background: this.statusBackground },
+          },
+          this.queryStatusLabel
+        ),
+      ]),
+      h("div", { class: "details-info-line" }, [
+        "Observers:",
+        h(
+          "code",
+          {
+            class: "details-code",
+          },
+          this.observersCount
+        ),
+      ]),
+      h("div", { class: "details-info-line" }, [
+        "Last Updated:",
+        h(
+          "code",
+          {
+            class: "details-code",
+          },
+          this.updateDate
+        ),
+      ]),
+    ];
+    const detailsSlot = isVue2 ? details : { default: () => details };
     return h(
       InfoPanel,
       {
@@ -48,45 +88,7 @@ export default defineComponent({
           title: "Query Details",
         },
       },
-      [
-        h("div", { class: "details-info-line" }, [
-          h(
-            "code",
-            {
-              class: "details-code",
-            },
-            [h("pre", { class: "details-pre" }, this.formattedQueryKey)]
-          ),
-          h(
-            "span",
-            {
-              class: "details-span",
-              style: { background: this.statusBackground },
-            },
-            this.queryStatusLabel
-          ),
-        ]),
-        h("div", { class: "details-info-line" }, [
-          "Observers:",
-          h(
-            "code",
-            {
-              class: "details-code",
-            },
-            this.observersCount
-          ),
-        ]),
-        h("div", { class: "details-info-line" }, [
-          "Last Updated:",
-          h(
-            "code",
-            {
-              class: "details-code",
-            },
-            this.updateDate
-          ),
-        ]),
-      ]
+      detailsSlot
     );
   },
 });

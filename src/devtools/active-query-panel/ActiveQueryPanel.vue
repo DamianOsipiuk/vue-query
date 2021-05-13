@@ -1,5 +1,5 @@
 <script lang="ts">
-import { defineComponent, PropType, h } from "vue-demi";
+import { defineComponent, PropType, h, isVue2 } from "vue-demi";
 
 import type { Query } from "react-query/types";
 
@@ -17,6 +17,38 @@ export default defineComponent({
     },
   },
   render() {
+    const dataExplorer = h(Explorer, {
+      // Vue3
+      label: "Data",
+      value: this.$props.query.state.data,
+      defaultExpanded: true,
+      // Vue2
+      props: {
+        label: "Data",
+        value: this.$props.query.state.data,
+        defaultExpanded: true,
+      },
+    });
+    const dataExplorerSlot = isVue2
+      ? [dataExplorer]
+      : { default: () => dataExplorer };
+
+    const queryExplorer = h(Explorer, {
+      // Vue3
+      label: "Query",
+      value: this.$props.query,
+      defaultExpanded: { queryKey: true },
+      // Vue2
+      props: {
+        label: "Query",
+        value: this.$props.query,
+        defaultExpanded: { queryKey: true },
+      },
+    });
+    const queryExplorerSlot = isVue2
+      ? [queryExplorer]
+      : { default: () => queryExplorer };
+
     return h(
       "div",
       {
@@ -49,20 +81,7 @@ export default defineComponent({
               title: "Data Explorer",
             },
           },
-          [
-            h(Explorer, {
-              // Vue3
-              label: "Data",
-              value: this.$props.query.state.data,
-              defaultExpanded: true,
-              // Vue2
-              props: {
-                label: "Data",
-                value: this.$props.query.state.data,
-                defaultExpanded: true,
-              },
-            }),
-          ]
+          dataExplorerSlot
         ),
         h(
           InfoPanel,
@@ -74,20 +93,7 @@ export default defineComponent({
               title: "Query Explorer",
             },
           },
-          [
-            h(Explorer, {
-              // Vue3
-              label: "Query",
-              value: this.$props.query,
-              defaultExpanded: { queryKey: true },
-              // Vue2
-              props: {
-                label: "Query",
-                value: this.$props.query,
-                defaultExpanded: { queryKey: true },
-              },
-            }),
-          ]
+          queryExplorerSlot
         ),
       ]
     );
