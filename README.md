@@ -1,14 +1,20 @@
+[![Vue Query logo](./media/vue-query.png)](https://damianosipiuk.github.io/vue-query/)
+
 [![npm version](https://img.shields.io/npm/v/vue-query)](https://www.npmjs.com/package/vue-query)
 [![npm license](https://img.shields.io/npm/l/vue-query)](https://github.com/DamianOsipiuk/vue-query/blob/main/LICENSE)
 [![bundle size](https://img.shields.io/bundlephobia/minzip/vue-query)](https://bundlephobia.com/result?p=vue-query)
+![npm](https://img.shields.io/npm/dm/vue-query)
 
-# vue-query
+# Vue Query
 
 Hooks for fetching, caching and updating asynchronous data in Vue.
 
-These hooks support Vue 2.x too via [vue-demi](https://github.com/vueuse/vue-demi)
+Support for Vue 2.x via [vue-demi](https://github.com/vueuse/vue-demi)
 
 Based on [react-query](https://github.com/tannerlinsley/react-query)
+
+# Documentation
+Visit [damianosipiuk.github.io/vue-query](https://damianosipiuk.github.io/vue-query/)
 
 # Quick Features
 
@@ -24,31 +30,7 @@ Based on [react-query](https://github.com/tannerlinsley/react-query)
 - Dedicated Devtools
 - [![npm bundle size](https://img.shields.io/bundlephobia/minzip/vue-query)](https://bundlephobia.com/result?p=vue-query) (depending on features imported)
 
-# Examples
-
-- 3.x
-  - [Basic](https://github.com/DamianOsipiuk/vue-query/tree/main/examples/basic)
-  - [Suspense](https://github.com/DamianOsipiuk/vue-query/tree/main/examples/suspense)
-  - [Multi-Page](https://github.com/DamianOsipiuk/vue-query/tree/main/examples/multi-page)
-    - Caching - throttle network and then switch between pages
-    - Deduping requests - click `change page` in quick succession and monitor Network tab in devtools.
-    - Garbage collection - click `remove page`
-- 2.x
-  - [Basic](https://github.com/DamianOsipiuk/vue-query/tree/main/examples/basic-vue-2.x)
-
-# Installation
-
-```
-npm install vue-query
-```
-
-or
-
-```
-yarn add vue-query
-```
-
-# Usage
+# Quick Start
 
 1. Attach vue-query to your Vue application
 
@@ -85,27 +67,3 @@ yarn add vue-query
 
    const query = useQuery(queryKey, queryFunction, options);
    ```
-
-# DevTools
-
-This package provides built-in DevTools in the form of a Vue component.
-
-Use VueQueryDevTools component in the main component of your application.
-
-Check [Examples section](#examples).
-
-```vue
-<script lang="ts">
-import { defineComponent } from "vue";
-import { VueQueryDevTools } from "vue-query/devtools";
-
-export default defineComponent({
-  name: "App",
-  components: { VueQueryDevTools },
-});
-</script>
-
-<template>
-  <VueQueryDevTools />
-</template>
-```
