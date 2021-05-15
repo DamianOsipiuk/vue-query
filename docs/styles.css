@@ -1,0 +1,22 @@
+body .docsify-pagination-container {
+  margin: 1em 0 1em;
+  border-top: 1px solid #eee;
+}
+
+#docsify-darklight-theme {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  z-index: 25;
+  top: unset;
+  background-size: unset;
+  background-color: var(--background);
+  height: 60px;
+  width: 37px;
+  background-position-x: center;
+}
+
+.sidebar-toggle-button {
+  width: 20px;
+  background-color: var(--background);
+}
