@@ -23,11 +23,7 @@ describe("useQueryClient", () => {
   test("should throw an error when queryClient does not exist in the context", () => {
     injectSpy.mockReturnValueOnce(undefined);
 
-    expect(useQueryClient).toThrowError(
-      Error(
-        "No queryClient found in Vue context, use 'app.provide(VUE_QUERY_CLIENT, new QueryClient());' to set one in root component."
-      )
-    );
+    expect(useQueryClient).toThrowError();
     expect(injectSpy).toHaveBeenCalledTimes(1);
     expect(injectSpy).toHaveBeenCalledWith(VUE_QUERY_CLIENT);
   });
