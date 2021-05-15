@@ -1,7 +1,6 @@
 <script lang="ts">
 import { defineComponent } from "vue";
-import { useQuery, useQueryProvider } from "vue-query";
-import { VueQueryDevTools } from "vue-query/devtools";
+import { useQuery } from "vue-query";
 
 interface Todo {
   userId: number;
@@ -10,23 +9,18 @@ interface Todo {
   completed: boolean;
 }
 
-const todoFetcher = async (): Promise<Todo[]> =>
-  await fetch("https://jsonplaceholder.cypress.io/todos").then((response) =>
+const fetcher = async (): Promise<Todo[]> =>
+  await fetch("https://jsonplaceholder.typicode.com/todos").then((response) =>
     response.json()
   );
 
 export default defineComponent({
-  name: "App",
-  components: { VueQueryDevTools },
+  name: "Todos",
   setup() {
-    useQueryProvider();
-
     const { isLoading, isError, isFetching, data, error, refetch } = useQuery(
       "todos",
-      todoFetcher
+      fetcher
     );
-    useQuery("todos2", todoFetcher);
-    useQuery("todos3", todoFetcher);
 
     return { isLoading, isError, isFetching, data, error, refetch };
   },
@@ -34,8 +28,7 @@ export default defineComponent({
 </script>
 
 <template>
-  <h1>vue-query example</h1>
-  <p>Turn on <b>Slow 3G</b> or <b>Offline</b> in dev-tools and hit Refetch</p>
+  <p>Turn on <b>network throttling</b> in dev-tools and press Refetch</p>
   <button @click="refetch" :disabled="isFetching">
     {{ isFetching ? "Refetching..." : "Refetch" }}
   </button>
@@ -49,8 +42,6 @@ export default defineComponent({
       </li>
     </ul>
   </div>
-  <div v-else>Nothing to see here...</div>
-  <VueQueryDevTools :initialIsOpen="true" />
 </template>
 
 <style>
