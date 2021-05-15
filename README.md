@@ -14,6 +14,7 @@ Support for Vue 2.x via [vue-demi](https://github.com/vueuse/vue-demi)
 Based on [react-query](https://github.com/tannerlinsley/react-query)
 
 # Documentation
+
 Visit [damianosipiuk.github.io/vue-query](https://damianosipiuk.github.io/vue-query/)
 
 # Quick Features
@@ -32,26 +33,36 @@ Visit [damianosipiuk.github.io/vue-query](https://damianosipiuk.github.io/vue-qu
 
 # Quick Start
 
-1. Attach vue-query to your Vue application
+1. Attach **Vue Query** to the root component of your Vue application
 
    ```ts
-   import { createApp } from "vue";
-   import { QueryClient, VUE_QUERY_CLIENT } from "vue-query";
+   import { defineComponent } from "vue";
+   import { useQueryProvider } from "vue-query";
 
-   import App from "./App.vue";
-
-   const queryClient = new QueryClient();
-   queryClient.mount();
-
-   createApp(App).provide(VUE_QUERY_CLIENT, queryClient).mount("#app");
+   export default defineComponent({
+     name: "App",
+     setup() {
+       useQueryProvider();
+     },
+   });
    ```
 
 2. Use query
 
    ```ts
+   import { defineComponent } from "vue";
    import { useQuery } from "vue-query";
 
-   const query = useQuery("todos", getTodos);
+   export default defineComponent({
+     name: "MyComponent",
+     setup() {
+       const query = useQuery("todos", getTodos);
+
+       return {
+         query,
+       };
+     },
+   });
    ```
 
 3. If you need to update options on your query dynamically, make sure to pass it as reactive property
@@ -61,8 +72,7 @@ Visit [damianosipiuk.github.io/vue-query](https://damianosipiuk.github.io/vue-qu
    const queryKey = reactive(["todos", { id }]);
    const queryFunction = () => getTodos(id);
    const options = reactive({
-     staleTime: 60 * 60,
-     onSuccess: () => {},
+     enabled: false,
    });
 
    const query = useQuery(queryKey, queryFunction, options);
