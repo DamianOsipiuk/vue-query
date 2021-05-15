@@ -3,7 +3,7 @@
 [![npm version](https://img.shields.io/npm/v/vue-query)](https://www.npmjs.com/package/vue-query)
 [![npm license](https://img.shields.io/npm/l/vue-query)](https://github.com/DamianOsipiuk/vue-query/blob/main/LICENSE)
 [![bundle size](https://img.shields.io/bundlephobia/minzip/vue-query)](https://bundlephobia.com/result?p=vue-query)
-![npm](https://img.shields.io/npm/dm/vue-query)
+[![npm](https://img.shields.io/npm/dm/vue-query)](https://www.npmjs.com/package/vue-query)
 
 # Vue Query
 
@@ -14,8 +14,7 @@ Support for Vue 2.x via [vue-demi](https://github.com/vueuse/vue-demi)
 Based on [react-query](https://github.com/tannerlinsley/react-query)
 
 # Documentation
-
-Visit [damianosipiuk.github.io/vue-query](https://damianosipiuk.github.io/vue-query/)
+Visit https://vue-query.vercel.app
 
 # Quick Features
 
