@@ -1,5 +1,5 @@
 {
   "packages": ["./"],
-  "sandboxes": ["/examples/multi-page", "/examples/basic-vue-2.x"],
+  "sandboxes": ["/examples/base", "/examples/basic-vue-2.x"],
   "node": "14"
 }
