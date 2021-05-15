@@ -1,5 +1,6 @@
 <script lang="ts">
 import { defineComponent } from "vue";
+import { useQueryProvider } from "vue-query";
 import { VueQueryDevTools } from "vue-query/devtools";
 
 import Content from "./Content.vue";
@@ -7,6 +8,9 @@ import Content from "./Content.vue";
 export default defineComponent({
   name: "App",
   components: { Content, VueQueryDevTools },
+  setup() {
+    useQueryProvider();
+  },
 });
 </script>
 
