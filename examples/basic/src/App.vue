@@ -1,6 +1,6 @@
 <script lang="ts">
 import { defineComponent } from "vue";
-import { useQuery } from "vue-query";
+import { useQuery, useQueryProvider } from "vue-query";
 import { VueQueryDevTools } from "vue-query/devtools";
 
 interface Todo {
@@ -19,6 +19,8 @@ export default defineComponent({
   name: "App",
   components: { VueQueryDevTools },
   setup() {
+    useQueryProvider();
+
     const { isLoading, isError, isFetching, data, error, refetch } = useQuery(
       "todos",
       todoFetcher

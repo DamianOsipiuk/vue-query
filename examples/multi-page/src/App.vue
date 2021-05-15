@@ -1,6 +1,7 @@
 <script lang="ts">
 import { defineComponent, ref } from "vue";
 
+import { useQueryProvider } from "vue-query";
 import { VueQueryDevTools } from "vue-query/devtools";
 import Page from "./Page.vue";
 
@@ -8,6 +9,8 @@ export default defineComponent({
   name: "App",
   components: { VueQueryDevTools, Page },
   setup() {
+    useQueryProvider();
+
     const firstPage = ref(1);
 
     const changePage = () => {
