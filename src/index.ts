@@ -1,6 +1,12 @@
 /* istanbul ignore file */
 
-export { QueryClient } from "react-query/core";
+export {
+  QueryClient,
+  QueryObserver,
+  QueriesObserver,
+  InfiniteQueryObserver,
+  MutationObserver,
+} from "react-query/core";
 
 export { useQueryClient, VUE_QUERY_CLIENT } from "./useQueryClient";
 export { useQueryProvider } from "./useQueryProvider";
