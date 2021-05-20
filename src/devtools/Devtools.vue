@@ -144,7 +144,7 @@ export default defineComponent({
     });
 
     return h("div", { class: "VueQueryDevtools" }, [
-      devtoolsPanel,
+      this.isOpen ? devtoolsPanel : null,
       this.isOpen ? closeButton : toggleButton,
     ]);
   },

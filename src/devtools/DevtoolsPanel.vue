@@ -9,6 +9,7 @@ import {
   Ref,
   ref,
   h,
+  onUnmounted,
 } from "vue-demi";
 
 import { sortFns, getQueryState } from "./utils";
@@ -57,7 +58,8 @@ export default defineComponent({
       queries.value = getSortedQueries();
     };
 
-    const queries: Ref<Query[]> = ref([]);
+    const queryClient = useQueryClient();
+    const queryCache = queryClient.getQueryCache();
     const getSortedQueries = () => {
       const queries = queryCache.getAll();
       const sorted = [...queries].sort(options.sortFn);
@@ -74,9 +76,10 @@ export default defineComponent({
         keys: ["queryHash"],
       }).filter((d) => d.queryHash);
     };
-    const queryClient = useQueryClient();
-    const queryCache = queryClient.getQueryCache();
-    queryCache.subscribe(() => {
+
+    const queries = ref(getSortedQueries()) as Ref<Query[]>;
+
+    const unsub = queryCache.subscribe(() => {
       queries.value = getSortedQueries();
     });
 
@@ -92,6 +95,8 @@ export default defineComponent({
     const handleDragStart = (event: MouseEvent) => {
       emit("handleDragStart", event);
     };
+
+    onUnmounted(unsub);
 
     return {
       theme,
