@@ -16,6 +16,7 @@ const todoFetcher = async (): Promise<Todo[]> =>
   );
 
 export default defineComponent({
+  name: "App",
   components: { VueQueryDevTools },
   setup() {
     useQueryProvider();
@@ -53,9 +54,3 @@ export default defineComponent({
     <VueQueryDevTools :initialIsOpen="true" />
   </div>
 </template>
-
-<style>
-ul {
-  list-style: none;
-}
-</style>
