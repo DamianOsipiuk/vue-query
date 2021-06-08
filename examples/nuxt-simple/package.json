@@ -1,0 +1,27 @@
+{
+  "name": "my-nuxt-project",
+  "version": "1.0.0",
+  "description": "Nuxt.js project",
+  "author": "Damian Osipiuk <osipiukd+git@gmail.com>",
+  "private": true,
+  "scripts": {
+    "dev": "nuxt",
+    "build": "nuxt build",
+    "start": "nuxt start",
+    "generate": "nuxt generate",
+    "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
+    "precommit": "npm run lint"
+  },
+  "dependencies": {
+    "@nuxtjs/composition-api": "^0.24.2",
+    "nuxt": "^2.0.0",
+    "vue-query": "^1.5.1"
+  },
+  "devDependencies": {
+    "babel-eslint": "^10.0.1",
+    "eslint": "^4.19.1",
+    "eslint-friendly-formatter": "^4.0.1",
+    "eslint-loader": "^2.1.1",
+    "eslint-plugin-vue": "^4.0.0"
+  }
+}
