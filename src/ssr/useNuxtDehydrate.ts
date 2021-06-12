@@ -7,5 +7,11 @@ export function useNuxtDehydrate(
   },
   queryClient: QueryClient
 ): void {
-  ssrContext.nuxt.vueQueryState = dehydrate(queryClient);
+  if (!ssrContext || !ssrContext.nuxt) {
+    throw new Error(
+      "Please provide `ssrContext` from nuxt `useContext` hook as a first parameter to `useNuxtDehydrate`"
+    );
+  } else {
+    ssrContext.nuxt.vueQueryState = dehydrate(queryClient);
+  }
 }
