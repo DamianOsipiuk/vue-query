@@ -14,6 +14,7 @@ Support for Vue 2.x via [vue-demi](https://github.com/vueuse/vue-demi)
 Based on [react-query](https://github.com/tannerlinsley/react-query)
 
 # Documentation
+
 Visit https://vue-query.vercel.app
 
 # Quick Features

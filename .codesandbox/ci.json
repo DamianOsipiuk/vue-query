@@ -1,5 +1,9 @@
 {
   "packages": ["./"],
-  "sandboxes": ["/examples/base", "/examples/basic-vue-2.x", "/examples/nuxt-simple"],
+  "sandboxes": [
+    "/examples/base",
+    "/examples/basic-vue-2.x",
+    "/examples/nuxt-simple"
+  ],
   "node": "14"
 }

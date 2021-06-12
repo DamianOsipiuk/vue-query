@@ -15,6 +15,7 @@ If you want to suggest a feature, [create an issue](https://github.com/DamianOsi
 ## Development
 
 While contributing, make sure to follow the guidelines:
+
 - run `npm run verify` before opening a PR
 - write tests for any new piece of code that you are adding to the repository when applicable
 
