@@ -17,5 +17,3 @@ export { useInfiniteQuery } from "./useInfiniteQuery";
 export { useMutation } from "./useMutation";
 export { useIsFetching } from "./useIsFetching";
 export { useIsMutating } from "./useIsMutating";
-
-export { hydrate, dehydrate } from "./hydration";

@@ -31,6 +31,15 @@ export default [
     ...common,
   },
   {
+    input: "src/ssr/index.ts",
+    output: {
+      file: "lib/ssr.js",
+      format: "cjs",
+      sourcemap: true,
+    },
+    ...common,
+  },
+  {
     input: "src/index.ts",
     output: {
       dir: "esm",
@@ -43,6 +52,15 @@ export default [
     input: "src/devtools/index.ts",
     output: {
       file: "esm/devtools.js",
+      format: "esm",
+      sourcemap: true,
+    },
+    ...common,
+  },
+  {
+    input: "src/ssr/index.ts",
+    output: {
+      file: "esm/ssr.js",
       format: "esm",
       sourcemap: true,
     },
