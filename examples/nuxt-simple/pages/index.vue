@@ -26,7 +26,10 @@ export default defineComponent({
   setup() {
     const renderer = ssrRef("client", 'renderer');
 
-    const { refetch, data } = useQuery("todos", fetcher);
+    const { refetch, data } = useQuery("todos", fetcher, {
+      // If you do not want data to be refetched on the client, set a staleTime to high enough time
+      staleTime: 1000,
+    });
 
     onServerPrefetch(async () => {
       renderer.value = "server";
