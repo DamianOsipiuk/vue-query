@@ -7,13 +7,13 @@
 
 <script lang="ts">
 import { defineComponent } from "@nuxtjs/composition-api";
-import { useQueryProvider } from "vue-query";
+import { useNuxtQueryProvider } from "vue-query/ssr";
 import { VueQueryDevTools } from "vue-query/devtools";
 
 export default defineComponent({
   components: { VueQueryDevTools },
   setup() {
-    useQueryProvider();
+    useNuxtQueryProvider();
   },
 });
 </script>

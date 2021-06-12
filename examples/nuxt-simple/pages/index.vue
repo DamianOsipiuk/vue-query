@@ -7,16 +7,15 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import {
   defineComponent,
   ssrRef,
-  useContext,
   onServerPrefetch,
-  onBeforeMount,
+  useContext,
 } from "@nuxtjs/composition-api";
-import { QueryClient, useQuery, useQueryClient } from "vue-query";
-import { hydrate, dehydrate } from "vue-query/ssr";
+import { QueryClient, useQuery } from "vue-query";
+import { useNuxtDehydrate } from "vue-query/ssr";
 
 const fetcher = async () =>
   await fetch("https://jsonplaceholder.typicode.com/todos").then((response) =>
@@ -24,18 +23,10 @@ const fetcher = async () =>
   );
 
 export default defineComponent({
-  setup(props, attrs) {
-    const renderer = ssrRef("client");
+  setup() {
+    const renderer = ssrRef("client", 'renderer');
 
-    const { refetch, data } = useQuery("todos", fetcher, {
-      enabled: false,
-    });
-
-    onBeforeMount(() => {
-      const { nuxtState } = useContext();
-      const queryClient = useQueryClient();
-      hydrate(queryClient, nuxtState.vueQueryState);
-    });
+    const { refetch, data } = useQuery("todos", fetcher);
 
     onServerPrefetch(async () => {
       renderer.value = "server";
@@ -44,7 +35,7 @@ export default defineComponent({
       const queryClient = new QueryClient();
       await queryClient.prefetchQuery("todos", fetcher);
 
-      ssrContext.nuxt.vueQueryState = dehydrate(queryClient);
+      useNuxtDehydrate(ssrContext, queryClient);
     });
 
     return {
