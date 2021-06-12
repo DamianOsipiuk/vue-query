@@ -10,5 +10,10 @@
   - [Simple](examples/simple.md)
   - [Basic](examples/base.md)
   - [Multi Page](examples/multi-page.md)
-  - [Suspense](examples/suspense.md)
-  - [Vue 2.x](examples/vue-2.x.md)
+  - [Suspense (experimental)](examples/suspense.md)
+  - [Vue 2.x (experimental)](examples/vue-2.x.md)
+  - [Nuxt.js (experimental)](examples/nuxt.md)
+
+- Guides & Concepts
+
+  - [SSR & Nuxt.js (experimental)](guides/ssr.md)
