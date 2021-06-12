@@ -7,7 +7,7 @@ const config: Config.InitialOptions = {
   },
   moduleFileExtensions: ["js", "ts", "vue"],
   collectCoverage: true,
-  collectCoverageFrom: ["src/**/!(*.d).{ts,vue}"],
+  collectCoverageFrom: ["src/**/!(*.d).{ts}"],
 };
 
 export default config;
