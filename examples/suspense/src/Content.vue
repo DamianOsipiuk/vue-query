@@ -17,15 +17,8 @@ const todoFetcher = async (): Promise<Todo[]> =>
 export default defineComponent({
   name: "Content",
   async setup() {
-    const {
-      isLoading,
-      isError,
-      isFetching,
-      data,
-      error,
-      refetch,
-      suspense,
-    } = useQuery("todos", todoFetcher);
+    const { isLoading, isError, isFetching, data, error, refetch, suspense } =
+      useQuery("todos", todoFetcher);
     useQuery("todos2", todoFetcher);
     useQuery("todos3", todoFetcher);
 

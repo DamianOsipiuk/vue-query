@@ -17,8 +17,9 @@ export default defineComponent({
     const theme = useTheme();
 
     const getQueryStateData = (state: QueryState) => {
-      const count = props.queries.filter((q) => getQueryState(q) === state)
-        .length;
+      const count = props.queries.filter(
+        (q) => getQueryState(q) === state
+      ).length;
 
       return {
         label: QueryStateLabel[state],
