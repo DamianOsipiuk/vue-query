@@ -14,7 +14,7 @@ import {
   onServerPrefetch,
   useContext,
 } from "@nuxtjs/composition-api";
-import { QueryClient, useQuery } from "vue-query";
+import { useQuery, useQueryClient } from "vue-query";
 import { useNuxtDehydrate } from "vue-query/ssr";
 
 const fetcher = async () =>
@@ -24,7 +24,7 @@ const fetcher = async () =>
 
 export default defineComponent({
   setup() {
-    const renderer = ssrRef("client", 'renderer');
+    const renderer = ssrRef("client", "renderer");
 
     const { refetch, data } = useQuery("todos", fetcher, {
       // If you do not want data to be refetched on the client, set a staleTime to high enough time
@@ -33,9 +33,11 @@ export default defineComponent({
 
     onServerPrefetch(async () => {
       renderer.value = "server";
+    });
 
+    onServerPrefetch(async () => {
       const { ssrContext } = useContext();
-      const queryClient = new QueryClient();
+      const queryClient = useQueryClient();
       await queryClient.prefetchQuery("todos", fetcher);
 
       useNuxtDehydrate(ssrContext, queryClient);
