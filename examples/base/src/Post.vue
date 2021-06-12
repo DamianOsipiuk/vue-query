@@ -5,9 +5,9 @@ import { useQuery } from "vue-query";
 import { Post } from "./types";
 
 const fetcher = async (id: number): Promise<Post> =>
-  await fetch(
-    `https://jsonplaceholder.typicode.com/posts/${id}`
-  ).then((response) => response.json());
+  await fetch(`https://jsonplaceholder.typicode.com/posts/${id}`).then(
+    (response) => response.json()
+  );
 
 export default defineComponent({
   name: "Post",
