@@ -1,8 +1,4 @@
 {
-  "name": "my-nuxt-project",
-  "version": "1.0.0",
-  "description": "Nuxt.js project",
-  "author": "Damian Osipiuk <osipiukd+git@gmail.com>",
   "private": true,
   "scripts": {
     "dev": "nuxt",
