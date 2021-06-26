@@ -4,7 +4,7 @@ import { QueryClient } from "react-query/core";
 import { VUE_QUERY_CLIENT } from "./useQueryClient";
 
 // QueryClientConfig isn't exported so we need to extract it
-type QueryClientConfig = NonNullable<
+export type QueryClientConfig = NonNullable<
   ConstructorParameters<typeof QueryClient>[0]
 >;
 
