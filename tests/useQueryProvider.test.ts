@@ -32,6 +32,20 @@ describe("useQueryProvider", () => {
     expect(queryClientSpy).toHaveBeenCalledTimes(1);
   });
 
+  test("should create queryClient with passed config", () => {
+    const config = {
+      defaultOptions: {
+        queries: {
+          enabled: false,
+        },
+      },
+    };
+
+    useQueryProvider(config);
+
+    expect(queryClientSpy).toBeCalledWith(config);
+  });
+
   test("should call mount on QueryClient", () => {
     useQueryProvider();
 
