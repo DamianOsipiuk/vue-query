@@ -6,6 +6,8 @@ export {
   QueriesObserver,
   InfiniteQueryObserver,
   MutationObserver,
+  QueryCache,
+  MutationCache,
 } from "react-query/core";
 
 export { useQueryClient, VUE_QUERY_CLIENT } from "./useQueryClient";
