@@ -40,6 +40,21 @@ describe("useNuxtQueryProvider", () => {
     expect(useQueryProviderSpy).toHaveBeenCalledTimes(1);
   });
 
+  test("should call queryProvider with passed config", () => {
+    const config = {
+      defaultOptions: {
+        queries: {
+          enabled: false,
+        },
+      },
+    };
+    // @ts-expect-error Nuxt.js injected client property
+    process.client = false;
+    useNuxtQueryProvider(config);
+
+    expect(useQueryProviderSpy).toHaveBeenCalledWith(config);
+  });
+
   test("should call useQueryClient when vueQueryState is present", () => {
     useContextSpy.mockReturnValueOnce(withVueQueryState);
     useNuxtQueryProvider();
