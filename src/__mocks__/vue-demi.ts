@@ -10,5 +10,5 @@ module.exports = {
   inject: jest.fn(),
   provide: jest.fn(),
   onUnmounted: jest.fn(),
-  getCurrentInstance: jest.fn(),
+  getCurrentInstance: jest.fn(() => ({ proxy: {} })),
 };
