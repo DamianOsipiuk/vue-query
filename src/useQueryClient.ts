@@ -1,10 +1,18 @@
-import { inject } from "vue-demi";
+import { getCurrentInstance, inject } from "vue-demi";
 
 import type { QueryClient } from "react-query/types";
 
 export const VUE_QUERY_CLIENT = "VUE_QUERY_CLIENT";
 
 export function useQueryClient(): QueryClient {
+  const vm = getCurrentInstance()?.proxy;
+
+  if (!vm) {
+    throw new Error(
+      "vue-query hooks can only be used inside setup() function."
+    );
+  }
+
   const queryClient = inject<QueryClient>(VUE_QUERY_CLIENT);
 
   if (!queryClient) {

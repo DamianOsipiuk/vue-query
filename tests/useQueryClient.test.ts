@@ -1,8 +1,9 @@
-import { inject } from "vue-demi";
+import { getCurrentInstance, inject } from "vue-demi";
 import { useQueryClient, VUE_QUERY_CLIENT } from "../src/useQueryClient";
 
 describe("useQueryClient", () => {
   const injectSpy = inject as jest.Mock;
+  const getCurrentInstanceSpy = getCurrentInstance as jest.Mock;
 
   beforeEach(() => {
     jest.restoreAllMocks();
@@ -26,5 +27,12 @@ describe("useQueryClient", () => {
     expect(useQueryClient).toThrowError();
     expect(injectSpy).toHaveBeenCalledTimes(1);
     expect(injectSpy).toHaveBeenCalledWith(VUE_QUERY_CLIENT);
+  });
+
+  test("should throw an error when used outside of setup function", () => {
+    getCurrentInstanceSpy.mockReturnValueOnce(undefined);
+
+    expect(useQueryClient).toThrowError();
+    expect(getCurrentInstanceSpy).toHaveBeenCalledTimes(1);
   });
 });
