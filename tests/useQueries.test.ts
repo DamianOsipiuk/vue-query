@@ -1,4 +1,4 @@
-import { reactive, set } from "vue-demi";
+import { onUnmounted, reactive, set } from "vue-demi";
 import { setLogger } from "react-query/core";
 import { useQueries } from "../src/useQueries";
 import {
@@ -51,11 +51,11 @@ describe("useQueries", () => {
   test("should resolve to success and update reactive state", async () => {
     const queries = [
       {
-        queryKey: "key1",
+        queryKey: "key11",
         queryFn: simpleFetcher,
       },
       {
-        queryKey: "key2",
+        queryKey: "key12",
         queryFn: simpleFetcher,
       },
     ];
@@ -82,12 +82,12 @@ describe("useQueries", () => {
   test("should reject one of the queries and update reactive state", async () => {
     const queries = [
       {
-        queryKey: "key1",
+        queryKey: "key21",
         queryFn: rejectFetcher,
         retry: false,
       },
       {
-        queryKey: "key2",
+        queryKey: "key22",
         queryFn: simpleFetcher,
       },
     ];
@@ -115,11 +115,11 @@ describe("useQueries", () => {
     const initialQueries = reactive([]);
     const queries = [
       {
-        queryKey: "key1",
+        queryKey: "key31",
         queryFn: simpleFetcher,
       },
       {
-        queryKey: "key2",
+        queryKey: "key32",
         queryFn: simpleFetcher,
       },
     ];
@@ -147,6 +147,42 @@ describe("useQueries", () => {
         status: "success",
         isLoading: false,
         isFetching: false,
+        isStale: true,
+      },
+    ]);
+  });
+
+  test("should stop listening to changes on onUnmount", async () => {
+    const onUnmountedMock = onUnmounted as jest.MockedFunction<
+      typeof onUnmounted
+    >;
+    onUnmountedMock.mockImplementationOnce((fn) => fn());
+
+    const queries = [
+      {
+        queryKey: "key41",
+        queryFn: simpleFetcher,
+      },
+      {
+        queryKey: "key42",
+        queryFn: simpleFetcher,
+      },
+    ];
+    const queriesState = useQueries(queries);
+
+    await flushPromises();
+
+    expect(queriesState).toMatchObject([
+      {
+        status: "loading",
+        isLoading: true,
+        isFetching: true,
+        isStale: true,
+      },
+      {
+        status: "loading",
+        isLoading: true,
+        isFetching: true,
         isStale: true,
       },
     ]);

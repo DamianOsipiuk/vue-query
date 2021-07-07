@@ -96,9 +96,6 @@ export function useMutation<
 
   const unsubscribe = observer.subscribe(() => {
     updateState(state, observer.getCurrentResult());
-    if (state.error && observer.options.useErrorBoundary) {
-      throw state.error;
-    }
   });
 
   const mutate = (

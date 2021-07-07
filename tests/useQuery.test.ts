@@ -157,11 +157,21 @@ describe("useQuery", () => {
       expect(result).toEqual(undefined);
     });
 
+    test("should return undefined when not used in a vue component", () => {
+      const getCurrentInstanceSpy = getCurrentInstance as jest.Mock;
+      getCurrentInstanceSpy.mockImplementation(() => null);
+
+      const query = useQuery("suspense2", simpleFetcher);
+      const result = query.suspense();
+
+      expect(result).toEqual(undefined);
+    });
+
     test("should return a Promise when inside a Suspense boundary", () => {
       const getCurrentInstanceSpy = getCurrentInstance as jest.Mock;
       getCurrentInstanceSpy.mockImplementation(() => ({ suspense: {} }));
 
-      const query = useQuery("suspense1", simpleFetcher);
+      const query = useQuery("suspense3", simpleFetcher);
       const result = query.suspense();
 
       expect(result).toBeInstanceOf(Promise);
