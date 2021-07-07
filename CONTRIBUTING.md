@@ -21,7 +21,7 @@ While contributing, make sure to follow the guidelines:
 
 ## Commit message conventions
 
-`vue-query` is following [Angular Commit Message Conventions](https://github.com/angular/angular.js/blob/master/DEVELOPERS.md#-git-commit-guidelines).
+`vue-query` is using [commitlint](https://github.com/conventional-changelog/commitlint/#what-is-commitlint) to enable [semantic-release](https://github.com/semantic-release/semantic-release) bot.
 
 ## Pull requests
 
@@ -31,4 +31,4 @@ Use an appropriate commit type. Be especially careful with breaking changes.
 
 ## Releases
 
-For each new commit added to the `master` branch (push or merge), a GitHub action gets triggered that runs the [semantic-release](https://github.com/semantic-release/semantic-release)
+For each new commit added to the `main` branch (push or merge), a GitHub action gets triggered that runs the [semantic-release](https://github.com/semantic-release/semantic-release)

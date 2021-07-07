@@ -5,6 +5,9 @@
 [![bundle size](https://img.shields.io/bundlephobia/minzip/vue-query)](https://bundlephobia.com/result?p=vue-query)
 [![npm](https://img.shields.io/npm/dm/vue-query)](https://www.npmjs.com/package/vue-query)
 
+[![build status](https://img.shields.io/github/workflow/status/DamianOsipiuk/vue-query/CI/main)](https://github.com/DamianOsipiuk/vue-query/actions/workflows/ci.yml?query=branch%3Amain)
+[![codecov](https://codecov.io/gh/DamianOsipiuk/vue-query/branch/main/graph/badge.svg?token=X8FK0O5CTG)](https://codecov.io/gh/DamianOsipiuk/vue-query)
+
 # Vue Query
 
 Hooks for fetching, caching and updating asynchronous data in Vue.
