@@ -1,3 +1,5 @@
+/* istanbul ignore file */
+
 // This is exact copy of react-query implementation.
 // Original implementation cannot be used due to dependency on react
 
