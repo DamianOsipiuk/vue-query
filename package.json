@@ -9,7 +9,8 @@
     "/devtools",
     "/ssr",
     "/lib",
-    "/esm"
+    "/esm",
+    "/types"
   ],
   "scripts": {
     "build": "rollup -c rollup.config.ts",
