@@ -16,4 +16,8 @@
 
 - Guides & Concepts
 
+  - [Important Defaults](guides/important-defaults.md)
+  - [Queries](guides/queries.md)
+  - [Query Keys](guides/query-keys.md)
+  - [Query Functions](guides/query-functions.md)
   - [SSR & Nuxt.js (experimental)](guides/ssr.md)
