@@ -8,7 +8,7 @@
 - Examples
 
   - [Simple](examples/simple.md)
-  - [Basic](examples/base.md)
+  - [Basic](examples/basic.md)
   - [Multi Page](examples/multi-page.md)
   - [Suspense (experimental)](examples/suspense.md)
   - [Vue 2.x (experimental)](examples/vue-2.x.md)
