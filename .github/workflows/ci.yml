@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - beta
   pull_request:
 
 jobs:
@@ -44,7 +45,7 @@ jobs:
 
   publish:
     # publish only when merged in master on original repo, not on PR
-    if: github.repository == 'DamianOsipiuk/vue-query' && github.ref == 'refs/heads/main'
+    if: github.repository == 'DamianOsipiuk/vue-query' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/beta')
     needs: [verify, commitlint]
     runs-on: ubuntu-latest
 
@@ -57,7 +58,7 @@ jobs:
           registry-url: https://registry.npmjs.org/
       - run: npm ci
       - run: npm run build
-      - run: npx semantic-release@17 --branches main
+      - run: npx semantic-release@17
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_AUTOMATION_TOKEN}}
           GH_TOKEN: ${{secrets.GITHUB_TOKEN}}
