@@ -1,1 +1,1 @@
-export * from "react-query/types";
+export * from "react-query/types/core";
