@@ -12,7 +12,7 @@ import {
   onUnmounted,
 } from "vue-demi";
 
-import { sortFns, getQueryState } from "./utils";
+import { sortFns, getQueryState, makeArrayNonConfigurable } from "./utils";
 import { useTheme } from "./useTheme";
 import { useQueryClient } from "../useQueryClient";
 
@@ -62,6 +62,8 @@ export default defineComponent({
     const queryCache = queryClient.getQueryCache();
     const getSortedQueries = () => {
       const queries = queryCache.getAll();
+      // Fix for infinite loop in Vue2.x
+      makeArrayNonConfigurable(queries);
       const sorted = [...queries].sort(options.sortFn);
 
       if (options.sortDesc) {

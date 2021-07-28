@@ -1,0 +1,21 @@
+{
+  "private": true,
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "build:dev": "vite build -m development",
+    "serve": "vite preview"
+  },
+  "dependencies": {
+    "@vue/composition-api": "^1.0.4",
+    "vue": "^2.6.14",
+    "vue-query": ">=1.0.0",
+    "vue-template-compiler": "^2.6.14"
+  },
+  "devDependencies": {
+    "typescript": "^4.3.5",
+    "vite": "~2.3.8",
+    "vite-plugin-vue2": "^1.7.3",
+    "vue-demi": "^0.11.2"
+  }
+}

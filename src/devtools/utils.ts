@@ -79,3 +79,11 @@ export const sortFns: Record<string, SortFn> = {
   "Query Hash": queryHashSort,
   "Last Updated": dateSort,
 };
+
+export function makeArrayNonConfigurable(objects: Query[]): void {
+  objects.forEach((obj) => {
+    Object.keys(obj).forEach((key) => {
+      Object.defineProperty(obj, key, { configurable: false });
+    });
+  });
+}
