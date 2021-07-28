@@ -1,8 +1,8 @@
 {
   "packages": ["./"],
   "sandboxes": [
-    "/examples/base",
-    "/examples/basic-vue-2.x",
+    "/examples/basic",
+    "/examples/2.x-basic",
     "/examples/nuxt-simple"
   ],
   "node": "14"
