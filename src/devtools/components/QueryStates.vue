@@ -1,6 +1,6 @@
 <script lang="ts">
 import { computed, defineComponent, PropType, h } from "vue-demi";
-import type { Query } from "react-query/types";
+import type { Query } from "react-query/types/core";
 
 import { useTheme } from "../useTheme";
 import { getQueryState, QueryState, QueryStateLabel } from "../utils";
