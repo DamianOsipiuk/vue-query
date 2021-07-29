@@ -1,7 +1,10 @@
 import { QueriesObserver } from "react-query/core";
 import { onUnmounted, reactive, readonly, set, watch } from "vue-demi";
 
-import type { UseQueryOptions, UseQueryResult } from "react-query/types";
+import type {
+  UseQueryOptions,
+  UseQueryResult,
+} from "react-query/types/react/types";
 
 import { useQueryClient } from "./useQueryClient";
 

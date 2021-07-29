@@ -1,7 +1,7 @@
 <script lang="ts">
 import { defineComponent, PropType, h, isVue2 } from "vue-demi";
 
-import type { Query } from "react-query/types";
+import type { Query } from "react-query/types/core";
 
 import Explorer from "./Explorer.vue";
 import InfoPanel from "./InfoPanel.vue";

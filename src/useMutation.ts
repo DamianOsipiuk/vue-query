@@ -11,13 +11,12 @@ import {
   MutationObserver,
   MutationObserverResult,
 } from "react-query/core";
-import {
+import { MutationFunction, MutationKey } from "react-query/types/core";
+import type {
   UseMutationOptions,
-  MutationFunction,
-  MutationKey,
   UseMutateFunction,
   UseMutateAsyncFunction,
-} from "react-query/types";
+} from "react-query/types/react/types";
 import { parseMutationArgs, updateState } from "./utils";
 import { useQueryClient } from "./useQueryClient";
 

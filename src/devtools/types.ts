@@ -1,4 +1,4 @@
-import type { Query } from "react-query/types";
+import type { Query } from "react-query/types/core";
 
 export type ButtonProps = Partial<HTMLButtonElement>;
 

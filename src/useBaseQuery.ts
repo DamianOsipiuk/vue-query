@@ -9,7 +9,10 @@ import {
 } from "vue-demi";
 
 import type { QueryObserver } from "react-query/core";
-import type { UseBaseQueryOptions, UseQueryResult } from "react-query/types";
+import type {
+  UseBaseQueryOptions,
+  UseQueryResult,
+} from "react-query/types/react/types";
 
 import { useQueryClient } from "./useQueryClient";
 import { updateState } from "./utils";
