@@ -4,7 +4,7 @@ import type { QueryClient } from "react-query/types/core";
 
 export const VUE_QUERY_CLIENT = "VUE_QUERY_CLIENT";
 
-export function useQueryClient(): QueryClient {
+export function useQueryClient(id = ""): QueryClient {
   const vm = getCurrentInstance()?.proxy;
 
   if (!vm) {
@@ -13,7 +13,8 @@ export function useQueryClient(): QueryClient {
     );
   }
 
-  const queryClient = inject<QueryClient>(VUE_QUERY_CLIENT);
+  const suffix = id ? `:${id}` : "";
+  const queryClient = inject<QueryClient>(VUE_QUERY_CLIENT + suffix);
 
   if (!queryClient) {
     throw new Error(

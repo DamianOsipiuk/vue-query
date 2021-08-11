@@ -6,12 +6,20 @@ import type {
   QueryKey,
 } from "react-query/types/core";
 import type {
-  UseInfiniteQueryOptions,
+  UseInfiniteQueryOptions as UIQO,
   UseInfiniteQueryResult,
 } from "react-query/types/react/types";
 
 import { useBaseQuery, UseQueryReturnType } from "./useBaseQuery";
 import { parseQueryArgs } from "./utils";
+
+import type { WithQueryClientKey } from "./types";
+
+export type UseInfiniteQueryOptions<
+  TQueryFnData = unknown,
+  TError = unknown,
+  TData = TQueryFnData
+> = WithQueryClientKey<UIQO<TQueryFnData, TError, TData>>;
 
 export function useInfiniteQuery<
   TQueryFnData = unknown,

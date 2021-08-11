@@ -1,8 +1,12 @@
 import { onUnmounted, Ref, ref, watchEffect } from "vue-demi";
-import { QueryKey } from "react-query/types/core";
-import { QueryFilters } from "react-query/types/core/utils";
+import type { QueryKey } from "react-query/types/core";
+import type { QueryFilters as QF } from "react-query/types/core/utils";
+
 import { useQueryClient } from "./useQueryClient";
 import { parseFilterArgs } from "./utils";
+import type { WithQueryClientKey } from "./types";
+
+export type QueryFilters = WithQueryClientKey<QF>;
 
 export function useIsFetching(filters?: QueryFilters): Ref<number>;
 export function useIsFetching(
@@ -14,10 +18,10 @@ export function useIsFetching(
   arg2?: QueryFilters
 ): Ref<number> {
   const filters: Ref<QueryFilters> = ref({});
-  const queryClient = useQueryClient();
-
   const [parsedFilters] = parseFilterArgs(arg1, arg2);
   filters.value = parsedFilters;
+
+  const queryClient = useQueryClient(parsedFilters?.queryClientKey);
 
   const isFetching = ref(queryClient.isFetching(filters.value));
 

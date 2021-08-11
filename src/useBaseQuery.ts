@@ -10,12 +10,20 @@ import {
 
 import type { QueryObserver } from "react-query/core";
 import type {
-  UseBaseQueryOptions,
+  UseBaseQueryOptions as UBQO,
   UseQueryResult,
 } from "react-query/types/react/types";
 
 import { useQueryClient } from "./useQueryClient";
 import { updateState } from "./utils";
+import { WithQueryClientKey } from "./types";
+
+export type UseBaseQueryOptions<
+  TQueryFnData = unknown,
+  TError = unknown,
+  TData = TQueryFnData,
+  TQueryData = unknown
+> = WithQueryClientKey<UBQO<TQueryFnData, TError, TData, TQueryData>>;
 
 export type UseQueryReturnType<
   TData,
@@ -29,7 +37,7 @@ export function useBaseQuery<TQueryFnData, TError, TData, TQueryData>(
   options: UseBaseQueryOptions<TQueryFnData, TError, TData, TQueryData>,
   Observer: typeof QueryObserver
 ): UseQueryReturnType<TData, TError> {
-  const queryClient = useQueryClient();
+  const queryClient = useQueryClient(options.queryClientKey);
   const defaultedOptions = queryClient.defaultQueryObserverOptions(options);
   const observer = new Observer(queryClient, defaultedOptions);
   const state = reactive(observer.getCurrentResult());

@@ -8,13 +8,18 @@ export type QueryClientConfig = NonNullable<
   ConstructorParameters<typeof QueryClient>[0]
 >;
 
-export function useQueryProvider(config: QueryClientConfig = {}): void {
-  const queryClient = new QueryClient(config);
-  queryClient.mount();
+export function useQueryProvider(
+  arg1: QueryClientConfig | QueryClient = {},
+  id = ""
+): void {
+  const suffix = id ? `:${id}` : "";
+  const client = arg1 instanceof QueryClient ? arg1 : new QueryClient(arg1);
 
-  provide(VUE_QUERY_CLIENT, queryClient);
+  client.mount();
+
+  provide(VUE_QUERY_CLIENT + suffix, client);
 
   onUnmounted(() => {
-    queryClient.unmount();
+    client.unmount();
   });
 }

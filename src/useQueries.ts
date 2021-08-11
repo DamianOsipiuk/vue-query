@@ -1,17 +1,16 @@
 import { QueriesObserver } from "react-query/core";
 import { onUnmounted, reactive, readonly, set, watch } from "vue-demi";
 
-import type {
-  UseQueryOptions,
-  UseQueryResult,
-} from "react-query/types/react/types";
+import type { UseQueryResult } from "react-query/types/react/types";
 
 import { useQueryClient } from "./useQueryClient";
+import { UseQueryOptions } from "./useQuery";
 
 export function useQueries(
   queries: UseQueryOptions[]
 ): Readonly<UseQueryResult[]> {
-  const queryClient = useQueryClient();
+  const queryClientKey = queries[0]?.queryClientKey;
+  const queryClient = useQueryClient(queryClientKey);
   const observer = new QueriesObserver(queryClient, queries);
   const state = reactive(observer.getCurrentResult());
   const unsubscribe = observer.subscribe((result) => {
