@@ -20,4 +20,5 @@
   - [Queries](guides/queries.md)
   - [Query Keys](guides/query-keys.md)
   - [Query Functions](guides/query-functions.md)
+  - [Custom clients (experimental)](guides/custom-clients.md)
   - [SSR & Nuxt.js (experimental)](guides/ssr.md)
