@@ -15,6 +15,9 @@ export default defineComponent({
       type: Object as PropType<Query>,
       required: true,
     },
+    selectedQueryClientKey: {
+      type: String,
+    },
   },
   render() {
     const dataExplorer = h(Explorer, {
@@ -66,9 +69,11 @@ export default defineComponent({
         h(QueryActions, {
           // Vue3
           query: this.$props.query,
+          selectedQueryClientKey: this.$props.selectedQueryClientKey,
           // Vue2
           props: {
             query: this.$props.query,
+            selectedQueryClientKey: this.$props.selectedQueryClientKey,
           },
         }),
         h(

@@ -15,10 +15,13 @@ export default defineComponent({
       type: Object as PropType<Query>,
       required: true,
     },
+    selectedQueryClientKey: {
+      type: String,
+    },
   },
   setup(props) {
     const theme = useTheme();
-    const queryClient = useQueryClient();
+    const queryClient = useQueryClient(props.selectedQueryClientKey);
     const isFetching = computed(() => props.query.state.isFetching);
 
     const doFetch = () => {

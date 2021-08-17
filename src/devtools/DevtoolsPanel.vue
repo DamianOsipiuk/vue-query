@@ -1,6 +1,6 @@
 <script lang="ts">
 import { matchSorter } from "match-sorter";
-import type { Query } from "react-query/core";
+import type { Query, QueryCache, QueryClient } from "react-query/core";
 import {
   computed,
   defineComponent,
@@ -28,6 +28,25 @@ interface PanelProps {
   className?: string;
 }
 
+const getSortedQueries = (queryCache: QueryCache, filterOptions: Options) => {
+  const queries = queryCache.getAll();
+  // Fix for infinite loop in Vue2.x
+  makeArrayNonConfigurable(queries);
+  const sorted = [...queries].sort(filterOptions.sortFn);
+
+  if (filterOptions.sortDesc) {
+    sorted.reverse();
+  }
+
+  if (!filterOptions.filter) {
+    return sorted;
+  }
+
+  return matchSorter(sorted, filterOptions.filter, {
+    keys: ["queryHash"],
+  }).filter((d) => d.queryHash);
+};
+
 export default defineComponent({
   name: "DevtoolsPanel",
   props: {
@@ -39,8 +58,23 @@ export default defineComponent({
       type: Object as PropType<PanelProps>,
       default: () => ({}),
     },
+    queryClientKeys: {
+      type: Array as PropType<string[]>,
+      default: () => [],
+    },
   },
   setup(props, { emit }) {
+    let queryCache: QueryCache;
+    let unsubscribe = () => {
+      // NOOP
+    };
+
+    const defaultClient = useQueryClient();
+    const clients = props.queryClientKeys.reduce((map, key) => {
+      map[key] = useQueryClient(key);
+      return map;
+    }, {} as Record<string, QueryClient>);
+
     const theme = useTheme();
 
     const devtoolsPanelStyles = computed(() => ({
@@ -49,41 +83,22 @@ export default defineComponent({
     }));
 
     const options = reactive({
+      selectedQueryClientKey: "",
       filter: "",
       sortDesc: false,
       sortFn: sortFns["Status > Last Updated"],
     });
     const onOptionsChange = (newOptions: Options) => {
+      if (
+        options.selectedQueryClientKey !== newOptions.selectedQueryClientKey
+      ) {
+        selectQueryClient(newOptions.selectedQueryClientKey);
+      }
       Object.assign(options, newOptions);
-      queries.value = getSortedQueries();
+      queries.value = getSortedQueries(queryCache, options);
     };
 
-    const queryClient = useQueryClient();
-    const queryCache = queryClient.getQueryCache();
-    const getSortedQueries = () => {
-      const queries = queryCache.getAll();
-      // Fix for infinite loop in Vue2.x
-      makeArrayNonConfigurable(queries);
-      const sorted = [...queries].sort(options.sortFn);
-
-      if (options.sortDesc) {
-        sorted.reverse();
-      }
-
-      if (!options.filter) {
-        return sorted;
-      }
-
-      return matchSorter(sorted, options.filter, {
-        keys: ["queryHash"],
-      }).filter((d) => d.queryHash);
-    };
-
-    const queries = ref(getSortedQueries()) as Ref<Query[]>;
-
-    const unsub = queryCache.subscribe(() => {
-      queries.value = getSortedQueries();
-    });
+    const queries = ref([]) as Ref<Query[]>;
 
     const activeQuery = ref<Query>();
     const selectQuery = (queryHash: string) => {
@@ -98,7 +113,21 @@ export default defineComponent({
       emit("handleDragStart", event);
     };
 
-    onUnmounted(unsub);
+    const selectQueryClient = (queryClientKey?: string) => {
+      unsubscribe();
+      const queryClient = queryClientKey
+        ? clients[queryClientKey]
+        : defaultClient;
+      queryCache = queryClient.getQueryCache();
+      unsubscribe = queryCache.subscribe(() => {
+        queries.value = getSortedQueries(queryCache, options);
+      });
+      activeQuery.value = undefined;
+    };
+
+    selectQueryClient();
+
+    onUnmounted(() => unsubscribe);
 
     return {
       theme,
@@ -109,6 +138,7 @@ export default defineComponent({
       activeQuery,
       selectQuery,
       handleDragStart,
+      options,
     };
   },
   render() {
@@ -182,9 +212,13 @@ export default defineComponent({
                   h(QueryOptions, {
                     // Vue3
                     onOptionsChange: this.onOptionsChange,
+                    queryClientKeys: this.queryClientKeys,
                     // Vue2
                     on: {
                       optionsChange: this.onOptionsChange,
+                    },
+                    props: {
+                      queryClientKeys: this.queryClientKeys,
                     },
                   }),
                 ]),
@@ -200,9 +234,11 @@ export default defineComponent({
                 this.activeQuery.state.dataUpdatedAt,
               // Vue3
               query: this.activeQuery,
+              selectedQueryClientKey: this.options.selectedQueryClientKey,
               // Vue2
               props: {
                 query: this.activeQuery,
+                selectedQueryClientKey: this.options.selectedQueryClientKey,
               },
             })
           : undefined,

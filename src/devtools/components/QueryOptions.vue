@@ -1,5 +1,5 @@
 <script lang="ts">
-import { defineComponent, reactive, ref, h } from "vue-demi";
+import { defineComponent, reactive, ref, h, PropType } from "vue-demi";
 
 import type { Options } from "../types";
 import { useTheme } from "../useTheme";
@@ -7,6 +7,12 @@ import { sortFns } from "../utils";
 
 export default defineComponent({
   name: "QueryOptions",
+  props: {
+    queryClientKeys: {
+      type: Array as PropType<string[]>,
+      default: () => [],
+    },
+  },
   emits: {
     optionsChange: (options: Options) => Boolean(options),
   },
@@ -17,6 +23,7 @@ export default defineComponent({
     const sort = ref(sortFnKeys[0]);
 
     const options = reactive({
+      selectedQueryClientKey: "",
       filter: "",
       sortDesc: false,
       sortFn: sortFns["Status > Last Updated"],
@@ -48,6 +55,14 @@ export default defineComponent({
       emit("optionsChange", options);
     };
 
+    const onSelectedClientChange = (event: Event) => {
+      options.selectedQueryClientKey = (
+        event.target as HTMLSelectElement
+      )?.value;
+
+      emit("optionsChange", options);
+    };
+
     return {
       theme,
       sortFnKeys,
@@ -57,6 +72,7 @@ export default defineComponent({
       onKeyDown,
       onSortFnChange,
       onSortDescChange,
+      onSelectedClientChange,
     };
   },
   render() {
@@ -143,12 +159,67 @@ export default defineComponent({
         )
       : undefined;
 
+    const queryClientSelector =
+      this.queryClientKeys.length > 1
+        ? h(
+            "select",
+            {
+              class: "options-select",
+              style: {
+                backgroundColor: this.theme.inputBackgroundColor,
+                color: this.theme.inputTextColor,
+              },
+              // Vue3
+              value: this.options.selectedQueryClientKey,
+              onChange: this.onSelectedClientChange,
+              // Vue2
+              attrs: {
+                value: this.options.selectedQueryClientKey,
+              },
+              on: {
+                change: this.onSelectedClientChange,
+              },
+            },
+            [
+              h(
+                "option",
+                {
+                  key: "",
+                  // Vue3
+                  value: "",
+                  // Vue2
+                  attrs: {
+                    value: "",
+                  },
+                },
+                "Query Client: Default"
+              ),
+            ].concat(
+              this.queryClientKeys.map((key) => {
+                return h(
+                  "option",
+                  {
+                    key: key,
+                    // Vue3
+                    value: key,
+                    // Vue2
+                    attrs: {
+                      value: key,
+                    },
+                  },
+                  `Query Client: ${key}`
+                );
+              })
+            )
+          )
+        : undefined;
+
     return h(
       "div",
       {
         class: "options-wrapper",
       },
-      [input, select, button]
+      [queryClientSelector, input, select, button]
     );
   },
 });
