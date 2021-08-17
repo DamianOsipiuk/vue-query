@@ -3,6 +3,7 @@ import {
   isQueryKey,
   parseFilterArgs,
   parseMutationArgs,
+  parseMutationFilterArgs,
   parseQueryArgs,
   updateState,
 } from "../utils";
@@ -103,6 +104,23 @@ describe("utils", () => {
 
       expect(result).toEqual(expected);
       expect(result).toBe(options);
+    });
+  });
+
+  describe("parseMutationFilterArgs", () => {
+    test("should default to empty filters", () => {
+      const result = parseMutationFilterArgs(undefined);
+
+      expect(result).toEqual(undefined);
+    });
+
+    test("should merge mutation key with filters", () => {
+      const filters = { fetching: true };
+
+      const result = parseMutationFilterArgs("key", filters);
+      const expected = { ...filters, mutationKey: "key" };
+
+      expect(result).toEqual(expected);
     });
   });
 

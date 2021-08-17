@@ -7,7 +7,8 @@ import type {
   QueryKey,
   QueryOptions,
 } from "react-query/types/core";
-import type { QueryFilters } from "react-query/types/core/utils";
+import { QueryFilters } from "./useIsFetching";
+import { MutationFilters } from "./useIsMutating";
 
 export function isQueryKey(value: unknown): value is QueryKey {
   return typeof value === "string" || Array.isArray(value);
@@ -64,6 +65,18 @@ export function parseMutationArgs<
     return Object.assign(arg2, { mutationFn: arg1 }) as TOptions;
   }
 
+  return arg1;
+}
+
+export function parseMutationFilterArgs(
+  arg1?: QueryKey | MutationFilters,
+  arg2?: MutationFilters
+): MutationFilters | undefined {
+  if (isQueryKey(arg1)) {
+    return Object.assign(arg2, {
+      mutationKey: arg1,
+    });
+  }
   return arg1;
 }
 
