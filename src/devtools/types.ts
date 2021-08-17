@@ -5,6 +5,7 @@ export type ButtonProps = Partial<HTMLButtonElement>;
 export type SortFn = (a: Query, b: Query) => number;
 
 export interface Options {
+  selectedQueryClientKey: string;
   filter: string;
   sortFn: SortFn;
   sortDesc: boolean;

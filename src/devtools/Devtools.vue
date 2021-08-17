@@ -35,6 +35,10 @@ export default defineComponent({
       type: String,
       default: "footer",
     },
+    queryClientKeys: {
+      type: Array as PropType<string[]>,
+      default: () => [],
+    },
   },
   setup(props) {
     const isOpen = ref(props.initialIsOpen);
@@ -103,10 +107,12 @@ export default defineComponent({
       isOpen: this.isOpen,
       panelProps: this.panelProps as never,
       onHandleDragStart: this.handleDragStart,
+      queryClientKeys: this.queryClientKeys,
       // Vue2
       props: {
         isOpen: this.isOpen,
         panelProps: this.panelProps,
+        queryClientKeys: this.queryClientKeys,
       },
       on: {
         handleDragStart: this.handleDragStart,

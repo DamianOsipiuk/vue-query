@@ -62,6 +62,18 @@ describe("useQueryProvider", () => {
     );
   });
 
+  test("should call provide with QueryClient and custom key suffix", () => {
+    const queryClientKey = "foo";
+    const expectedKeyParameter = `${VUE_QUERY_CLIENT}:${queryClientKey}`;
+    useQueryProvider({}, queryClientKey);
+
+    expect(provideSpy).toHaveBeenCalledTimes(1);
+    expect(provideSpy).toHaveBeenCalledWith(
+      expectedKeyParameter,
+      queryClientInstance
+    );
+  });
+
   test("should call unmount on QueryClient", () => {
     onUnmountedSpy.mockImplementationOnce((fn) => fn());
 

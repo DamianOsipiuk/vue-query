@@ -1,10 +1,18 @@
 import { QueryObserver } from "react-query/core";
 
 import type { QueryFunction, QueryKey } from "react-query/types/core";
-import type { UseQueryOptions } from "react-query/types/react/types";
+import type { UseQueryOptions as UQO } from "react-query/types/react/types";
 
 import { useBaseQuery, UseQueryReturnType } from "./useBaseQuery";
 import { parseQueryArgs } from "./utils";
+
+import type { WithQueryClientKey } from "./types";
+
+export type UseQueryOptions<
+  TQueryFnData = unknown,
+  TError = unknown,
+  TData = TQueryFnData
+> = WithQueryClientKey<UQO<TQueryFnData, TError, TData>>;
 
 export function useQuery<
   TQueryFnData = unknown,

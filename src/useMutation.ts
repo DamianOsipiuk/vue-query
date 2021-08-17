@@ -13,17 +13,21 @@ import {
 } from "react-query/core";
 import { MutationFunction, MutationKey } from "react-query/types/core";
 import type {
-  UseMutationOptions,
+  UseMutationOptions as UMO,
   UseMutateFunction,
   UseMutateAsyncFunction,
 } from "react-query/types/react/types";
 import { parseMutationArgs, updateState } from "./utils";
 import { useQueryClient } from "./useQueryClient";
+import { WithQueryClientKey } from "./types";
 
 type MutationResult<TData, TError, TVariables, TContext> = Omit<
   MutationObserverResult<TData, TError, TVariables, TContext>,
   "mutate"
 >;
+
+export type UseMutationOptions<TData, TError, TVariables, TContext> =
+  WithQueryClientKey<UMO<TData, TError, TVariables, TContext>>;
 
 export type UseMutationReturnType<
   TData,
@@ -88,7 +92,7 @@ export function useMutation<
   arg3?: UseMutationOptions<TData, TError, TVariables, TContext>
 ): UseMutationReturnType<TData, TError, TVariables, TContext> {
   const options = parseMutationArgs(arg1, arg2, arg3);
-  const queryClient = useQueryClient();
+  const queryClient = useQueryClient(options.queryClientKey);
   const observer = new MutationObserver(queryClient, options);
 
   const state = reactive(observer.getCurrentResult());
