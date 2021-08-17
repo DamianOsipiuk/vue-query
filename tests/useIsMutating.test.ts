@@ -3,6 +3,7 @@ import { setLogger } from "react-query/core";
 import { useMutation } from "../src/useMutation";
 import { useIsMutating } from "../src/useIsMutating";
 import { flushPromises, noop, successMutator } from "./test-utils";
+import { useQueryClient } from "../src/useQueryClient";
 
 jest.mock("../src/useQueryClient");
 
@@ -58,5 +59,12 @@ describe("useIsMutating", () => {
     expect(isMutating.value).toStrictEqual(0);
 
     onUnmountedMock.mockReset();
+  });
+
+  test("should call `useQueryClient` with a proper `queryClientKey`", async () => {
+    const queryClientKey = "foo";
+    useIsMutating({ queryClientKey });
+
+    expect(useQueryClient).toHaveBeenCalledWith(queryClientKey);
   });
 });

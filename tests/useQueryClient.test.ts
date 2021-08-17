@@ -35,4 +35,15 @@ describe("useQueryClient", () => {
     expect(useQueryClient).toThrowError();
     expect(getCurrentInstanceSpy).toHaveBeenCalledTimes(1);
   });
+
+  test("should call inject with a custom key as a suffix", () => {
+    const queryClientKey = "foo";
+    const expectedKeyParameter = `${VUE_QUERY_CLIENT}:${queryClientKey}`;
+    const queryClientMock = { name: "Mocked client" };
+    injectSpy.mockReturnValueOnce(queryClientMock);
+
+    useQueryClient(queryClientKey);
+
+    expect(injectSpy).toHaveBeenCalledWith(expectedKeyParameter);
+  });
 });

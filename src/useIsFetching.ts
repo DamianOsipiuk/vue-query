@@ -21,7 +21,7 @@ export function useIsFetching(
   const [parsedFilters] = parseFilterArgs(arg1, arg2);
   filters.value = parsedFilters;
 
-  const queryClient = useQueryClient(parsedFilters?.queryClientKey);
+  const queryClient = useQueryClient(parsedFilters.queryClientKey);
 
   const isFetching = ref(queryClient.isFetching(filters.value));
 
