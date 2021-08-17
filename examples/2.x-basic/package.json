@@ -7,7 +7,7 @@
     "serve": "vite preview"
   },
   "dependencies": {
-    "@vue/composition-api": "^1.0.4",
+    "@vue/composition-api": "^1.1.1",
     "vue": "^2.6.14",
     "vue-query": ">=1.0.0",
     "vue-template-compiler": "^2.6.14"
@@ -15,7 +15,7 @@
   "devDependencies": {
     "typescript": "^4.3.5",
     "vite": "~2.3.8",
-    "vite-plugin-vue2": "^1.7.3",
-    "vue-demi": "^0.11.2"
+    "vite-plugin-vue2": "^1.8.1",
+    "vue-demi": "^0.11.3"
   }
 }
