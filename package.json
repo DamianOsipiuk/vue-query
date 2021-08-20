@@ -13,6 +13,7 @@
     "/types"
   ],
   "scripts": {
+    "prepare": "husky install",
     "build": "rollup -c rollup.config.ts",
     "lint": "eslint ./src/**/*.{ts,vue} ./tests/**/*.{ts,vue}",
     "test": "npm run test:2 && npm run test:3",
@@ -39,8 +40,8 @@
   "homepage": "https://github.com/DamianOsipiuk/vue-query#readme",
   "dependencies": {
     "match-sorter": "^6.3.0",
-    "react-query": "^3.17.1",
-    "vue-demi": "^0.9.1"
+    "react-query": "^3.19.6",
+    "vue-demi": "^0.11.3"
   },
   "peerDependencies": {
     "@nuxtjs/composition-api": "^0.24.4",
@@ -56,30 +57,33 @@
     }
   },
   "devDependencies": {
-    "@nuxtjs/composition-api": "^0.24.4",
-    "@rollup/plugin-node-resolve": "^13.0.0",
+    "@commitlint/cli": "^13.1.0",
+    "@commitlint/config-conventional": "^13.1.0",
+    "@nuxtjs/composition-api": "^0.26.0",
+    "@rollup/plugin-node-resolve": "^13.0.4",
     "@types/jest": "^26.0.21",
-    "@typescript-eslint/eslint-plugin": "^4.26.1",
-    "@typescript-eslint/parser": "^4.26.1",
-    "@vue/compiler-sfc": "^3.1.1",
-    "@vue/composition-api": "^1.0.0-rc.11",
+    "@typescript-eslint/eslint-plugin": "^4.29.2",
+    "@typescript-eslint/parser": "^4.29.2",
+    "@vue/compiler-sfc": "^3.2.4",
+    "@vue/composition-api": "^1.1.1",
     "@vue/eslint-config-prettier": "^6.0.0",
     "@vue/eslint-config-typescript": "^7.0.0",
-    "eslint": "^7.28.0",
+    "eslint": "^7.32.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^3.4.0",
-    "eslint-plugin-vue": "^7.11.0",
+    "eslint-plugin-vue": "^7.16.0",
+    "husky": "^7.0.1",
     "jest": "^26.6.3",
-    "prettier": "^2.3.1",
-    "rollup": "^2.51.2",
+    "prettier": "^2.3.2",
+    "rollup": "^2.56.2",
     "rollup-plugin-auto-external": "^2.0.0",
-    "rollup-plugin-postcss": "^4.0.0",
+    "rollup-plugin-postcss": "^4.0.1",
     "rollup-plugin-typescript2": "^0.30.0",
     "rollup-plugin-vue": "^6.0.0",
     "ts-jest": "^26.5.4",
-    "ts-node": "^10.0.0",
-    "typescript": "^4.3.2",
-    "vue": "^3.1.1",
+    "ts-node": "^10.2.1",
+    "typescript": "^4.3.5",
+    "vue": "^3.2.4",
     "vue-jest": "^5.0.0-alpha.10",
     "vue2": "npm:vue@2"
   }
