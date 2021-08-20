@@ -5,10 +5,10 @@ import {
   flushPromises,
   noop,
   successMutator,
-} from "./test-utils";
-import { useMutation } from "../src/useMutation";
+} from "../test-utils";
+import { useMutation } from "../useMutation";
 
-jest.mock("../src/useQueryClient");
+jest.mock("../useQueryClient");
 
 describe("useMutation", () => {
   beforeAll(() => {

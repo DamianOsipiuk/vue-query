@@ -1,11 +1,11 @@
 import { onUnmounted } from "vue-demi";
 import { setLogger } from "react-query/core";
-import { useMutation } from "../src/useMutation";
-import { useIsMutating } from "../src/useIsMutating";
-import { flushPromises, noop, successMutator } from "./test-utils";
-import { useQueryClient } from "../src/useQueryClient";
+import { useMutation } from "../useMutation";
+import { useIsMutating } from "../useIsMutating";
+import { flushPromises, noop, successMutator } from "../test-utils";
+import { useQueryClient } from "../useQueryClient";
 
-jest.mock("../src/useQueryClient");
+jest.mock("../useQueryClient");
 
 describe("useIsMutating", () => {
   beforeAll(() => {

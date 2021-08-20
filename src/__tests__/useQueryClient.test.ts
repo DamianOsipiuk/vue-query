@@ -1,5 +1,5 @@
 import { getCurrentInstance, inject } from "vue-demi";
-import { useQueryClient, VUE_QUERY_CLIENT } from "../src/useQueryClient";
+import { useQueryClient, VUE_QUERY_CLIENT } from "../useQueryClient";
 
 describe("useQueryClient", () => {
   const injectSpy = inject as jest.Mock;

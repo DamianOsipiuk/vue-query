@@ -1,8 +1,8 @@
 import { setLogger } from "react-query/core";
-import { useInfiniteQuery } from "../src/useInfiniteQuery";
-import { noop, infiniteFetcher, flushPromises } from "./test-utils";
+import { useInfiniteQuery } from "../useInfiniteQuery";
+import { noop, infiniteFetcher, flushPromises } from "../test-utils";
 
-jest.mock("../src/useQueryClient");
+jest.mock("../useQueryClient");
 
 describe("useQuery", () => {
   beforeAll(() => {

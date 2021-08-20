@@ -5,7 +5,7 @@ import {
   parseMutationArgs,
   parseQueryArgs,
   updateState,
-} from "../src/utils";
+} from "./utils";
 
 describe("utils", () => {
   describe("isQueryKey", () => {

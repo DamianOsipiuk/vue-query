@@ -1,6 +1,6 @@
-import { useNuxtDehydrate } from "../../src/ssr/useNuxtDehydrate";
+import { useNuxtDehydrate } from "../useNuxtDehydrate";
 
-jest.mock("../../src/ssr/hydration", () => ({
+jest.mock("../hydration", () => ({
   dehydrate: jest.fn(() => "dehydrated"),
 }));
 

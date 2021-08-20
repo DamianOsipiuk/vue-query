@@ -1,10 +1,10 @@
 import { onUnmounted } from "vue-demi";
 import { setLogger } from "react-query/core";
-import { useQuery } from "../src/useQuery";
-import { useIsFetching } from "../src/useIsFetching";
-import { flushPromises, simpleFetcher, noop } from "./test-utils";
+import { useQuery } from "../useQuery";
+import { useIsFetching } from "../useIsFetching";
+import { flushPromises, simpleFetcher, noop } from "../test-utils";
 
-jest.mock("../src/useQueryClient");
+jest.mock("../useQueryClient");
 
 describe("useIsFetching", () => {
   beforeAll(() => {
