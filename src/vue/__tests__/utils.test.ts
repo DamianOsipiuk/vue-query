@@ -1,11 +1,11 @@
-import { successMutator, simpleFetcher } from "./test-utils";
+import { successMutator, simpleFetcher } from "@/test-utils";
 import {
   isQueryKey,
   parseFilterArgs,
   parseMutationArgs,
   parseQueryArgs,
   updateState,
-} from "./utils";
+} from "../utils";
 
 describe("utils", () => {
   describe("isQueryKey", () => {

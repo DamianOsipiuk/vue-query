@@ -5,7 +5,7 @@ import {
   flushPromises,
   noop,
   successMutator,
-} from "../test-utils";
+} from "@/test-utils";
 import { useMutation } from "../useMutation";
 
 jest.mock("../useQueryClient");

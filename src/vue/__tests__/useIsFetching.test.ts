@@ -1,8 +1,9 @@
 import { onUnmounted } from "vue-demi";
 import { setLogger } from "react-query/core";
+
+import { flushPromises, simpleFetcher, noop } from "@/test-utils";
 import { useQuery } from "../useQuery";
 import { useIsFetching } from "../useIsFetching";
-import { flushPromises, simpleFetcher, noop } from "../test-utils";
 
 jest.mock("../useQueryClient");
 

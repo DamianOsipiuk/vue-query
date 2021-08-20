@@ -14,7 +14,7 @@ import {
 
 import { sortFns, getQueryState, makeArrayNonConfigurable } from "./utils";
 import { useTheme } from "./useTheme";
-import { useQueryClient } from "../useQueryClient";
+import { useQueryClient } from "../vue/useQueryClient";
 
 import Logo from "./components/Logo.vue";
 import ActiveQueryPanel from "./active-query-panel/ActiveQueryPanel.vue";

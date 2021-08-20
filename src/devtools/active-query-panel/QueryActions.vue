@@ -6,7 +6,7 @@ import type { Query } from "react-query/types/core";
 import InfoPanel from "./InfoPanel.vue";
 
 import { useTheme } from "../useTheme";
-import { useQueryClient } from "../../useQueryClient";
+import { useQueryClient } from "../../vue/useQueryClient";
 
 export default defineComponent({
   name: "QueryActions",

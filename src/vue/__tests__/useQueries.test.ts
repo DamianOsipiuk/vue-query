@@ -1,12 +1,13 @@
 import { onUnmounted, reactive, set } from "vue-demi";
 import { setLogger } from "react-query/core";
-import { useQueries } from "../useQueries";
+
 import {
   flushPromises,
   rejectFetcher,
   simpleFetcher,
   noop,
-} from "../test-utils";
+} from "@/test-utils";
+import { useQueries } from "../useQueries";
 
 jest.mock("../useQueryClient");
 

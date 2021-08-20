@@ -6,14 +6,15 @@ import {
   getCurrentInstance,
 } from "vue-demi";
 import { QueryObserver, setLogger } from "react-query/core";
-import { useQuery } from "../useQuery";
-import { useBaseQuery } from "../useBaseQuery";
+
 import {
   flushPromises,
   rejectFetcher,
   simpleFetcher,
   noop,
-} from "../test-utils";
+} from "@/test-utils";
+import { useQuery } from "../useQuery";
+import { useBaseQuery } from "../useBaseQuery";
 
 jest.mock("../useQueryClient");
 jest.mock("../useBaseQuery");

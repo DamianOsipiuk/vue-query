@@ -6,6 +6,9 @@ const config: Config.InitialOptions = {
     "^.+\\.vue$": "vue-jest",
   },
   moduleFileExtensions: ["js", "ts", "vue"],
+  moduleNameMapper: {
+    "^@/(.*)": "<rootDir>/src/$1",
+  },
   collectCoverage: true,
   collectCoverageFrom: [
     "src/**/*.{ts,vue}",
