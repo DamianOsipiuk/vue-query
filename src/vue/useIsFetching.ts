@@ -18,7 +18,7 @@ export function useIsFetching(
   arg2?: QueryFilters
 ): Ref<number> {
   const filters: Ref<QueryFilters> = ref({});
-  const [parsedFilters] = parseFilterArgs(arg1, arg2);
+  const parsedFilters = parseFilterArgs(arg1, arg2);
   filters.value = parsedFilters;
 
   const queryClient = useQueryClient(parsedFilters.queryClientKey);
@@ -30,7 +30,7 @@ export function useIsFetching(
   });
 
   watchEffect(() => {
-    const [parsedFilters] = parseFilterArgs(arg1, arg2);
+    const parsedFilters = parseFilterArgs(arg1, arg2);
     filters.value = parsedFilters;
   });
 
