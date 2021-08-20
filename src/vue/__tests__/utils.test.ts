@@ -19,48 +19,19 @@ describe("utils", () => {
   });
 
   describe("parseFilterArgs", () => {
-    test("should default to empty options", () => {
-      const filters = { active: true };
-
-      const result = parseFilterArgs(filters);
-      const expected = [filters, {}];
-
-      expect(result).toEqual(expected);
-      expect(result[0]).toBe(filters);
-    });
-
     test("should default to empty filters", () => {
-      const options = { option1: false };
+      const result = parseFilterArgs(undefined);
 
-      const result = parseFilterArgs(undefined, options);
-      const expected = [{}, options];
-
-      expect(result).toEqual(expected);
-      expect(result[1]).toBe(options);
-    });
-
-    test("should covert to array of parameters", () => {
-      const filters = { active: true };
-      const options = { option1: false };
-
-      const result = parseFilterArgs(filters, options);
-      const expected = [filters, options];
-
-      expect(result).toEqual(expected);
-      expect(result[0]).toBe(filters);
-      expect(result[1]).toBe(options);
+      expect(result).toEqual({});
     });
 
     test("should merge query key with filters", () => {
       const filters = { active: true };
-      const options = { option1: false };
 
-      const result = parseFilterArgs("key", filters, options);
-      const expected = [{ ...filters, queryKey: "key" }, options];
+      const result = parseFilterArgs("key", filters);
+      const expected = { ...filters, queryKey: "key" };
 
       expect(result).toEqual(expected);
-      expect(result[0]).toBe(filters);
-      expect(result[1]).toBe(options);
     });
   });
 

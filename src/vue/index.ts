@@ -9,6 +9,7 @@ export { useInfiniteQuery } from "./useInfiniteQuery";
 export { useMutation } from "./useMutation";
 export { useIsFetching } from "./useIsFetching";
 export { useIsMutating } from "./useIsMutating";
+export { parseFilterArgs, parseMutationArgs, parseQueryArgs } from "./utils";
 
 export type { UseQueryOptions } from "./useQuery";
 export type { UseInfiniteQueryOptions } from "./useInfiniteQuery";
