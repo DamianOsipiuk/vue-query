@@ -26,7 +26,7 @@ To support caching queries on the server and set up hydration:
 
 <script>
 import { defineComponent } from "@nuxtjs/composition-api";
-import { useNuxtQueryProvider } from "vue-query/ssr";
+import { useNuxtQueryProvider } from "vue-query/nuxt";
 
 export default defineComponent({
   setup() {
@@ -60,7 +60,7 @@ import {
   useContext,
 } from "@nuxtjs/composition-api";
 import { useQuery, useQueryClient } from "vue-query";
-import { useNuxtDehydrate } from "vue-query/ssr";
+import { useNuxtDehydrate } from "vue-query/nuxt";
 
 export default defineComponent({
   setup() {
