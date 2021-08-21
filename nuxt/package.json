@@ -1,0 +1,6 @@
+{
+  "internal": true,
+  "main": "../lib/nuxt",
+  "module": "../esm/nuxt",
+  "types": "../lib/nuxt/index.d.ts"
+}

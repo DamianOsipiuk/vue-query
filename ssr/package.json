@@ -1,6 +1,0 @@
-{
-  "internal": true,
-  "main": "../lib/ssr",
-  "module": "../esm/ssr",
-  "types": "../lib/ssr/index.d.ts"
-}

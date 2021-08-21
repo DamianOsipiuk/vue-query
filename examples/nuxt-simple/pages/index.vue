@@ -15,7 +15,7 @@ import {
   useContext,
 } from "@nuxtjs/composition-api";
 import { useQuery, useQueryClient } from "vue-query";
-import { useNuxtDehydrate } from "vue-query/ssr";
+import { useNuxtDehydrate } from "vue-query/nuxt";
 
 const fetcher = async () =>
   await fetch("https://jsonplaceholder.typicode.com/todos").then((response) =>

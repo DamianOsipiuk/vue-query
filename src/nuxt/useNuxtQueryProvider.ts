@@ -1,7 +1,8 @@
 import { useContext } from "@nuxtjs/composition-api";
-import { useQueryClient, useQueryProvider } from "../index";
+
+import { hydrate } from "@/hydration";
+import { useQueryClient, useQueryProvider } from "@/vue";
 import type { QueryClientConfig } from "@/vue/useQueryProvider";
-import { hydrate } from "./hydration";
 
 export function useNuxtQueryProvider(config: QueryClientConfig = {}): void {
   useQueryProvider(config);
