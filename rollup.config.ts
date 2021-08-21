@@ -31,9 +31,9 @@ export default [
     ...common,
   },
   {
-    input: "src/ssr/index.ts",
+    input: "src/nuxt/index.ts",
     output: {
-      file: "lib/ssr.js",
+      file: "lib/nuxt.js",
       format: "cjs",
       sourcemap: true,
     },
@@ -58,9 +58,9 @@ export default [
     ...common,
   },
   {
-    input: "src/ssr/index.ts",
+    input: "src/nuxt/index.ts",
     output: {
-      file: "esm/ssr.js",
+      file: "esm/nuxt.js",
       format: "esm",
       sourcemap: true,
     },

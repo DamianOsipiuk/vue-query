@@ -1,18 +1,19 @@
 import { useContext } from "@nuxtjs/composition-api";
+
 import { useNuxtQueryProvider } from "../useNuxtQueryProvider";
-import { useQueryClient, useQueryProvider } from "../../index";
-import { hydrate } from "../hydration";
+import { useQueryClient, useQueryProvider } from "../../vue";
+import { hydrate } from "../../hydration";
 
 jest.mock("@nuxtjs/composition-api", () => ({
   useContext: jest.fn(),
 }));
 
-jest.mock("../../index", () => ({
+jest.mock("../../vue", () => ({
   useQueryClient: jest.fn(),
   useQueryProvider: jest.fn(),
 }));
 
-jest.mock("../hydration", () => ({
+jest.mock("../../hydration", () => ({
   hydrate: jest.fn(),
 }));
 

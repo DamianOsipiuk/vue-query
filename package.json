@@ -7,7 +7,7 @@
   "types": "lib/index.d.ts",
   "files": [
     "/devtools",
-    "/ssr",
+    "/nuxt",
     "/lib",
     "/esm",
     "/types"
@@ -41,7 +41,7 @@
   "dependencies": {
     "match-sorter": "^6.3.0",
     "react-query": "^3.19.6",
-    "vue-demi": "^0.11.3"
+    "vue-demi": "^0.10.1"
   },
   "peerDependencies": {
     "@nuxtjs/composition-api": "^0.24.4",
