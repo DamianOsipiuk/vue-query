@@ -5,7 +5,6 @@ import {
   ToRefs,
   reactive,
   watchEffect,
-  getCurrentInstance,
 } from "vue-demi";
 
 import type { QueryObserver } from "react-query/core";
@@ -30,7 +29,7 @@ export type UseQueryReturnType<
   TError,
   Result = UseQueryResult<TData, TError>
 > = ToRefs<Readonly<Result>> & {
-  suspense: () => Promise<Result> | void;
+  suspense: () => Promise<Result>;
 };
 
 export function useBaseQuery<TQueryFnData, TError, TData, TQueryData>(
@@ -59,12 +58,7 @@ export function useBaseQuery<TQueryFnData, TError, TData, TQueryData>(
   >;
 
   // Suspense
-  const currentInstance = getCurrentInstance();
-  // @ts-expect-error Suspense is considered experimental and not exposed
-  const isSuspense = Boolean(currentInstance?.suspense);
-  const suspense = isSuspense
-    ? () => observer.fetchOptimistic(defaultedOptions)
-    : () => undefined;
+  const suspense = () => observer.fetchOptimistic(defaultedOptions);
 
   return {
     ...resultRefs,
