@@ -13,6 +13,7 @@
   - [Suspense (experimental)](examples/suspense.md)
   - [Vue 2.x (experimental)](examples/vue-2.x.md)
   - [Nuxt.js (experimental)](examples/nuxt.md)
+  - [Vite SSR (experimental)](examples/vite-ssr.md)
 
 - Guides & Concepts
 
