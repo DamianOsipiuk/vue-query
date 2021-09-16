@@ -21,5 +21,7 @@
   - [Queries](guides/queries.md)
   - [Query Keys](guides/query-keys.md)
   - [Query Functions](guides/query-functions.md)
+  - [Parallel Queries](guides/parallel-queries.md)
+  - [Dependent Queries](guides/dependent-queries.md)
   - [Custom clients (experimental)](guides/custom-clients.md)
   - [SSR & Nuxt.js (experimental)](guides/ssr.md)

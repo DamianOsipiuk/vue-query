@@ -12,11 +12,7 @@ The **unique key** you provide is used internally for refetching, caching, and s
 The query results returned by `useQuery` contains all of the information about the query that you'll need for templating and any other usage of the data:
 
 ```js
-import { useQuery } from "vue-query";
-
-function App() {
-  const result = useQuery("todos", fetchTodoList);
-}
+const result = useQuery("todos", fetchTodoList);
 ```
 
 The `result` object contains a few very important states you'll need to be aware of to be productive. A query can only be in one of the following states at any given moment:
@@ -71,10 +67,7 @@ import { useQuery } from "vue-query";
 export default defineComponent({
   name: "Todo",
   setup(props) {
-    const { status, data, error } = useQuery(
-      "todos",
-      fetchTodoList
-    );
+    const { status, data, error } = useQuery("todos", fetchTodoList);
     return { status, data, error };
   },
 });
