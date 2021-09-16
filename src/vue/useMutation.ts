@@ -118,7 +118,7 @@ export function useMutation<
   });
 
   const resultRefs = toRefs(readonly(state)) as ToRefs<
-    Readonly<MutationObserverResult<TData, TError, TVariables, TContext>>
+    Readonly<MutationResult<TData, TError, TVariables, TContext>>
   >;
 
   return {
