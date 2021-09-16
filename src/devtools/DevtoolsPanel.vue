@@ -119,6 +119,7 @@ export default defineComponent({
         ? clients[queryClientKey]
         : defaultClient;
       queryCache = queryClient.getQueryCache();
+      queries.value = getSortedQueries(queryCache, options);
       unsubscribe = queryCache.subscribe(() => {
         queries.value = getSortedQueries(queryCache, options);
       });
