@@ -1,4 +1,4 @@
-import { dehydrate } from "@/hydration";
+import { dehydrate } from "@/index";
 import type { QueryClient } from "@/index";
 
 export function useNuxtDehydrate(

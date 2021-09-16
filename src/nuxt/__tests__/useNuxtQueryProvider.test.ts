@@ -2,7 +2,7 @@ import { useContext } from "@nuxtjs/composition-api";
 
 import { useNuxtQueryProvider } from "../useNuxtQueryProvider";
 import { useQueryClient, useQueryProvider } from "../../vue";
-import { hydrate } from "../../hydration";
+import { hydrate } from "../../index";
 
 jest.mock("@nuxtjs/composition-api", () => ({
   useContext: jest.fn(),
@@ -13,7 +13,7 @@ jest.mock("../../vue", () => ({
   useQueryProvider: jest.fn(),
 }));
 
-jest.mock("../../hydration", () => ({
+jest.mock("../../index", () => ({
   hydrate: jest.fn(),
 }));
 
