@@ -5,14 +5,14 @@ body .docsify-pagination-container {
 
 #docsify-darklight-theme {
   position: fixed;
-  left: 0;
-  bottom: 0;
-  z-index: 25;
+  left: 3px;
+  bottom: 35px;
+  z-index: 35;
   top: unset;
   background-size: unset;
   background-color: var(--background);
-  height: 60px;
-  width: 37px;
+  height: 30px;
+  width: 30px;
   background-position-x: center;
 }
 
