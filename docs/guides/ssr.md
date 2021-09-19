@@ -90,7 +90,7 @@ As demonstrated, it's fine to prefetch some queries and let others fetch on the 
 
 ## Using Vite SSR
 
-Pass VueQuery client cache to [vite-ssr](https://github.com/frandiox/vite-ssr) in order to serialize the state in the DOM:
+Sync VueQuery client cache with [vite-ssr](https://github.com/frandiox/vite-ssr) in order to serialize the state in the DOM:
 
 ```js
 // main.js (entry point)
@@ -98,56 +98,33 @@ import App from "./App.vue";
 import viteSSR from "vite-ssr/vue";
 import { QueryClient, hydrate, dehydrate } from "vue-query";
 
-export default viteSSR(
-  App,
-  {
-    routes: [
-      /* ... */
-    ],
-    transformState(state, defaultTransformer) {
-      if (import.meta.env.SSR) {
-        // Dehydrate client cache in server
-        state.vueQuery = dehydrate(state.vueQuery);
-      }
-
-      return defaultTransformer(state);
-    },
-  },
+export default viteSSR(App, { routes: [] }, ({ app, initialState }) => {
   // This is Vite SSR main hook, which is called once per request.
-  // Use it to set up Vue Query Client:
-  ({ initialState }) => {
-    // Create VueQuery client
-    const client = new QueryClient();
 
-    // Hydrate existing state in browser
-    if (!import.meta.env.SSR) hydrate(client, initialState.vueQuery);
+  // Create and provide a new client to use it later in the app root:
+  const client = new QueryClient();
+  app.provide("vueQueryClient", client);
 
-    // Save reference to the client
-    initialState.vueQuery = client;
+  // Sync initialState with the client cache:
+  if (import.meta.env.SSR) {
+    // This is a placeholder that will return the VueQuery state during SSR:
+    initialState.vueQueryState = { toJSON: () => dehydrate(client) };
+  } else {
+    // Reuse the existing state in the browser:
+    hydrate(client, initialState.vueQueryState);
   }
-);
+});
 ```
 
 After that, provide the client in the root component using the saved reference to make it available globally:
 
 ```html
 <!-- App.vue -->
-<template>
-  <div>
-    <RouterView />
-  </div>
-</template>
-
-<script>
-  import { useContext } from "vite-ssr/vue";
+<script setup>
+  import { inject } from "vue";
   import { useQueryProvider } from "vue-query";
 
-  export default {
-    setup() {
-      const { initialState } = useContext();
-      useQueryProvider(initialState.vueQuery);
-    },
-  };
+  useQueryProvider(inject('vueQueryClient'));
 </script>
 ```
 
@@ -162,22 +139,13 @@ Finally, call VueQuery from any component:
   </div>
 </template>
 
-<script>
+<script setup>
   import { useQuery } from "vue-query";
   import { onServerPrefetch } from "vue";
 
-  export default {
-    setup() {
-      // This will be prefetched and sent from the server
-      const { refetch, data, suspense } = useQuery("todos", getTodos);
-      onServerPrefetch(suspense);
-
-      return {
-        refetch,
-        data,
-      };
-    },
-  };
+  // This will be prefetched and sent from the server
+  const { refetch, data, suspense } = useQuery("todos", getTodos);
+  onServerPrefetch(suspense);
 </script>
 ```
 
