@@ -1,4 +1,4 @@
-import type { Query } from "react-query/types";
+import type { Query } from "react-query/types/core";
 
 import type { SortFn } from "./types";
 import type { Theme } from "./useTheme";
