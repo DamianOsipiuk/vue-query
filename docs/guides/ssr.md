@@ -90,45 +90,36 @@ As demonstrated, it's fine to prefetch some queries and let others fetch on the 
 
 ## Using Vite SSR
 
-Sync VueQuery client cache with [vite-ssr](https://github.com/frandiox/vite-ssr) in order to serialize the state in the DOM:
+Sync VueQuery client state with [vite-ssr](https://github.com/frandiox/vite-ssr) in order to serialize it in the DOM:
 
 ```js
 // main.js (entry point)
 import App from "./App.vue";
 import viteSSR from "vite-ssr/vue";
-import { QueryClient, hydrate, dehydrate } from "vue-query";
+import { QueryClient, hydrate, dehydrate, VUE_QUERY_CLIENT } from "vue-query";
 
 export default viteSSR(App, { routes: [] }, ({ app, initialState }) => {
-  // This is Vite SSR main hook, which is called once per request.
+  // -- This is Vite SSR main hook, which is called once per request
 
-  // Create and provide a new client to use it later in the app root:
+  // Create a fresh VueQuery client
   const client = new QueryClient();
-  app.provide("vueQueryClient", client);
 
-  // Sync initialState with the client cache:
+  // Sync initialState with the client state
   if (import.meta.env.SSR) {
-    // This is a placeholder that will return the VueQuery state during SSR:
+    // Indicate how to access and serialize VueQuery state during SSR
     initialState.vueQueryState = { toJSON: () => dehydrate(client) };
   } else {
-    // Reuse the existing state in the browser:
+    // Reuse the existing state in the browser
     hydrate(client, initialState.vueQueryState);
   }
+
+  // Mount and provide the client to the app components
+  client.mount();
+  app.provide(VUE_QUERY_CLIENT, client);
 });
 ```
 
-After that, provide the client in the root component using the saved reference to make it available globally:
-
-```html
-<!-- App.vue -->
-<script setup>
-  import { inject } from "vue";
-  import { useQueryProvider } from "vue-query";
-
-  useQueryProvider(inject('vueQueryClient'));
-</script>
-```
-
-Finally, call VueQuery from any component:
+Then, call VueQuery from any component using Vue's `onServerPrefetch`:
 
 ```html
 <!-- MyComponent.vue -->
