@@ -20,6 +20,8 @@ Based on [react-query](https://github.com/tannerlinsley/react-query)
 
 Visit https://vue-query.vercel.app
 
+For topics not covered in vue-query docs visit https://react-query.tanstack.com/reference/useQuery as most of the concepts and API are the same.
+
 # Quick Features
 
 - Transport/protocol/backend agnostic data fetching (REST, GraphQL, promises, whatever!)
