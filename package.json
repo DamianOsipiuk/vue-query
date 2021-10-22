@@ -19,6 +19,7 @@
     "test": "npm run test:2 && npm run test:3",
     "test:2": "vue-demi-switch 2 vue2 && jest",
     "test:3": "vue-demi-switch 3 && jest",
+    "prettier": "prettier . --write",
     "verify": "npm run lint && npm run test && npm run build"
   },
   "repository": {
