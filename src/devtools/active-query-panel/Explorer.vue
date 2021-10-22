@@ -251,11 +251,8 @@ export default defineComponent({
       )
     );
 
-    const expanded = this.expanded
-      ? this.subEntryPages.length === 1
-        ? singlePage
-        : multiPage
-      : undefined;
+    const page = this.subEntryPages?.length === 1 ? singlePage : multiPage;
+    const expanded = this.expanded ? page : undefined;
 
     const noPages = [
       h("span", { class: "expandable" }, this.label),

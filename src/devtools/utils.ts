@@ -67,12 +67,13 @@ const queryHashSort: SortFn = (a, b) => (a.queryHash > b.queryHash ? 1 : -1);
 const dateSort: SortFn = (a, b) =>
   a.state.dataUpdatedAt < b.state.dataUpdatedAt ? 1 : -1;
 
-const statusAndDateSort: SortFn = (a, b) =>
-  getStatusRank(a) === getStatusRank(b)
-    ? dateSort(a, b)
-    : getStatusRank(a) > getStatusRank(b)
-    ? 1
-    : -1;
+const statusAndDateSort: SortFn = (a, b) => {
+  if (getStatusRank(a) === getStatusRank(b)) {
+    return dateSort(a, b);
+  }
+
+  return getStatusRank(a) > getStatusRank(b) ? 1 : -1;
+};
 
 export const sortFns: Record<string, SortFn> = {
   "Status > Last Updated": statusAndDateSort,

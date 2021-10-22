@@ -1,6 +1,5 @@
 <script lang="ts">
-import { ref } from "vue";
-import { defineComponent } from "vue";
+import { defineComponent, ref } from "vue";
 import { useQueryProvider } from "vue-query";
 import { VueQueryDevTools } from "vue-query/devtools";
 

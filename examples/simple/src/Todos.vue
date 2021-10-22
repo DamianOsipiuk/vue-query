@@ -28,7 +28,9 @@ export default defineComponent({
 </script>
 
 <template>
-  <p>Turn on <b>network throttling</b> in dev-tools and press Refetch</p>
+  <p>
+    Turn on <strong>network throttling</strong> in dev-tools and press Refetch
+  </p>
   <button @click="refetch" :disabled="isFetching">
     {{ isFetching ? "Refetching..." : "Refetch" }}
   </button>
