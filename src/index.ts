@@ -10,6 +10,8 @@ export {
   MutationCache,
   hydrate,
   dehydrate,
+  focusManager,
+  setLogger,
 } from "react-query/core";
 
 export * from "./vue";
