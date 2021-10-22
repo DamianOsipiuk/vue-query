@@ -46,9 +46,5 @@ export function successMutator<T>(param: T): Promise<T> {
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function errorMutator<T>(param: T): Promise<Error> {
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      return reject(new Error("Some error"));
-    }, 0);
-  });
+  return rejectFetcher();
 }

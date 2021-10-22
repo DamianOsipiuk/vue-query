@@ -16,7 +16,10 @@ export default defineComponent({
 
 <template>
   <h1>vue-query example</h1>
-  <p>Turn on <b>Slow 3G</b> or <b>Offline</b> in dev-tools and hit Refetch</p>
+  <p>
+    Turn on <strong>Slow 3G</strong> or <strong>Offline</strong> in dev-tools
+    and hit Refetch
+  </p>
   <Suspense>
     <template #default>
       <Content />

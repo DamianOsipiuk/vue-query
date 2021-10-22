@@ -30,8 +30,8 @@ export function useIsFetching(
   });
 
   watchEffect(() => {
-    const parsedFilters = parseFilterArgs(arg1, arg2);
-    filters.value = parsedFilters;
+    const parsedFiltersUpdate = parseFilterArgs(arg1, arg2);
+    filters.value = parsedFiltersUpdate;
   });
 
   onUnmounted(() => {

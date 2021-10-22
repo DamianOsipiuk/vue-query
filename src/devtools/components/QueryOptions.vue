@@ -136,6 +136,7 @@ export default defineComponent({
         )
       : undefined;
 
+    const sortDesc = this.options.sortDesc ? "⬇ Desc" : "⬆ Asc";
     const button = !this.options.filter
       ? h(
           "button",
@@ -155,7 +156,7 @@ export default defineComponent({
               click: this.onSortDescChange,
             },
           },
-          this.options.sortDesc ? "⬇ Desc" : "⬆ Asc"
+          sortDesc
         )
       : undefined;
 

@@ -105,8 +105,9 @@ export function useMutation<
     variables: TVariables,
     mutateOptions?: MutateOptions<TData, TError, TVariables, TContext>
   ) => {
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
-    observer.mutate(variables, mutateOptions).catch(() => {});
+    observer.mutate(variables, mutateOptions).catch(() => {
+      // This is intentional
+    });
   };
 
   watchEffect(() => {
