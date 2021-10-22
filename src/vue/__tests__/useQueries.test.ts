@@ -6,7 +6,7 @@ import {
   rejectFetcher,
   simpleFetcher,
   noop,
-} from "@/test-utils";
+} from "./test-utils";
 import { useQueries } from "../useQueries";
 
 jest.mock("../useQueryClient");
@@ -85,7 +85,6 @@ describe("useQueries", () => {
       {
         queryKey: "key21",
         queryFn: rejectFetcher,
-        retry: false,
       },
       {
         queryKey: "key22",
@@ -170,7 +169,6 @@ describe("useQueries", () => {
       },
     ];
     const queriesState = useQueries(queries);
-
     await flushPromises();
 
     expect(queriesState).toMatchObject([

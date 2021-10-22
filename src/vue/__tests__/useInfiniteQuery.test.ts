@@ -1,6 +1,6 @@
 import { setLogger } from "react-query/core";
 
-import { noop, infiniteFetcher, flushPromises } from "@/test-utils";
+import { noop, infiniteFetcher, flushPromises } from "./test-utils";
 import { useInfiniteQuery } from "../useInfiniteQuery";
 
 jest.mock("../useQueryClient");

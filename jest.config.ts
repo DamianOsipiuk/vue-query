@@ -9,6 +9,7 @@ const config: Config.InitialOptions = {
   moduleNameMapper: {
     "^@/(.*)": "<rootDir>/src/$1",
   },
+  testPathIgnorePatterns: ["test-utils.ts"],
   collectCoverage: true,
   collectCoverageFrom: [
     "src/**/*.{ts,vue}",

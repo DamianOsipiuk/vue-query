@@ -1,4 +1,4 @@
-import { successMutator, simpleFetcher } from "@/test-utils";
+import { successMutator, simpleFetcher } from "./test-utils";
 import {
   isQueryKey,
   parseFilterArgs,
