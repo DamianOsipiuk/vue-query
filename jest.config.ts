@@ -3,12 +3,13 @@ import type { Config } from "@jest/types";
 const config: Config.InitialOptions = {
   preset: "ts-jest",
   transform: {
-    "^.+\\.vue$": "vue-jest",
+    "^.+\\.vue$": "@vue/vue3-jest",
   },
   moduleFileExtensions: ["js", "ts", "vue"],
   moduleNameMapper: {
     "^@/(.*)": "<rootDir>/src/$1",
   },
+  testPathIgnorePatterns: ["test-utils.ts"],
   collectCoverage: true,
   collectCoverageFrom: [
     "src/**/*.{ts,vue}",

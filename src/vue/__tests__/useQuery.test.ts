@@ -12,7 +12,7 @@ import {
   rejectFetcher,
   simpleFetcher,
   noop,
-} from "@/test-utils";
+} from "./test-utils";
 import { useQuery } from "../useQuery";
 import { useBaseQuery } from "../useBaseQuery";
 
@@ -68,9 +68,7 @@ describe("useQuery", () => {
   });
 
   test("should reject and update reactive state", async () => {
-    const query = useQuery("key3", rejectFetcher, {
-      retry: false,
-    });
+    const query = useQuery("key3", rejectFetcher);
 
     await flushPromises();
 

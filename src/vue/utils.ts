@@ -5,8 +5,8 @@ import type {
   MutationOptions,
   QueryFunction,
   QueryKey,
-  QueryOptions,
 } from "react-query/types/core";
+import type { UseBaseQueryOptions } from "react-query/types/react/types";
 import { QueryFilters } from "./useIsFetching";
 import { MutationFilters } from "./useIsMutating";
 
@@ -14,23 +14,29 @@ export function isQueryKey(value: unknown): value is QueryKey {
   return typeof value === "string" || Array.isArray(value);
 }
 
-export function parseQueryArgs<TOptions extends QueryOptions<any, any, any>>(
+export function parseQueryArgs<
+  TQueryFnData = unknown,
+  TError = unknown,
+  TData = TQueryFnData,
+  TQueryKey extends QueryKey = QueryKey,
+  TOptions = UseBaseQueryOptions<TQueryFnData, TError, TData, TQueryKey>
+>(
   arg1: QueryKey | TOptions,
-  arg2: QueryFunction | TOptions = {} as TOptions,
+  arg2: QueryFunction<TQueryFnData, TQueryKey> | TOptions = {} as TOptions,
   arg3: TOptions = {} as TOptions
 ): TOptions {
   if (!isQueryKey(arg1)) {
-    return arg1 as TOptions;
+    return arg1;
   }
 
   if (typeof arg2 === "function") {
     return Object.assign(arg3, {
       queryKey: arg1,
       queryFn: arg2,
-    }) as TOptions;
+    });
   }
 
-  return Object.assign(arg2, { queryKey: arg1 }) as TOptions;
+  return Object.assign(arg2, { queryKey: arg1 });
 }
 
 export function parseFilterArgs<TFilters extends QueryFilters>(

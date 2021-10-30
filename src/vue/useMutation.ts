@@ -55,7 +55,10 @@ export function useMutation<
   TContext = unknown
 >(
   mutationFn: MutationFunction<TData, TVariables>,
-  options?: UseMutationOptions<TData, TError, TVariables, TContext>
+  options?: Omit<
+    UseMutationOptions<TData, TError, TVariables, TContext>,
+    "mutationFn"
+  >
 ): UseMutationReturnType<TData, TError, TVariables, TContext>;
 export function useMutation<
   TData = unknown,
@@ -64,7 +67,10 @@ export function useMutation<
   TContext = unknown
 >(
   mutationKey: MutationKey,
-  options?: UseMutationOptions<TData, TError, TVariables, TContext>
+  options?: Omit<
+    UseMutationOptions<TData, TError, TVariables, TContext>,
+    "mutationKey"
+  >
 ): UseMutationReturnType<TData, TError, TVariables, TContext>;
 export function useMutation<
   TData = unknown,
@@ -74,7 +80,10 @@ export function useMutation<
 >(
   mutationKey: MutationKey,
   mutationFn?: MutationFunction<TData, TVariables>,
-  options?: UseMutationOptions<TData, TError, TVariables, TContext>
+  options?: Omit<
+    UseMutationOptions<TData, TError, TVariables, TContext>,
+    "mutationKey" | "mutationFn"
+  >
 ): UseMutationReturnType<TData, TError, TVariables, TContext>;
 export function useMutation<
   TData = unknown,
