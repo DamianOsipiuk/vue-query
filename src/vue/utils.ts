@@ -22,8 +22,8 @@ export function parseQueryArgs<
   TOptions = UseBaseQueryOptions<TQueryFnData, TError, TData, TQueryKey>
 >(
   arg1: QueryKey | TOptions,
-  arg2: QueryFunction<TQueryFnData, TQueryKey> | TOptions,
-  arg3: TOptions
+  arg2: QueryFunction<TQueryFnData, TQueryKey> | TOptions = {} as TOptions,
+  arg3: TOptions = {} as TOptions
 ): TOptions {
   if (!isQueryKey(arg1)) {
     return arg1;
