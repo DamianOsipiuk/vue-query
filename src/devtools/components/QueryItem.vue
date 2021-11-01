@@ -22,6 +22,9 @@ export default defineComponent({
     const isStale = computed(
       () => getQueryState(props.query) === QueryState.Stale
     );
+    const isDisabled = computed(
+      () => observerCount.value > 0 && !props.query.isActive()
+    );
     const stateColor = computed(() => getQueryStatusColor(props.query, theme));
 
     const onQueryClick = () => {
@@ -32,6 +35,7 @@ export default defineComponent({
       theme,
       observerCount,
       isStale,
+      isDisabled,
       stateColor,
       onQueryClick,
     };
@@ -65,6 +69,18 @@ export default defineComponent({
           },
           this.observerCount
         ),
+        this.isDisabled
+          ? h(
+              "div",
+              {
+                class: "query-item-disabled-label",
+                style: {
+                  background: this.theme.gray,
+                },
+              },
+              "disabled"
+            )
+          : null,
         h(
           "code",
           {
@@ -87,6 +103,15 @@ export default defineComponent({
   height: 2rem;
   justify-content: center;
   width: 2rem;
+}
+
+.query-item-disabled-label {
+  align-items: center;
+  display: flex;
+  flex: 0 0 auto;
+  font-weight: bold;
+  height: 2rem;
+  padding: 0 0.5em;
 }
 
 .query-item-code {
