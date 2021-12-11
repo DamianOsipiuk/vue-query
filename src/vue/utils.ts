@@ -5,8 +5,8 @@ import type {
   MutationOptions,
   QueryFunction,
   QueryKey,
+  QueryObserverOptions,
 } from "react-query/types/core";
-import type { UseBaseQueryOptions } from "react-query/types/react/types";
 import { QueryFilters } from "./useIsFetching";
 import { MutationFilters } from "./useIsMutating";
 
@@ -19,7 +19,13 @@ export function parseQueryArgs<
   TError = unknown,
   TData = TQueryFnData,
   TQueryKey extends QueryKey = QueryKey,
-  TOptions = UseBaseQueryOptions<TQueryFnData, TError, TData, TQueryKey>
+  TOptions = QueryObserverOptions<
+    TQueryFnData,
+    TError,
+    TData,
+    TQueryFnData,
+    TQueryKey
+  >
 >(
   arg1: QueryKey | TOptions,
   arg2: QueryFunction<TQueryFnData, TQueryKey> | TOptions = {} as TOptions,
