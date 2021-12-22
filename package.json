@@ -41,7 +41,7 @@
   "homepage": "https://github.com/DamianOsipiuk/vue-query#readme",
   "dependencies": {
     "match-sorter": "^6.3.1",
-    "react-query": "^3.30.0",
+    "react-query": "^3.34.5",
     "vue-demi": "^0.10.1"
   },
   "peerDependencies": {

@@ -7,11 +7,12 @@ import {
   watchEffect,
 } from "vue-demi";
 
-import type { QueryObserver, QueryKey } from "react-query/core";
 import type {
-  UseBaseQueryOptions as UBQO,
-  UseQueryResult,
-} from "react-query/types/react/types";
+  QueryObserver,
+  QueryKey,
+  QueryObserverOptions,
+  QueryObserverResult,
+} from "react-query/core";
 
 import { useQueryClient } from "./useQueryClient";
 import { updateState } from "./utils";
@@ -24,13 +25,13 @@ export type UseBaseQueryOptions<
   TQueryData = unknown,
   TQueryKey extends QueryKey = QueryKey
 > = WithQueryClientKey<
-  UBQO<TQueryFnData, TError, TData, TQueryData, TQueryKey>
+  QueryObserverOptions<TQueryFnData, TError, TData, TQueryData, TQueryKey>
 >;
 
 export type UseQueryReturnType<
   TData,
   TError,
-  Result = UseQueryResult<TData, TError>
+  Result = QueryObserverResult<TData, TError>
 > = ToRefs<Readonly<Result>> & {
   suspense: () => Promise<Result>;
 };

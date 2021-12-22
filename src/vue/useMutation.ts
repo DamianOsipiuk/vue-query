@@ -11,12 +11,12 @@ import {
   MutationObserver,
   MutationObserverResult,
 } from "react-query/core";
-import { MutationFunction, MutationKey } from "react-query/types/core";
-import type {
-  UseMutationOptions as UMO,
-  UseMutateFunction,
-  UseMutateAsyncFunction,
-} from "react-query/types/react/types";
+import {
+  MutationFunction,
+  MutationKey,
+  MutationObserverOptions,
+  MutateFunction,
+} from "react-query/types/core";
 import { parseMutationArgs, updateState } from "./utils";
 import { useQueryClient } from "./useQueryClient";
 import { WithQueryClientKey } from "./types";
@@ -27,7 +27,18 @@ type MutationResult<TData, TError, TVariables, TContext> = Omit<
 >;
 
 export type UseMutationOptions<TData, TError, TVariables, TContext> =
-  WithQueryClientKey<UMO<TData, TError, TVariables, TContext>>;
+  WithQueryClientKey<
+    MutationObserverOptions<TData, TError, TVariables, TContext>
+  >;
+
+type MutateSyncFunction<
+  TData = unknown,
+  TError = unknown,
+  TVariables = void,
+  TContext = unknown
+> = (
+  ...options: Parameters<MutateFunction<TData, TError, TVariables, TContext>>
+) => void;
 
 export type UseMutationReturnType<
   TData,
@@ -36,8 +47,8 @@ export type UseMutationReturnType<
   TContext,
   Result = MutationResult<TData, TError, TVariables, TContext>
 > = ToRefs<Readonly<Result>> & {
-  mutate: UseMutateFunction<TData, TError, TVariables, TContext>;
-  mutateAsync: UseMutateAsyncFunction<TData, TError, TVariables, TContext>;
+  mutate: MutateSyncFunction<TData, TError, TVariables, TContext>;
+  mutateAsync: MutateFunction<TData, TError, TVariables, TContext>;
 };
 
 export function useMutation<

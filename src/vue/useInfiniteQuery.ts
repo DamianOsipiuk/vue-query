@@ -4,12 +4,10 @@ import type {
   QueryObserver,
   QueryFunction,
   QueryKey,
+  QueryObserverOptions,
+  InfiniteQueryObserverOptions,
+  InfiniteQueryObserverResult,
 } from "react-query/types/core";
-import type {
-  UseInfiniteQueryOptions as UIQO,
-  UseInfiniteQueryResult,
-  UseBaseQueryOptions,
-} from "react-query/types/react/types";
 
 import { useBaseQuery, UseQueryReturnType } from "./useBaseQuery";
 import { parseQueryArgs } from "./utils";
@@ -22,7 +20,13 @@ export type UseInfiniteQueryOptions<
   TData = TQueryFnData,
   TQueryKey extends QueryKey = QueryKey
 > = WithQueryClientKey<
-  UIQO<TQueryFnData, TError, TData, TQueryFnData, TQueryKey>
+  InfiniteQueryObserverOptions<
+    TQueryFnData,
+    TError,
+    TData,
+    TQueryFnData,
+    TQueryKey
+  >
 >;
 
 export function useInfiniteQuery<
@@ -32,7 +36,11 @@ export function useInfiniteQuery<
   TQueryKey extends QueryKey = QueryKey
 >(
   options: UseInfiniteQueryOptions<TQueryFnData, TError, TData, TQueryKey>
-): UseQueryReturnType<TData, TError, UseInfiniteQueryResult<TData, TError>>;
+): UseQueryReturnType<
+  TData,
+  TError,
+  InfiniteQueryObserverResult<TData, TError>
+>;
 export function useInfiniteQuery<
   TQueryFnData = unknown,
   TError = unknown,
@@ -44,7 +52,11 @@ export function useInfiniteQuery<
     UseInfiniteQueryOptions<TQueryFnData, TError, TData, TQueryKey>,
     "queryKey"
   >
-): UseQueryReturnType<TData, TError, UseInfiniteQueryResult<TData, TError>>;
+): UseQueryReturnType<
+  TData,
+  TError,
+  InfiniteQueryObserverResult<TData, TError>
+>;
 export function useInfiniteQuery<
   TQueryFnData = unknown,
   TError = unknown,
@@ -57,7 +69,11 @@ export function useInfiniteQuery<
     UseInfiniteQueryOptions<TQueryFnData, TError, TData, TQueryKey>,
     "queryKey" | "queryFn"
   >
-): UseQueryReturnType<TData, TError, UseInfiniteQueryResult<TData, TError>>;
+): UseQueryReturnType<
+  TData,
+  TError,
+  InfiniteQueryObserverResult<TData, TError>
+>;
 export function useInfiniteQuery<
   TQueryFnData,
   TError,
@@ -71,15 +87,22 @@ export function useInfiniteQuery<
     | QueryFunction<TQueryFnData, TQueryKey>
     | UseInfiniteQueryOptions<TQueryFnData, TError, TData, TQueryKey>,
   arg3?: UseInfiniteQueryOptions<TQueryFnData, TError, TData, TQueryKey>
-): UseQueryReturnType<TData, TError, UseInfiniteQueryResult<TData, TError>> {
-  const parsedOptions = parseQueryArgs(arg1, arg2, arg3) as UseBaseQueryOptions<
-    TQueryFnData,
-    TError,
-    TData,
-    TQueryKey
-  >;
+): UseQueryReturnType<
+  TData,
+  TError,
+  InfiniteQueryObserverResult<TData, TError>
+> {
+  const parsedOptions = parseQueryArgs(
+    arg1,
+    arg2,
+    arg3
+  ) as QueryObserverOptions<TQueryFnData, TError, TData, TQueryKey>;
   return useBaseQuery(
     parsedOptions,
     InfiniteQueryObserver as typeof QueryObserver
-  ) as UseQueryReturnType<TData, TError, UseInfiniteQueryResult<TData, TError>>;
+  ) as UseQueryReturnType<
+    TData,
+    TError,
+    InfiniteQueryObserverResult<TData, TError>
+  >;
 }
