@@ -16,6 +16,11 @@ export function simpleFetcher(): Promise<string> {
   });
 }
 
+export function getSimpleFetcherWithReturnData(returnData: unknown) {
+  return () =>
+    new Promise((resolve) => setTimeout(() => resolve(returnData), 0));
+}
+
 export function infiniteFetcher({
   pageParam = 0,
 }: {

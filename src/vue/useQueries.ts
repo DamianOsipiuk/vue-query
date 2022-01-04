@@ -1,6 +1,15 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { QueriesObserver } from "react-query/core";
-import { onUnmounted, reactive, readonly, set, watch } from "vue-demi";
+import {
+  onUnmounted,
+  reactive,
+  readonly,
+  watch,
+  unref,
+  Ref,
+  isRef,
+  isReactive,
+} from "vue-demi";
 
 import type {
   QueryFunction,
@@ -114,33 +123,33 @@ export type UseQueriesResults<
   : // Fallback
     QueryObserverResult[];
 
+type UseQueriesOptions<T extends any[]> =
+  | readonly [...QueriesOptions<T>]
+  | Ref<[...QueriesOptions<T>]>;
+
 export function useQueries<T extends any[]>(
   queries: readonly [...UseQueriesOptions<T>]
 ): Readonly<UseQueriesResults<T>> {
-  const queryClientKey = queries[0]?.queryClientKey;
+  const queryClientKey = unref(queries)[0]?.queryClientKey;
   const queryClient = useQueryClient(queryClientKey);
-  const defaultedQueries = queries.map((options) => {
+  const defaultedQueries = unref(queries).map((options) => {
     return queryClient.defaultQueryObserverOptions(options);
   });
 
   const observer = new QueriesObserver(queryClient, defaultedQueries);
   const state = reactive(observer.getCurrentResult());
   const unsubscribe = observer.subscribe((result) => {
-    result.forEach((resultEntry, index) => {
-      set(state, index, resultEntry);
-    });
+    state.splice(0, state.length, ...result);
   });
 
-  watch(
-    () => queries,
-    () => {
-      const defaulted = queries.map((options) => {
+  if (isRef(queries) || isReactive(queries)) {
+    watch(queries, () => {
+      const defaulted = unref(queries).map((options) => {
         return queryClient.defaultQueryObserverOptions(options);
       });
       observer.setQueries(defaulted);
-    },
-    { deep: true }
-  );
+    });
+  }
 
   onUnmounted(() => {
     unsubscribe();
