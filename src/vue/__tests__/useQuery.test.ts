@@ -84,7 +84,7 @@ describe("useQuery", () => {
     });
   });
 
-  test("should update query on reactive prop change", async () => {
+  test("should update query on reactive options object change", async () => {
     const spy = jest.fn();
     const onSuccess = ref(noop);
     useQuery(
@@ -101,6 +101,31 @@ describe("useQuery", () => {
     await flushPromises();
 
     expect(spy).toBeCalledTimes(1);
+  });
+
+  test("should update query on reactive (Ref) key change", async () => {
+    const secondKeyRef = ref("key7");
+    const query = useQuery(["key6", secondKeyRef], simpleFetcher);
+
+    await flushPromises();
+
+    expect(query).toMatchObject({
+      status: { value: "success" },
+    });
+
+    secondKeyRef.value = "key8";
+    await flushPromises();
+
+    expect(query).toMatchObject({
+      status: { value: "loading" },
+      data: { value: undefined },
+    });
+
+    await flushPromises();
+
+    expect(query).toMatchObject({
+      status: { value: "success" },
+    });
   });
 
   test("should properly execute dependant queries", async () => {
