@@ -70,9 +70,9 @@ type GetResults<T> =
       QueryObserverResult;
 
 /**
- * QueriesOptions reducer recursively unwraps function arguments to infer/enforce type param
+ * UseQueriesOptions reducer recursively unwraps function arguments to infer/enforce type param
  */
-type QueriesOptions<
+export type UseQueriesOptions<
   T extends any[],
   Result extends any[] = [],
   Depth extends ReadonlyArray<number> = []
@@ -83,7 +83,7 @@ type QueriesOptions<
   : T extends [infer Head]
   ? [...Result, GetOptions<Head>]
   : T extends [infer Head, ...infer Tail]
-  ? QueriesOptions<[...Tail], [...Result, GetOptions<Head>], [...Depth, 1]>
+  ? UseQueriesOptions<[...Tail], [...Result, GetOptions<Head>], [...Depth, 1]>
   : unknown[] extends T
   ? T
   : // If T is *some* array but we couldn't assign unknown[] to it, then it must hold some known/homogenous type!
@@ -94,9 +94,9 @@ type QueriesOptions<
     UseQueryOptions[];
 
 /**
- * QueriesResults reducer recursively maps type param to results
+ * UseQueriesResults reducer recursively maps type param to results
  */
-type QueriesResults<
+export type UseQueriesResults<
   T extends any[],
   Result extends any[] = [],
   Depth extends ReadonlyArray<number> = []
@@ -107,7 +107,7 @@ type QueriesResults<
   : T extends [infer Head]
   ? [...Result, GetResults<Head>]
   : T extends [infer Head, ...infer Tail]
-  ? QueriesResults<[...Tail], [...Result, GetResults<Head>], [...Depth, 1]>
+  ? UseQueriesResults<[...Tail], [...Result, GetResults<Head>], [...Depth, 1]>
   : T extends UseQueryOptions<infer TQueryFnData, infer TError, infer TData>[]
   ? // Dynamic-size (homogenous) UseQueryOptions array: map directly to array of results
     QueryObserverResult<unknown extends TData ? TQueryFnData : TData, TError>[]
@@ -115,8 +115,8 @@ type QueriesResults<
     QueryObserverResult[];
 
 export function useQueries<T extends any[]>(
-  queries: readonly [...QueriesOptions<T>]
-): Readonly<QueriesResults<T>> {
+  queries: readonly [...UseQueriesOptions<T>]
+): Readonly<UseQueriesResults<T>> {
   const queryClientKey = queries[0]?.queryClientKey;
   const queryClient = useQueryClient(queryClientKey);
   const defaultedQueries = queries.map((options) => {
@@ -146,5 +146,5 @@ export function useQueries<T extends any[]>(
     unsubscribe();
   });
 
-  return readonly(state) as QueriesResults<T>;
+  return readonly(state) as UseQueriesResults<T>;
 }
