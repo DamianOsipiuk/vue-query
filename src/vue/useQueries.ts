@@ -123,18 +123,19 @@ export type UseQueriesResults<
   : // Fallback
     QueryObserverResult[];
 
-type UseQueriesOptions<T extends any[]> =
-  | readonly [...QueriesOptions<T>]
-  | Ref<[...QueriesOptions<T>]>;
+type UseQueriesOptionsArg<T extends any[]> = readonly [...UseQueriesOptions<T>];
 
 export function useQueries<T extends any[]>(
-  queries: readonly [...UseQueriesOptions<T>]
+  queries: Ref<UseQueriesOptionsArg<T>> | UseQueriesOptionsArg<T>
 ): Readonly<UseQueriesResults<T>> {
-  const queryClientKey = unref(queries)[0]?.queryClientKey;
+  const queryClientKey = (unref(queries) as UseQueriesOptionsArg<T>)[0]
+    ?.queryClientKey;
   const queryClient = useQueryClient(queryClientKey);
-  const defaultedQueries = unref(queries).map((options) => {
-    return queryClient.defaultQueryObserverOptions(options);
-  });
+  const defaultedQueries = (unref(queries) as UseQueriesOptionsArg<T>).map(
+    (options) => {
+      return queryClient.defaultQueryObserverOptions(options);
+    }
+  );
 
   const observer = new QueriesObserver(queryClient, defaultedQueries);
   const state = reactive(observer.getCurrentResult());
@@ -144,9 +145,11 @@ export function useQueries<T extends any[]>(
 
   if (isRef(queries) || isReactive(queries)) {
     watch(queries, () => {
-      const defaulted = unref(queries).map((options) => {
-        return queryClient.defaultQueryObserverOptions(options);
-      });
+      const defaulted = (unref(queries) as UseQueriesOptionsArg<T>).map(
+        (options) => {
+          return queryClient.defaultQueryObserverOptions(options);
+        }
+      );
       observer.setQueries(defaulted);
     });
   }
