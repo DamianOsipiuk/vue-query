@@ -5,6 +5,7 @@ import {
   ToRefs,
   reactive,
   watchEffect,
+  unref,
 } from "vue-demi";
 
 import type {
@@ -53,7 +54,9 @@ export function useBaseQuery<
   Observer: typeof QueryObserver
 ): UseQueryReturnType<TData, TError> {
   const queryClient = useQueryClient(options.queryClientKey);
-  const defaultedOptions = queryClient.defaultQueryObserverOptions(options);
+  const defaultedOptions = queryClient.defaultQueryObserverOptions(
+    getOptionsWithUnrefKey(options)
+  );
   const observer = new Observer(queryClient, defaultedOptions);
   const state = reactive(observer.getCurrentResult());
   const unsubscribe = observer.subscribe((result) => {
@@ -61,7 +64,9 @@ export function useBaseQuery<
   });
 
   watchEffect(() => {
-    observer.setOptions(queryClient.defaultQueryObserverOptions(options));
+    observer.setOptions(
+      queryClient.defaultQueryObserverOptions(getOptionsWithUnrefKey(options))
+    );
   });
 
   onUnmounted(() => {
@@ -80,4 +85,13 @@ export function useBaseQuery<
     ...resultRefs,
     suspense,
   };
+
+  // We need to unref keys, otherwise ReactQuery doesn't recognise keys changes
+  function getOptionsWithUnrefKey<
+    T extends { queryKey?: QueryKey | undefined }
+  >(options: T): T {
+    return Array.isArray(options.queryKey)
+      ? { ...options, queryKey: options.queryKey.map(unref) }
+      : options;
+  }
 }
