@@ -38,11 +38,11 @@ useQuery(['todos', { type: 'done' }], ...)
 // queryKey === ['todos', { type: 'done' }]
 ```
 
-!> If your query key parameter **will change over time** in the same component, do not place it directly in the `queryKey` array. Place it inside an object as a `ref` and wrap the whole `queryKey` in `reactive`. This is due to how vue reactivity system works.
+!> If your query key parameter **will change over time** in the same component, pass every such query key parameter as a `ref` or computed value.
 
 ```js
 const id = ref(5);
-useQuery(reactive(['todo', { id }]), ...)
+useQuery(['todo', id], ...)
 ```
 
 ### Query Keys are hashed deterministically!
