@@ -1,10 +1,11 @@
-import { onUnmounted, reactive, set } from "vue-demi";
+import { onUnmounted, reactive } from "vue-demi";
 import { setLogger } from "react-query/core";
 
 import {
   flushPromises,
   rejectFetcher,
   simpleFetcher,
+  getSimpleFetcherWithReturnData,
   noop,
 } from "./test-utils";
 import { useQueries } from "../useQueries";
@@ -112,38 +113,51 @@ describe("useQueries", () => {
   });
 
   test("should return state for new queries", async () => {
-    const initialQueries = reactive([]);
-    const queries = [
+    const queries = reactive([
       {
         queryKey: "key31",
-        queryFn: simpleFetcher,
+        queryFn: getSimpleFetcherWithReturnData("value31"),
       },
       {
         queryKey: "key32",
-        queryFn: simpleFetcher,
+        queryFn: getSimpleFetcherWithReturnData("value32"),
       },
-    ];
-    const queriesState = useQueries(initialQueries);
+      {
+        queryKey: "key33",
+        queryFn: getSimpleFetcherWithReturnData("value33"),
+      },
+    ]);
+    const queriesState = useQueries(queries);
 
-    expect(queriesState.length).toEqual(0);
+    await flushPromises();
 
-    queries.forEach((query, index) => {
-      set(initialQueries, index, query);
-    });
+    queries.splice(
+      0,
+      queries.length,
+      {
+        queryKey: "key31",
+        queryFn: getSimpleFetcherWithReturnData("value31"),
+      },
+      {
+        queryKey: "key34",
+        queryFn: getSimpleFetcherWithReturnData("value34"),
+      }
+    );
 
     await flushPromises();
     await flushPromises();
 
     expect(queriesState.length).toEqual(2);
-
     expect(queriesState).toMatchObject([
       {
+        data: "value31",
         status: "success",
         isLoading: false,
         isFetching: false,
         isStale: true,
       },
       {
+        data: "value34",
         status: "success",
         isLoading: false,
         isFetching: false,
