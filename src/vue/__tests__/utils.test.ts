@@ -41,7 +41,7 @@ describe("utils", () => {
       const options = { retry: false };
       const result = parseMutationArgs(options);
 
-      expect(result).toBe(options);
+      expect(result).toEqual(options);
     });
 
     test("should merge query key with options", () => {
@@ -50,7 +50,6 @@ describe("utils", () => {
       const expected = { ...options, mutationKey: "key" };
 
       expect(result).toEqual(expected);
-      expect(result).toBe(options);
     });
 
     test("should merge query fn with options", () => {
@@ -59,7 +58,6 @@ describe("utils", () => {
       const expected = { ...options, mutationFn: successMutator };
 
       expect(result).toEqual(expected);
-      expect(result).toBe(options);
     });
 
     test("should merge query key and fn with options", () => {
@@ -72,25 +70,16 @@ describe("utils", () => {
       };
 
       expect(result).toEqual(expected);
-      expect(result).toBe(options);
     });
   });
 
   describe("parseQueryArgs", () => {
-    test("should return the same instance of options", () => {
-      const options = { retry: false };
-      const result = parseQueryArgs(options);
-
-      expect(result).toBe(options);
-    });
-
     test("should merge query key with options", () => {
       const options = { retry: false };
       const result = parseQueryArgs("key", options);
       const expected = { ...options, queryKey: "key" };
 
       expect(result).toEqual(expected);
-      expect(result).toBe(options);
     });
 
     test("should merge query key and fn with options", () => {
@@ -103,7 +92,6 @@ describe("utils", () => {
       };
 
       expect(result).toEqual(expected);
-      expect(result).toBe(options);
     });
   });
 

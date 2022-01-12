@@ -128,6 +128,33 @@ describe("useQuery", () => {
     });
   });
 
+  test("should update query when an option is passed as Ref and it's changed", async () => {
+    const enabled = ref(false);
+    const query = useQuery("key9", simpleFetcher, { enabled });
+
+    await flushPromises();
+
+    expect(query).toMatchObject({
+      status: { value: "idle" },
+      data: { value: undefined },
+    });
+
+    enabled.value = true;
+
+    await flushPromises();
+
+    expect(query).toMatchObject({
+      status: { value: "loading" },
+      data: { value: undefined },
+    });
+
+    await flushPromises();
+
+    expect(query).toMatchObject({
+      status: { value: "success" },
+    });
+  });
+
   test("should properly execute dependant queries", async () => {
     const { data } = useQuery("dependant1", simpleFetcher);
 

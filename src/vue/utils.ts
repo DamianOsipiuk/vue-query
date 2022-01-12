@@ -7,6 +7,7 @@ import type {
   QueryKey,
   QueryObserverOptions,
 } from "react-query/types/core";
+import { reactive, toRefs } from "vue-demi";
 import { QueryFilters } from "./useIsFetching";
 import { MutationFilters } from "./useIsMutating";
 
@@ -31,18 +32,27 @@ export function parseQueryArgs<
   arg2: QueryFunction<TQueryFnData, TQueryKey> | TOptions = {} as TOptions,
   arg3: TOptions = {} as TOptions
 ): TOptions {
-  if (!isQueryKey(arg1)) {
-    return arg1;
-  }
+  let options: TOptions;
 
-  if (typeof arg2 === "function") {
-    return Object.assign(arg3, {
+  if (!isQueryKey(arg1)) {
+    // `useQuery(optionsObj)`
+    options = reactive(arg1 as unknown as object) as unknown as TOptions;
+  } else if (typeof arg2 === "function") {
+    // `useQuery(queryKey, queryFn, optionsObj?)`
+    options = reactive({
+      ...toRefs(reactive(arg3 as unknown as object)),
       queryKey: arg1,
       queryFn: arg2,
-    });
+    }) as TOptions;
+  } else {
+    // `useQuery(queryKey, optionsObj?)`
+    options = reactive({
+      ...toRefs(reactive(arg2 as unknown as object)),
+      queryKey: arg1,
+    }) as TOptions;
   }
 
-  return Object.assign(arg2, { queryKey: arg1 });
+  return options;
 }
 
 export function parseFilterArgs<TFilters extends QueryFilters>(
