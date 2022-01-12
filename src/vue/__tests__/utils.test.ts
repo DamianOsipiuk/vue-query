@@ -74,6 +74,13 @@ describe("utils", () => {
   });
 
   describe("parseQueryArgs", () => {
+    test("should return the same instance of options", () => {
+      const options = { retry: false };
+      const result = parseQueryArgs(options);
+
+      expect(result).toStrictEqual(options);
+    });
+
     test("should merge query key with options", () => {
       const options = { retry: false };
       const result = parseQueryArgs("key", options);
