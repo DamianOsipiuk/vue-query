@@ -32,27 +32,27 @@ export function parseQueryArgs<
   arg2: QueryFunction<TQueryFnData, TQueryKey> | TOptions = {} as TOptions,
   arg3: TOptions = {} as TOptions
 ): TOptions {
-  let options: TOptions;
+  let options;
 
   if (!isQueryKey(arg1)) {
     // `useQuery(optionsObj)`
-    options = reactive(arg1 as unknown as object) as unknown as TOptions;
+    options = arg1;
   } else if (typeof arg2 === "function") {
     // `useQuery(queryKey, queryFn, optionsObj?)`
-    options = reactive({
+    options = {
       ...toRefs(reactive(arg3 as unknown as object)),
       queryKey: arg1,
       queryFn: arg2,
-    }) as TOptions;
+    };
   } else {
     // `useQuery(queryKey, optionsObj?)`
-    options = reactive({
+    options = {
       ...toRefs(reactive(arg2 as unknown as object)),
       queryKey: arg1,
-    }) as TOptions;
+    };
   }
 
-  return options;
+  return reactive(options as object) as unknown as TOptions;
 }
 
 export function parseFilterArgs<TFilters extends QueryFilters>(
