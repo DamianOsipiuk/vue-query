@@ -6,6 +6,7 @@ import {
   reactive,
   watchEffect,
   unref,
+  isRef,
 } from "vue-demi";
 
 import type {
@@ -14,6 +15,8 @@ import type {
   QueryObserverOptions,
   QueryObserverResult,
 } from "react-query/core";
+
+import clonedeepwith from "lodash.clonedeepwith";
 
 import { useQueryClient } from "./useQueryClient";
 import { updateState } from "./utils";
@@ -55,7 +58,7 @@ export function useBaseQuery<
 ): UseQueryReturnType<TData, TError> {
   const queryClient = useQueryClient(options.queryClientKey);
   const defaultedOptions = queryClient.defaultQueryObserverOptions(
-    getOptionsWithUnrefKey(options)
+    cloneDeepUnref(options)
   );
   const observer = new Observer(queryClient, defaultedOptions);
   const state = reactive(observer.getCurrentResult());
@@ -65,7 +68,7 @@ export function useBaseQuery<
 
   watchEffect(() => {
     observer.setOptions(
-      queryClient.defaultQueryObserverOptions(getOptionsWithUnrefKey(options))
+      queryClient.defaultQueryObserverOptions(cloneDeepUnref(options))
     );
   });
 
@@ -85,13 +88,15 @@ export function useBaseQuery<
     ...resultRefs,
     suspense,
   };
+}
 
-  // We need to unref keys, otherwise ReactQuery doesn't recognise keys changes
-  function getOptionsWithUnrefKey<
-    T extends { queryKey?: QueryKey | undefined }
-  >(options: T): T {
-    return Array.isArray(options.queryKey)
-      ? { ...options, queryKey: options.queryKey.map(unref) }
-      : options;
-  }
+function cloneDeepUnref<T>(obj: T): T {
+  return clonedeepwith(obj, (val) => {
+    if (typeof val === "function") {
+      return val;
+    }
+    if (isRef(val)) {
+      return unref(val);
+    }
+  });
 }
