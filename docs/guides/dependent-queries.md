@@ -9,12 +9,11 @@ const enabled = computed(() => !!user.value?.id);
 
 // Then get the user's projects
 const { isIdle, data: projects } = useQuery(
-  reactive(["projects", { userId }]),
+  ["projects", userId],
   () => getProjectsByUser(userId.value),
-  reactive({
-    // The query will not execute until the userId exists
-    enabled,
-  })
+  {
+    enabled, // The query will not execute until the userId exists
+  }
 );
 
 // isIdle will be `true` until `enabled` is true and the query begins to fetch.

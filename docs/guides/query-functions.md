@@ -48,7 +48,7 @@ Query keys are not just for uniquely identifying the data you are fetching, but 
 
 ```js
 function useTodos(status, page) {
-  const result = useQuery(reactive(["todos", { status, page }]), fetchTodoList);
+  const result = useQuery(["todos", { status, page }], fetchTodoList);
 }
 
 // Access the key, status and page variables in your query function!

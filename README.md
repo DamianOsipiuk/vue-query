@@ -71,15 +71,13 @@ For topics not covered in vue-query docs visit https://react-query.tanstack.com/
    });
    ```
 
-3. If you need to update options on your query dynamically, make sure to pass it as reactive property
+3. If you need to update options on your query dynamically, make sure to pass them as reactive variables
 
    ```ts
    const id = ref(1);
-   const queryKey = reactive(["todos", { id }]);
+   const queryKey = ["todos", id];
    const queryFunction = () => getTodos(id);
-   const options = reactive({
-     enabled: false,
-   });
+   const enabled = ref(false);
 
-   const query = useQuery(queryKey, queryFunction, options);
+   const query = useQuery(queryKey, queryFunction, { enabled });
    ```

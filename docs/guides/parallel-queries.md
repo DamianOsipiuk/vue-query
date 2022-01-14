@@ -25,7 +25,7 @@ const users = computed(...)
 const userQueries = useQueries(
   users.value.map(user => {
     return {
-      queryKey: ['user', {userId: user.id}],
+      queryKey: ['user', user.id],
       queryFn: () => fetchUserById(user.id),
     }
   })

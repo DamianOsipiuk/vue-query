@@ -70,9 +70,7 @@ Since query keys uniquely describe the data they are fetching, they should inclu
 
 ```js
 function useTodos(todoId) {
-  const queryKey = reactive(["todos", { todoId }]);
+  const queryKey = ["todos", todoId];
   const result = useQuery(queryKey, () => fetchTodoById(todoId.value));
 }
 ```
-
-!> `queryKeys` that depend on variables should be wrapped in `reactive`. Variables should be passed as an object as `refs`. This will guarantee that Vue reactivity system will work for you.

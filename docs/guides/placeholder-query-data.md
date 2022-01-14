@@ -39,7 +39,7 @@ A good example of this would be searching the cached data from a blog post list 
 
 ```js
 const result = useQuery(
-  ["blogPost", { blogPostId }],
+  ["blogPost", blogPostId],
   () => fetch(`/blogPosts/${blogPostId}`),
   {
     placeholderData: () => {

@@ -11,7 +11,7 @@ You can configure retries both on a global level and an individual query level.
 import { useQuery } from "vue-query";
 
 // Make a specific query retry a certain number of times
-const result = useQuery(["todos"], fetchTodos, {
+const result = useQuery("todos", fetchTodos, {
   retry: 10, // Will retry failed requests 10 times before displaying an error
 });
 ```
