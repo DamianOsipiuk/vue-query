@@ -4,13 +4,11 @@ import type {
   QueryObserver,
   QueryFunction,
   QueryKey,
-  QueryObserverOptions,
   InfiniteQueryObserverOptions,
   InfiniteQueryObserverResult,
 } from "react-query/types/core";
 
 import { useBaseQuery, UseQueryReturnType } from "./useBaseQuery";
-import { parseQueryArgs } from "./utils";
 
 import type { WithQueryClientKey } from "./types";
 
@@ -92,14 +90,12 @@ export function useInfiniteQuery<
   TError,
   InfiniteQueryObserverResult<TData, TError>
 > {
-  const parsedOptions = parseQueryArgs(
+  return useBaseQuery(
+    InfiniteQueryObserver as typeof QueryObserver,
+    // @ts-ignore
     arg1,
     arg2,
     arg3
-  ) as QueryObserverOptions<TQueryFnData, TError, TData, TQueryKey>;
-  return useBaseQuery(
-    parsedOptions,
-    InfiniteQueryObserver as typeof QueryObserver
   ) as UseQueryReturnType<
     TData,
     TError,

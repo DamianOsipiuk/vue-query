@@ -4,9 +4,9 @@ import {
   readonly,
   ToRefs,
   reactive,
-  watchEffect,
   unref,
   isRef,
+  watch,
 } from "vue-demi";
 
 import type {
@@ -16,11 +16,13 @@ import type {
   QueryObserverResult,
 } from "react-query/core";
 
+import type { QueryFunction } from "react-query/types/core";
+
 import clonedeepwith from "lodash.clonedeepwith";
 
 import { useQueryClient } from "./useQueryClient";
 import { updateState } from "./utils";
-import { WithQueryClientKey } from "./types";
+import { WithQueryClientKey, VueQueryObserverOptions } from "./types";
 
 export type UseBaseQueryOptions<
   TQueryFnData = unknown,
@@ -40,6 +42,15 @@ export type UseQueryReturnType<
   suspense: () => Promise<Result>;
 };
 
+type UseQueryOptions<
+  TQueryFnData = unknown,
+  TError = unknown,
+  TData = TQueryFnData,
+  TQueryKey extends QueryKey = QueryKey
+> = WithQueryClientKey<
+  VueQueryObserverOptions<TQueryFnData, TError, TData, TQueryFnData, TQueryKey>
+>;
+
 export function useBaseQuery<
   TQueryFnData,
   TError,
@@ -47,30 +58,36 @@ export function useBaseQuery<
   TQueryData,
   TQueryKey extends QueryKey
 >(
-  options: UseBaseQueryOptions<
-    TQueryFnData,
-    TError,
-    TData,
-    TQueryData,
-    TQueryKey
-  >,
-  Observer: typeof QueryObserver
+  Observer: typeof QueryObserver,
+  arg1: TQueryKey | UseQueryOptions<TQueryFnData, TError, TData, TQueryKey>,
+  arg2:
+    | QueryFunction<TQueryFnData, TQueryKey>
+    | UseQueryOptions<TQueryFnData, TError, TData, TQueryKey> = {},
+  arg3: UseQueryOptions<TQueryFnData, TError, TData, TQueryKey> = {}
 ): UseQueryReturnType<TData, TError> {
+  const options = parseQueryArgs(arg1, arg2, arg3);
+  // @ts-ignore
   const queryClient = useQueryClient(options.queryClientKey);
-  const defaultedOptions = queryClient.defaultQueryObserverOptions(
-    cloneDeepUnref(options)
-  );
+  // @ts-ignore
+  const defaultedOptions = queryClient.defaultQueryObserverOptions(options);
   const observer = new Observer(queryClient, defaultedOptions);
   const state = reactive(observer.getCurrentResult());
   const unsubscribe = observer.subscribe((result) => {
     updateState(state, result);
   });
 
-  watchEffect(() => {
-    observer.setOptions(
-      queryClient.defaultQueryObserverOptions(cloneDeepUnref(options))
-    );
-  });
+  watch(
+    [() => arg1, () => arg2, () => arg3],
+    () => {
+      observer.setOptions(
+        queryClient.defaultQueryObserverOptions(
+          // @ts-ignore
+          parseQueryArgs(arg1, arg2, arg3)
+        )
+      );
+    },
+    { deep: true }
+  );
 
   onUnmounted(() => {
     unsubscribe();
@@ -86,6 +103,7 @@ export function useBaseQuery<
 
   return {
     ...resultRefs,
+    // @ts-ignore
     suspense,
   };
 }
@@ -99,4 +117,43 @@ function cloneDeepUnref<T>(obj: T): T {
       return unref(val);
     }
   });
+}
+function parseQueryArgs<
+  TQueryFnData = unknown,
+  TError = unknown,
+  TData = TQueryFnData,
+  TQueryKey extends QueryKey = QueryKey,
+  TOptions = QueryObserverOptions<
+    TQueryFnData,
+    TError,
+    TData,
+    TQueryFnData,
+    TQueryKey
+  >
+>(
+  arg1: QueryKey | TOptions,
+  arg2: QueryFunction<TQueryFnData, TQueryKey> | TOptions = {} as TOptions,
+  arg3: TOptions = {} as TOptions
+): TOptions {
+  // `useQuery(optionsObj)`
+  if (!isQueryKey(arg1)) {
+    return cloneDeepUnref(arg1);
+  }
+  // `useQuery(queryKey, queryFn, optionsObj?)`
+  if (typeof arg2 === "function") {
+    return cloneDeepUnref({
+      ...arg3,
+      queryKey: arg1,
+      queryFn: arg2,
+    });
+  }
+  // `useQuery(queryKey, optionsObj?)`
+  return cloneDeepUnref({
+    ...arg2,
+    queryKey: arg1,
+  });
+}
+
+function isQueryKey(value: unknown): value is QueryKey {
+  return typeof value === "string" || Array.isArray(value);
 }

@@ -31,14 +31,9 @@ describe("useQuery", () => {
   test("should properly execute query", () => {
     useQuery("key0", simpleFetcher, { staleTime: 1000 });
 
-    expect(useBaseQuery).toBeCalledWith(
-      {
-        queryFn: expect.anything(),
-        queryKey: "key0",
-        staleTime: 1000,
-      },
-      QueryObserver
-    );
+    expect(useBaseQuery).toBeCalledWith(QueryObserver, "key0", simpleFetcher, {
+      staleTime: 1000,
+    });
   });
 
   test("should return loading status initially", () => {

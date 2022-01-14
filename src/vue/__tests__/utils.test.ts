@@ -1,10 +1,9 @@
-import { successMutator, simpleFetcher } from "./test-utils";
+import { successMutator } from "./test-utils";
 import {
   isQueryKey,
   parseFilterArgs,
   parseMutationArgs,
   parseMutationFilterArgs,
-  parseQueryArgs,
   updateState,
 } from "../utils";
 
@@ -67,35 +66,6 @@ describe("utils", () => {
         ...options,
         mutationKey: "key",
         mutationFn: successMutator,
-      };
-
-      expect(result).toEqual(expected);
-    });
-  });
-
-  describe("parseQueryArgs", () => {
-    test("should return the same instance of options", () => {
-      const options = { retry: false };
-      const result = parseQueryArgs(options);
-
-      expect(result).toStrictEqual(options);
-    });
-
-    test("should merge query key with options", () => {
-      const options = { retry: false };
-      const result = parseQueryArgs("key", options);
-      const expected = { ...options, queryKey: "key" };
-
-      expect(result).toEqual(expected);
-    });
-
-    test("should merge query key and fn with options", () => {
-      const options = { retry: false };
-      const result = parseQueryArgs("key", simpleFetcher, options);
-      const expected = {
-        ...options,
-        queryKey: "key",
-        queryFn: simpleFetcher,
       };
 
       expect(result).toEqual(expected);
