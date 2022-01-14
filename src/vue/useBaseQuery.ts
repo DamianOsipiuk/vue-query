@@ -7,6 +7,7 @@ import {
   unref,
   isRef,
   watch,
+  UnwrapRef,
 } from "vue-demi";
 
 import type {
@@ -65,10 +66,8 @@ export function useBaseQuery<
     | UseQueryOptions<TQueryFnData, TError, TData, TQueryKey> = {},
   arg3: UseQueryOptions<TQueryFnData, TError, TData, TQueryKey> = {}
 ): UseQueryReturnType<TData, TError> {
-  const options = parseQueryArgs(arg1, arg2, arg3);
-  // @ts-ignore
+  const options = getQueryOptions();
   const queryClient = useQueryClient(options.queryClientKey);
-  // @ts-ignore
   const defaultedOptions = queryClient.defaultQueryObserverOptions(options);
   const observer = new Observer(queryClient, defaultedOptions);
   const state = reactive(observer.getCurrentResult());
@@ -80,10 +79,7 @@ export function useBaseQuery<
     [() => arg1, () => arg2, () => arg3],
     () => {
       observer.setOptions(
-        queryClient.defaultQueryObserverOptions(
-          // @ts-ignore
-          parseQueryArgs(arg1, arg2, arg3)
-        )
+        queryClient.defaultQueryObserverOptions(getQueryOptions())
       );
     },
     { deep: true }
@@ -103,12 +99,40 @@ export function useBaseQuery<
 
   return {
     ...resultRefs,
-    // @ts-ignore
     suspense,
   };
+
+  /**
+   * Get Query Options object
+   * All inner refs unwrapped. No Reactivity
+   */
+  function getQueryOptions() {
+    let options;
+
+    if (!isQueryKey(arg1)) {
+      // `useQuery(optionsObj)`
+      options = arg1;
+    } else if (typeof arg2 === "function") {
+      // `useQuery(queryKey, queryFn, optionsObj?)`
+      options = {
+        ...arg3,
+        queryKey: arg1,
+        queryFn: arg2,
+      };
+    } else {
+      // `useQuery(queryKey, optionsObj?)`
+      options = {
+        ...arg2,
+        queryKey: arg1,
+      };
+    }
+    return cloneDeepUnref(options) as WithQueryClientKey<
+      QueryObserverOptions<TQueryFnData, TError, TData, TQueryData, TQueryKey>
+    >;
+  }
 }
 
-function cloneDeepUnref<T>(obj: T): T {
+function cloneDeepUnref<T>(obj: T): UnwrapRef<T> {
   return clonedeepwith(obj, (val) => {
     if (typeof val === "function") {
       return val;
@@ -118,42 +142,6 @@ function cloneDeepUnref<T>(obj: T): T {
     }
   });
 }
-function parseQueryArgs<
-  TQueryFnData = unknown,
-  TError = unknown,
-  TData = TQueryFnData,
-  TQueryKey extends QueryKey = QueryKey,
-  TOptions = QueryObserverOptions<
-    TQueryFnData,
-    TError,
-    TData,
-    TQueryFnData,
-    TQueryKey
-  >
->(
-  arg1: QueryKey | TOptions,
-  arg2: QueryFunction<TQueryFnData, TQueryKey> | TOptions = {} as TOptions,
-  arg3: TOptions = {} as TOptions
-): TOptions {
-  // `useQuery(optionsObj)`
-  if (!isQueryKey(arg1)) {
-    return cloneDeepUnref(arg1);
-  }
-  // `useQuery(queryKey, queryFn, optionsObj?)`
-  if (typeof arg2 === "function") {
-    return cloneDeepUnref({
-      ...arg3,
-      queryKey: arg1,
-      queryFn: arg2,
-    });
-  }
-  // `useQuery(queryKey, optionsObj?)`
-  return cloneDeepUnref({
-    ...arg2,
-    queryKey: arg1,
-  });
-}
-
 function isQueryKey(value: unknown): value is QueryKey {
   return typeof value === "string" || Array.isArray(value);
 }
