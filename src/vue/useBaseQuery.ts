@@ -56,7 +56,7 @@ export function useBaseQuery<
     | UseQueryOptionsGeneric<TQueryFnData, TError, TData, TQueryKey> = {},
   arg3: UseQueryOptionsGeneric<TQueryFnData, TError, TData, TQueryKey> = {}
 ): UseQueryReturnType<TData, TError> {
-  const options = getQueryOptions();
+  const options = getQueryUnreffedOptions();
   const queryClient = useQueryClient(options.queryClientKey);
   const defaultedOptions = queryClient.defaultQueryObserverOptions(options);
   const observer = new Observer(queryClient, defaultedOptions);
@@ -69,7 +69,7 @@ export function useBaseQuery<
     [() => arg1, () => arg2, () => arg3],
     () => {
       observer.setOptions(
-        queryClient.defaultQueryObserverOptions(getQueryOptions())
+        queryClient.defaultQueryObserverOptions(getQueryUnreffedOptions())
       );
     },
     { deep: true }
@@ -88,7 +88,7 @@ export function useBaseQuery<
    * Get Query Options object
    * All inner refs unwrapped. No Reactivity
    */
-  function getQueryOptions() {
+  function getQueryUnreffedOptions() {
     let options;
 
     if (!isQueryKey(arg1)) {
@@ -118,6 +118,7 @@ function cloneDeepUnref<T>(obj: T): UnwrapRef<T> {
     }
   });
 }
+
 function isQueryKey(value: unknown): value is QueryKey {
   return typeof value === "string" || Array.isArray(value);
 }
