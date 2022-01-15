@@ -29,6 +29,12 @@ export type UseInfiniteQueryOptions<
   >
 >;
 
+type UseInfiniteQueryReturnType<TData, TError> = UseQueryReturnType<
+  TData,
+  TError,
+  InfiniteQueryObserverResult<TData, TError>
+>;
+
 export function useInfiniteQuery<
   TQueryFnData = unknown,
   TError = unknown,
@@ -36,11 +42,8 @@ export function useInfiniteQuery<
   TQueryKey extends QueryKey = QueryKey
 >(
   options: UseInfiniteQueryOptions<TQueryFnData, TError, TData, TQueryKey>
-): UseQueryReturnType<
-  TData,
-  TError,
-  InfiniteQueryObserverResult<TData, TError>
->;
+): UseInfiniteQueryReturnType<TData, TError>;
+
 export function useInfiniteQuery<
   TQueryFnData = unknown,
   TError = unknown,
@@ -52,11 +55,8 @@ export function useInfiniteQuery<
     UseInfiniteQueryOptions<TQueryFnData, TError, TData, TQueryKey>,
     "queryKey"
   >
-): UseQueryReturnType<
-  TData,
-  TError,
-  InfiniteQueryObserverResult<TData, TError>
->;
+): UseInfiniteQueryReturnType<TData, TError>;
+
 export function useInfiniteQuery<
   TQueryFnData = unknown,
   TError = unknown,
@@ -69,11 +69,7 @@ export function useInfiniteQuery<
     UseInfiniteQueryOptions<TQueryFnData, TError, TData, TQueryKey>,
     "queryKey" | "queryFn"
   >
-): UseQueryReturnType<
-  TData,
-  TError,
-  InfiniteQueryObserverResult<TData, TError>
->;
+): UseInfiniteQueryReturnType<TData, TError>;
 
 export function useInfiniteQuery<
   TQueryFnData,
@@ -88,19 +84,11 @@ export function useInfiniteQuery<
     | QueryFunction<TQueryFnData, TQueryKey>
     | UseInfiniteQueryOptions<TQueryFnData, TError, TData, TQueryKey>,
   arg3?: UseInfiniteQueryOptions<TQueryFnData, TError, TData, TQueryKey>
-): UseQueryReturnType<
-  TData,
-  TError,
-  InfiniteQueryObserverResult<TData, TError>
-> {
+): UseInfiniteQueryReturnType<TData, TError> {
   return useBaseQuery(
     InfiniteQueryObserver as typeof QueryObserver,
     arg1,
     arg2,
     arg3
-  ) as UseQueryReturnType<
-    TData,
-    TError,
-    InfiniteQueryObserverResult<TData, TError>
-  >;
+  ) as UseInfiniteQueryReturnType<TData, TError>;
 }
