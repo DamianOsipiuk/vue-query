@@ -1,4 +1,4 @@
-import { InfiniteData, InfiniteQueryObserver } from "react-query/core";
+import { InfiniteQueryObserver } from "react-query/core";
 
 import type {
   QueryObserver,
@@ -13,7 +13,6 @@ import type {
   WithQueryClientKey,
   VueInfiniteQueryObserverOptions,
 } from "./types";
-import { UseQueryOptions } from "./useQuery";
 
 export type UseInfiniteQueryOptions<
   TQueryFnData = unknown,
@@ -75,6 +74,7 @@ export function useInfiniteQuery<
   TError,
   InfiniteQueryObserverResult<TData, TError>
 >;
+
 export function useInfiniteQuery<
   TQueryFnData,
   TError,
@@ -95,31 +95,9 @@ export function useInfiniteQuery<
 > {
   return useBaseQuery(
     InfiniteQueryObserver as typeof QueryObserver,
-    arg1 as
-      | TQueryKey
-      | UseQueryOptions<
-          InfiniteData<TQueryFnData>,
-          TError,
-          InfiniteData<TData>,
-          TQueryKey
-        >,
-    arg2 as
-      | QueryFunction<InfiniteData<TQueryFnData>, TQueryKey>
-      | UseQueryOptions<
-          InfiniteData<TQueryFnData>,
-          TError,
-          InfiniteData<TData>,
-          TQueryKey
-        >
-      | undefined,
-    arg3 as
-      | UseQueryOptions<
-          InfiniteData<TQueryFnData>,
-          TError,
-          InfiniteData<TData>,
-          TQueryKey
-        >
-      | undefined
+    arg1,
+    arg2,
+    arg3
   ) as UseQueryReturnType<
     TData,
     TError,
