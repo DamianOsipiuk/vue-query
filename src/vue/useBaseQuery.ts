@@ -18,7 +18,7 @@ import type {
 import type { QueryFunction } from "react-query/types/core";
 import clonedeepwith from "lodash.clonedeepwith";
 import { useQueryClient } from "./useQueryClient";
-import { updateState } from "./utils";
+import { updateState, isQueryKey } from "./utils";
 import { WithQueryClientKey } from "./types";
 import { UseQueryOptions } from "./useQuery";
 import { UseInfiniteQueryOptions } from "./useInfiniteQuery";
@@ -114,11 +114,7 @@ function cloneDeepUnref<T>(obj: T): UnwrapRef<T> {
       return val;
     }
     if (isRef(val)) {
-      return unref(val);
+      return cloneDeepUnref(unref(val));
     }
   });
-}
-
-function isQueryKey(value: unknown): value is QueryKey {
-  return typeof value === "string" || Array.isArray(value);
 }

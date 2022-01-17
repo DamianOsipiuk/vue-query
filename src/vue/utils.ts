@@ -3,13 +3,57 @@ import type {
   MutationFunction,
   MutationKey,
   MutationOptions,
+  QueryFunction,
+  QueryObserverOptions,
   QueryKey,
 } from "react-query/types/core";
+import { reactive, toRefs } from "vue-demi";
 import { QueryFilters } from "./useIsFetching";
 import { MutationFilters } from "./useIsMutating";
 
 export function isQueryKey(value: unknown): value is QueryKey {
   return typeof value === "string" || Array.isArray(value);
+}
+
+// This Function is Deprecated. It's not used internally anymore.
+export function parseQueryArgs<
+  TQueryFnData = unknown,
+  TError = unknown,
+  TData = TQueryFnData,
+  TQueryKey extends QueryKey = QueryKey,
+  TOptions = QueryObserverOptions<
+    TQueryFnData,
+    TError,
+    TData,
+    TQueryFnData,
+    TQueryKey
+  >
+>(
+  arg1: QueryKey | TOptions,
+  arg2: QueryFunction<TQueryFnData, TQueryKey> | TOptions = {} as TOptions,
+  arg3: TOptions = {} as TOptions
+): TOptions {
+  let options;
+
+  if (!isQueryKey(arg1)) {
+    // `useQuery(optionsObj)`
+    options = arg1;
+  } else if (typeof arg2 === "function") {
+    // `useQuery(queryKey, queryFn, optionsObj?)`
+    options = {
+      ...toRefs(reactive(arg3 as unknown as object)),
+      queryKey: arg1,
+      queryFn: arg2,
+    };
+  } else {
+    // `useQuery(queryKey, optionsObj?)`
+    options = {
+      ...toRefs(reactive(arg2 as unknown as object)),
+      queryKey: arg1,
+    };
+  }
+
+  return reactive(options as object) as unknown as TOptions;
 }
 
 export function parseFilterArgs<TFilters extends QueryFilters>(

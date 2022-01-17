@@ -12,6 +12,7 @@ export { useIsMutating } from "./useIsMutating";
 export {
   parseFilterArgs,
   parseMutationArgs,
+  parseQueryArgs,
   parseMutationFilterArgs,
 } from "./utils";
 
