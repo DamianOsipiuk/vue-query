@@ -40,7 +40,6 @@
   },
   "homepage": "https://github.com/DamianOsipiuk/vue-query#readme",
   "dependencies": {
-    "lodash.clonedeepwith": "^4.5.0",
     "match-sorter": "^6.3.1",
     "react-query": "^3.34.5",
     "vue-demi": "^0.10.1"

@@ -7,7 +7,7 @@ import type {
   QueryObserverOptions,
   QueryKey,
 } from "react-query/types/core";
-import { reactive, toRefs } from "vue-demi";
+import { isRef, reactive, toRefs, unref, UnwrapRef } from "vue-demi";
 import { QueryFilters } from "./useIsFetching";
 import { MutationFilters } from "./useIsMutating";
 
@@ -110,4 +110,47 @@ export function updateState(
   Object.keys(state).forEach((key) => {
     state[key] = update[key];
   });
+}
+
+export function cloneDeep<T>(
+  value: T,
+  customizer?: (val: unknown) => unknown | void
+): T {
+  if (customizer) {
+    const result = customizer(value);
+    if (result !== undefined) {
+      return result as typeof value;
+    }
+  }
+
+  if (Array.isArray(value)) {
+    return value.map((val) => cloneDeep(val, customizer)) as typeof value;
+  }
+
+  if (typeof value === "object" && isPlainObject(value)) {
+    const entries = Object.entries(value).map(([key, val]) => [
+      key,
+      cloneDeep(val, customizer),
+    ]);
+    return Object.fromEntries(entries);
+  }
+
+  return value;
+}
+
+export function cloneDeepUnref<T>(obj: T): UnwrapRef<T> {
+  return cloneDeep(obj, (val) => {
+    if (isRef(val)) {
+      return cloneDeepUnref(unref(val));
+    }
+  }) as UnwrapRef<typeof obj>;
+}
+
+function isPlainObject(value: unknown): boolean {
+  if (Object.prototype.toString.call(value) !== "[object Object]") {
+    return false;
+  }
+
+  const prototype = Object.getPrototypeOf(value);
+  return prototype === null || prototype === Object.prototype;
 }

@@ -4,10 +4,7 @@ import {
   readonly,
   ToRefs,
   reactive,
-  unref,
-  isRef,
   watch,
-  UnwrapRef,
 } from "vue-demi";
 import type {
   QueryObserver,
@@ -16,9 +13,8 @@ import type {
   QueryObserverResult,
 } from "react-query/core";
 import type { QueryFunction } from "react-query/types/core";
-import clonedeepwith from "lodash.clonedeepwith";
 import { useQueryClient } from "./useQueryClient";
-import { updateState, isQueryKey } from "./utils";
+import { updateState, isQueryKey, cloneDeepUnref } from "./utils";
 import { WithQueryClientKey } from "./types";
 import { UseQueryOptions } from "./useQuery";
 import { UseInfiniteQueryOptions } from "./useInfiniteQuery";
@@ -106,15 +102,4 @@ export function useBaseQuery<
       QueryObserverOptions<TQueryFnData, TError, TData, TQueryData, TQueryKey>
     >;
   }
-}
-
-function cloneDeepUnref<T>(obj: T): UnwrapRef<T> {
-  return clonedeepwith(obj, (val) => {
-    if (typeof val === "function") {
-      return val;
-    }
-    if (isRef(val)) {
-      return cloneDeepUnref(unref(val));
-    }
-  });
 }
