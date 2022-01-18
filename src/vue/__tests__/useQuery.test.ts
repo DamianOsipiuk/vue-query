@@ -11,6 +11,7 @@ import {
   flushPromises,
   rejectFetcher,
   simpleFetcher,
+  getSimpleFetcherWithReturnData,
   noop,
 } from "./test-utils";
 import { useQuery } from "../useQuery";
@@ -31,14 +32,9 @@ describe("useQuery", () => {
   test("should properly execute query", () => {
     useQuery("key0", simpleFetcher, { staleTime: 1000 });
 
-    expect(useBaseQuery).toBeCalledWith(
-      {
-        queryFn: expect.anything(),
-        queryKey: "key0",
-        staleTime: 1000,
-      },
-      QueryObserver
-    );
+    expect(useBaseQuery).toBeCalledWith(QueryObserver, "key0", simpleFetcher, {
+      staleTime: 1000,
+    });
   });
 
   test("should return loading status initially", () => {
@@ -52,14 +48,51 @@ describe("useQuery", () => {
     });
   });
 
-  test("should resolve to success and update reactive state", async () => {
-    const query = useQuery("key2", simpleFetcher);
+  test("should resolve to success and update reactive state: useQuery(key, dataFn)", async () => {
+    const query = useQuery("key2", getSimpleFetcherWithReturnData("result2"));
 
     await flushPromises();
 
     expect(query).toMatchObject({
       status: { value: "success" },
-      data: { value: "Some data" },
+      data: { value: "result2" },
+      isLoading: { value: false },
+      isFetching: { value: false },
+      isFetched: { value: true },
+      isSuccess: { value: true },
+    });
+  });
+
+  test("should resolve to success and update reactive state: useQuery(optionsObj)", async () => {
+    const query = useQuery({
+      queryKey: "key31",
+      queryFn: getSimpleFetcherWithReturnData("result31"),
+      enabled: true,
+    });
+
+    await flushPromises();
+
+    expect(query).toMatchObject({
+      status: { value: "success" },
+      data: { value: "result31" },
+      isLoading: { value: false },
+      isFetching: { value: false },
+      isFetched: { value: true },
+      isSuccess: { value: true },
+    });
+  });
+
+  test("should resolve to success and update reactive state: useQuery(key, optionsObj)", async () => {
+    const query = useQuery("key32", {
+      queryFn: getSimpleFetcherWithReturnData("result32"),
+      enabled: true,
+    });
+
+    await flushPromises();
+
+    expect(query).toMatchObject({
+      status: { value: "success" },
+      data: { value: "result32" },
       isLoading: { value: false },
       isFetching: { value: false },
       isFetched: { value: true },

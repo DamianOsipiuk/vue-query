@@ -1,14 +1,6 @@
 import { QueryObserver } from "react-query/core";
-
-import type {
-  QueryFunction,
-  QueryKey,
-  QueryObserverOptions,
-} from "react-query/types/core";
-
+import type { QueryFunction, QueryKey } from "react-query/types/core";
 import { useBaseQuery, UseQueryReturnType } from "./useBaseQuery";
-import { parseQueryArgs } from "./utils";
-
 import type { WithQueryClientKey, VueQueryObserverOptions } from "./types";
 
 export type UseQueryOptions<
@@ -66,16 +58,5 @@ export function useQuery<
     | UseQueryOptions<TQueryFnData, TError, TData, TQueryKey>,
   arg3?: UseQueryOptions<TQueryFnData, TError, TData, TQueryKey>
 ): UseQueryReturnType<TData, TError> {
-  const parsedOptions = parseQueryArgs(
-    arg1,
-    arg2,
-    arg3
-  ) as QueryObserverOptions<
-    TQueryFnData,
-    TError,
-    TData,
-    TQueryFnData,
-    TQueryKey
-  >;
-  return useBaseQuery(parsedOptions, QueryObserver);
+  return useBaseQuery(QueryObserver, arg1, arg2, arg3);
 }

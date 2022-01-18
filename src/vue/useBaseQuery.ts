@@ -4,30 +4,20 @@ import {
   readonly,
   ToRefs,
   reactive,
-  watchEffect,
-  unref,
+  watch,
 } from "vue-demi";
-
 import type {
   QueryObserver,
   QueryKey,
   QueryObserverOptions,
   QueryObserverResult,
 } from "react-query/core";
-
+import type { QueryFunction } from "react-query/types/core";
 import { useQueryClient } from "./useQueryClient";
-import { updateState } from "./utils";
+import { updateState, isQueryKey, cloneDeepUnref } from "./utils";
 import { WithQueryClientKey } from "./types";
-
-export type UseBaseQueryOptions<
-  TQueryFnData = unknown,
-  TError = unknown,
-  TData = TQueryFnData,
-  TQueryData = unknown,
-  TQueryKey extends QueryKey = QueryKey
-> = WithQueryClientKey<
-  QueryObserverOptions<TQueryFnData, TError, TData, TQueryData, TQueryKey>
->;
+import { UseQueryOptions } from "./useQuery";
+import { UseInfiniteQueryOptions } from "./useInfiniteQuery";
 
 export type UseQueryReturnType<
   TData,
@@ -37,6 +27,15 @@ export type UseQueryReturnType<
   suspense: () => Promise<Result>;
 };
 
+type UseQueryOptionsGeneric<
+  TQueryFnData,
+  TError,
+  TData,
+  TQueryKey extends QueryKey = QueryKey
+> =
+  | UseQueryOptions<TQueryFnData, TError, TData, TQueryKey>
+  | UseInfiniteQueryOptions<TQueryFnData, TError, TData, TQueryKey>;
+
 export function useBaseQuery<
   TQueryFnData,
   TError,
@@ -44,54 +43,63 @@ export function useBaseQuery<
   TQueryData,
   TQueryKey extends QueryKey
 >(
-  options: UseBaseQueryOptions<
-    TQueryFnData,
-    TError,
-    TData,
-    TQueryData,
-    TQueryKey
-  >,
-  Observer: typeof QueryObserver
+  Observer: typeof QueryObserver,
+  arg1:
+    | TQueryKey
+    | UseQueryOptionsGeneric<TQueryFnData, TError, TData, TQueryKey>,
+  arg2:
+    | QueryFunction<TQueryFnData, TQueryKey>
+    | UseQueryOptionsGeneric<TQueryFnData, TError, TData, TQueryKey> = {},
+  arg3: UseQueryOptionsGeneric<TQueryFnData, TError, TData, TQueryKey> = {}
 ): UseQueryReturnType<TData, TError> {
+  const options = getQueryUnreffedOptions();
   const queryClient = useQueryClient(options.queryClientKey);
-  const defaultedOptions = queryClient.defaultQueryObserverOptions(
-    getOptionsWithUnrefKey(options)
-  );
+  const defaultedOptions = queryClient.defaultQueryObserverOptions(options);
   const observer = new Observer(queryClient, defaultedOptions);
   const state = reactive(observer.getCurrentResult());
   const unsubscribe = observer.subscribe((result) => {
     updateState(state, result);
   });
 
-  watchEffect(() => {
-    observer.setOptions(
-      queryClient.defaultQueryObserverOptions(getOptionsWithUnrefKey(options))
-    );
-  });
+  watch(
+    [() => arg1, () => arg2, () => arg3],
+    () => {
+      observer.setOptions(
+        queryClient.defaultQueryObserverOptions(getQueryUnreffedOptions())
+      );
+    },
+    { deep: true }
+  );
 
   onUnmounted(() => {
     unsubscribe();
   });
 
-  const resultRefs = toRefs(readonly(state)) as UseQueryReturnType<
-    TData,
-    TError
-  >;
-
-  // Suspense
-  const suspense = () => observer.fetchOptimistic(defaultedOptions);
-
   return {
-    ...resultRefs,
-    suspense,
+    ...(toRefs(readonly(state)) as UseQueryReturnType<TData, TError>),
+    suspense: () => observer.fetchOptimistic(defaultedOptions),
   };
 
-  // We need to unref keys, otherwise ReactQuery doesn't recognise keys changes
-  function getOptionsWithUnrefKey<
-    T extends { queryKey?: QueryKey | undefined }
-  >(options: T): T {
-    return Array.isArray(options.queryKey)
-      ? { ...options, queryKey: options.queryKey.map(unref) }
-      : options;
+  /**
+   * Get Query Options object
+   * All inner refs unwrapped. No Reactivity
+   */
+  function getQueryUnreffedOptions() {
+    let options;
+
+    if (!isQueryKey(arg1)) {
+      // `useQuery(optionsObj)`
+      options = arg1;
+    } else if (typeof arg2 === "function") {
+      // `useQuery(queryKey, queryFn, optionsObj?)`
+      options = { ...arg3, queryKey: arg1, queryFn: arg2 };
+    } else {
+      // `useQuery(queryKey, optionsObj?)`
+      options = { ...arg2, queryKey: arg1 };
+    }
+
+    return cloneDeepUnref(options) as WithQueryClientKey<
+      QueryObserverOptions<TQueryFnData, TError, TData, TQueryData, TQueryKey>
+    >;
   }
 }
