@@ -63,7 +63,6 @@
     "@nuxtjs/composition-api": "^0.29.3",
     "@rollup/plugin-node-resolve": "^13.0.6",
     "@types/jest": "^27.0.2",
-    "@types/lodash.clonedeepwith": "^4.5.6",
     "@typescript-eslint/eslint-plugin": "^5.1.0",
     "@typescript-eslint/parser": "^5.1.0",
     "@vue/compiler-sfc": "^3.2.20",
