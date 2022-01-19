@@ -2,6 +2,7 @@
 
 export { useQueryClient, VUE_QUERY_CLIENT } from "./useQueryClient";
 export { useQueryProvider } from "./useQueryProvider";
+export { VueQueryPlugin } from "./vueQueryPlugin";
 
 export { useQuery } from "./useQuery";
 export { useQueries } from "./useQueries";
