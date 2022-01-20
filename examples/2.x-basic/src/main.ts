@@ -1,9 +1,11 @@
 import Vue from "vue";
 import VueCompositionApi, { createApp, h } from "@vue/composition-api";
+import { VueQueryPlugin } from "vue-query";
 
 import App from "./App.vue";
 
 Vue.use(VueCompositionApi);
+Vue.use(VueQueryPlugin);
 
 createApp({
   render() {
