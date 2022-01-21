@@ -16,6 +16,7 @@ export {
   parseMutationFilterArgs,
 } from "./utils";
 
+export type { QueryClientConfig } from "./useQueryProvider";
 export type { UseQueryReturnType } from "./useBaseQuery";
 export type { UseQueryOptions } from "./useQuery";
 export type { UseInfiniteQueryOptions } from "./useInfiniteQuery";

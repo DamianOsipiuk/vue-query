@@ -2,6 +2,7 @@
 import { defineComponent, h } from "vue-demi";
 
 export default defineComponent({
+  name: "LogoIcon",
   render() {
     const svgAttrs = {
       xmlns: "http://www.w3.org/2000/svg",

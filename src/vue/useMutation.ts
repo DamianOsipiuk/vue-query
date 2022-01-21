@@ -138,7 +138,7 @@ export function useMutation<
     unsubscribe();
   });
 
-  const resultRefs = toRefs(readonly(state)) as ToRefs<
+  const resultRefs = toRefs(readonly(state)) as unknown as ToRefs<
     Readonly<MutationResult<TData, TError, TVariables, TContext>>
   >;
 

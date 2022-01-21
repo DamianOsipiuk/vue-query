@@ -7,7 +7,7 @@ const config: Config.InitialOptions = {
   },
   moduleFileExtensions: ["js", "ts", "vue"],
   moduleNameMapper: {
-    "^@/(.*)": "<rootDir>/src/$1",
+    "^vue-query": "<rootDir>/src/index.ts",
   },
   testPathIgnorePatterns: ["test-utils.ts"],
   collectCoverage: true,

@@ -11,10 +11,10 @@ import {
   h,
   onUnmounted,
 } from "vue-demi";
+import { useQueryClient } from "vue-query";
 
 import { sortFns, getQueryState, makeArrayNonConfigurable } from "./utils";
 import { useTheme } from "./useTheme";
-import { useQueryClient } from "../vue/useQueryClient";
 
 import Logo from "./components/Logo.vue";
 import ActiveQueryPanel from "./active-query-panel/ActiveQueryPanel.vue";

@@ -108,6 +108,7 @@ export default defineComponent({
 .details-code {
   font-size: 0.9em;
   line-height: 1.8rem;
+  color: "inherit";
 }
 
 .details-pre {
