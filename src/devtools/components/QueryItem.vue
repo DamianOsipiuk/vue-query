@@ -117,5 +117,6 @@ export default defineComponent({
 .query-item-code {
   font-size: 0.9em;
   padding: 0.5rem;
+  color: "inherit";
 }
 </style>
