@@ -6,7 +6,7 @@ import vue from "rollup-plugin-vue";
 
 const common = {
   plugins: [resolve(), autoExternal(), typescript(), vue(), postcss()],
-  external: ["vue-query", "react-query/core"],
+  external: ["vue-query", "react-query/core", "vue", "vue-demi"],
   watch: {
     include: "src/**",
     exclude: ["node_modules/**", "tests"],
