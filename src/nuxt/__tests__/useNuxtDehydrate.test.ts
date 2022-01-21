@@ -1,6 +1,6 @@
 import { useNuxtDehydrate } from "../useNuxtDehydrate";
 
-jest.mock("../../index", () => ({
+jest.mock("vue-query", () => ({
   dehydrate: jest.fn(() => "dehydrated"),
 }));
 

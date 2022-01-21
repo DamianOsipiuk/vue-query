@@ -1,5 +1,5 @@
-import { dehydrate } from "@/index";
-import type { QueryClient } from "@/index";
+import { dehydrate } from "vue-query";
+import type { QueryClient } from "vue-query";
 
 export function useNuxtDehydrate(
   ssrContext: {
