@@ -1,6 +1,5 @@
 <script lang="ts">
 import { defineComponent } from "vue";
-import { useQueryProvider } from "vue-query";
 import { VueQueryDevTools } from "vue-query/devtools";
 
 import Todos from "./Todos.vue";
@@ -8,9 +7,6 @@ import Todos from "./Todos.vue";
 export default defineComponent({
   name: "App",
   components: { Todos, VueQueryDevTools },
-  setup() {
-    useQueryProvider();
-  },
 });
 </script>
 
