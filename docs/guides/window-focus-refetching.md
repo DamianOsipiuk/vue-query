@@ -3,21 +3,22 @@ If a user leaves your application and returns to stale data, **Vue Query automat
 ### Disabling globally
 
 ```ts
-import { defineComponent } from "vue";
-import { useQueryProvider } from "vue-query";
+import { createApp } from "vue";
+import { VueQueryPlugin, VueQueryPluginOptions } from "vue-query";
 
-export default defineComponent({
-  name: "App",
-  setup() {
-    useQueryProvider({
-      defaultOptions: {
-        queries: {
-          refetchOnWindowFocus: false,
-        },
+import App from "./App.vue";
+
+const vueQueryPluginOptions: VueQueryPluginOptions = {
+  queryClientConfig: {
+    defaultOptions: {
+      queries: {
+        refetchOnWindowFocus: false,
       },
-    });
+    },
   },
-});
+};
+
+createApp(App).use(VueQueryPlugin, vueQueryPluginOptions).mount("#app");
 ```
 
 ### Disabling Per-Query

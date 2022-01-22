@@ -1,6 +1,5 @@
 <script lang="ts">
 import { defineComponent, ref } from "vue";
-import { useQueryProvider } from "vue-query";
 import { VueQueryDevTools } from "vue-query/devtools";
 
 import Posts from "./Posts.vue";
@@ -10,8 +9,6 @@ export default defineComponent({
   name: "App",
   components: { Posts, Post, VueQueryDevTools },
   setup() {
-    useQueryProvider();
-
     const visitedPosts = ref(new Set());
     const isVisited = (id: number) => visitedPosts.value.has(id);
 
