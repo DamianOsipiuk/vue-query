@@ -32,6 +32,19 @@ export const VueQueryPlugin: Plugin = {
 
     client.mount();
 
+    // @ts-expect-error onUnmount is not released yet
+    if (app.onUnmount) {
+      // @ts-expect-error onUnmount is not released yet
+      app.onUnmount(client.unmount);
+    } else {
+      const originalUnmount = app.unmount;
+      app.unmount = function vueQueryUnmount() {
+        client.unmount();
+        originalUnmount();
+      };
+    }
+
+    /* istanbul ignore next */
     if (isVue2) {
       app.mixin({
         beforeCreate() {
