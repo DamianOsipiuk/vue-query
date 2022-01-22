@@ -27,7 +27,9 @@ export type VueQueryPluginOptions = ConfigOptions | ClientOptions;
 
 export const VueQueryPlugin: Plugin = {
   install: (app, options: VueQueryPluginOptions = {}) => {
-    const clientKeySuffix = options.queryClientKey || "";
+    const clientKeySuffix = options.queryClientKey
+      ? `:${options.queryClientKey}`
+      : "";
     let client: QueryClient;
 
     if ("queryClient" in options && options.queryClient) {
@@ -74,8 +76,9 @@ export const VueQueryPlugin: Plugin = {
           this._provided[VUE_QUERY_CLIENT + clientKeySuffix] = client;
 
           options.additionalClients?.forEach((additionalClient) => {
-            this._provided[VUE_QUERY_CLIENT + additionalClient.queryClientKey] =
-              additionalClient.queryClient;
+            this._provided[
+              `${VUE_QUERY_CLIENT}:${additionalClient.queryClientKey}`
+            ] = additionalClient.queryClient;
             additionalClient.queryClient.mount();
           });
         },
@@ -85,7 +88,7 @@ export const VueQueryPlugin: Plugin = {
 
       options.additionalClients?.forEach((additionalClient) => {
         app.provide(
-          VUE_QUERY_CLIENT + additionalClient.queryClientKey,
+          `${VUE_QUERY_CLIENT}:${additionalClient.queryClientKey}`,
           additionalClient.queryClient
         );
         additionalClient.queryClient.mount();

@@ -113,7 +113,7 @@ describe("VueQueryPlugin", () => {
       appMock._mixin.beforeCreate?.call(appMock);
 
       expect(appMock._provided).toMatchObject({
-        [VUE_QUERY_CLIENT + "CUSTOM"]: expect.objectContaining({
+        [VUE_QUERY_CLIENT + ":CUSTOM"]: expect.objectContaining({
           defaultOptions: {},
         }),
       });
@@ -124,7 +124,7 @@ describe("VueQueryPlugin", () => {
       VueQueryPlugin.install?.(appMock, { queryClientKey: "CUSTOM" });
 
       expect(appMock.provide).toHaveBeenCalledWith(
-        VUE_QUERY_CLIENT + "CUSTOM",
+        VUE_QUERY_CLIENT + ":CUSTOM",
         expect.objectContaining({ defaultOptions: {} })
       );
     });
@@ -230,8 +230,8 @@ describe("VueQueryPlugin", () => {
         expect(barClient.mount).toHaveBeenCalled();
         expect(appMock._provided).toMatchObject({
           VUE_QUERY_CLIENT: expect.anything(),
-          [VUE_QUERY_CLIENT + foo]: fooClient,
-          [VUE_QUERY_CLIENT + bar]: barClient,
+          [`${VUE_QUERY_CLIENT}:${foo}`]: fooClient,
+          [`${VUE_QUERY_CLIENT}:${bar}`]: barClient,
         });
       }
     );
@@ -272,12 +272,12 @@ describe("VueQueryPlugin", () => {
         );
         expect(appMock.provide).toHaveBeenNthCalledWith(
           2,
-          VUE_QUERY_CLIENT + foo,
+          `${VUE_QUERY_CLIENT}:${foo}`,
           fooClient
         );
         expect(appMock.provide).toHaveBeenNthCalledWith(
           3,
-          VUE_QUERY_CLIENT + bar,
+          `${VUE_QUERY_CLIENT}:${bar}`,
           barClient
         );
       }
