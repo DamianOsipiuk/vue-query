@@ -1,8 +1,7 @@
 import { getCurrentInstance, inject } from "vue-demi";
 
 import type { QueryClient } from "react-query/types/core";
-
-export const VUE_QUERY_CLIENT = "VUE_QUERY_CLIENT";
+import { getClientKey } from "./utils";
 
 export function useQueryClient(id = ""): QueryClient {
   const vm = getCurrentInstance()?.proxy;
@@ -13,8 +12,8 @@ export function useQueryClient(id = ""): QueryClient {
     );
   }
 
-  const suffix = id ? `:${id}` : "";
-  const queryClient = inject<QueryClient>(VUE_QUERY_CLIENT + suffix);
+  const key = getClientKey(id);
+  const queryClient = inject<QueryClient>(key);
 
   if (!queryClient) {
     throw new Error(

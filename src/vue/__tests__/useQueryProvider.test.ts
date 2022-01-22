@@ -1,8 +1,8 @@
 import { provide, onUnmounted } from "vue-demi";
 import { QueryClient } from "react-query/core";
 
-import { VUE_QUERY_CLIENT } from "../useQueryClient";
 import { useQueryProvider } from "../useQueryProvider";
+import { VUE_QUERY_CLIENT } from "../utils";
 
 jest.mock("react-query/core", () => ({
   QueryClient: jest.fn(),

@@ -1,6 +1,6 @@
 /* istanbul ignore file */
 
-export { useQueryClient, VUE_QUERY_CLIENT } from "./useQueryClient";
+export { useQueryClient } from "./useQueryClient";
 export { useQueryProvider } from "./useQueryProvider";
 export { VueQueryPlugin } from "./vueQueryPlugin";
 
@@ -11,6 +11,7 @@ export { useMutation } from "./useMutation";
 export { useIsFetching } from "./useIsFetching";
 export { useIsMutating } from "./useIsMutating";
 export {
+  VUE_QUERY_CLIENT,
   parseFilterArgs,
   parseMutationArgs,
   parseQueryArgs,

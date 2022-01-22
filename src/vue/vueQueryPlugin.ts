@@ -1,10 +1,10 @@
 import { isVue2 } from "vue-demi";
 import { QueryClient } from "react-query/core";
-import { VUE_QUERY_CLIENT } from "./useQueryClient";
 
-import { QueryClientConfig } from "react-query/types/core";
-
+import type { QueryClientConfig } from "react-query/types/core";
 import type { Plugin } from "vue";
+
+import { getClientKey } from "./utils";
 
 export interface AdditionalClient {
   queryClient: QueryClient;
@@ -27,9 +27,7 @@ export type VueQueryPluginOptions = ConfigOptions | ClientOptions;
 
 export const VueQueryPlugin: Plugin = {
   install: (app, options: VueQueryPluginOptions = {}) => {
-    const clientKeySuffix = options.queryClientKey
-      ? `:${options.queryClientKey}`
-      : "";
+    const clientKey = getClientKey(options.queryClientKey);
     let client: QueryClient;
 
     if ("queryClient" in options && options.queryClient) {
@@ -73,24 +71,21 @@ export const VueQueryPlugin: Plugin = {
               set: (v) => Object.assign(provideCache, v),
             });
           }
-          this._provided[VUE_QUERY_CLIENT + clientKeySuffix] = client;
+          this._provided[clientKey] = client;
 
           options.additionalClients?.forEach((additionalClient) => {
-            this._provided[
-              `${VUE_QUERY_CLIENT}:${additionalClient.queryClientKey}`
-            ] = additionalClient.queryClient;
+            const key = getClientKey(additionalClient.queryClientKey);
+            this._provided[key] = additionalClient.queryClient;
             additionalClient.queryClient.mount();
           });
         },
       });
     } else {
-      app.provide(VUE_QUERY_CLIENT + clientKeySuffix, client);
+      app.provide(clientKey, client);
 
       options.additionalClients?.forEach((additionalClient) => {
-        app.provide(
-          `${VUE_QUERY_CLIENT}:${additionalClient.queryClientKey}`,
-          additionalClient.queryClient
-        );
+        const key = getClientKey(additionalClient.queryClientKey);
+        app.provide(key, additionalClient.queryClient);
         additionalClient.queryClient.mount();
       });
     }

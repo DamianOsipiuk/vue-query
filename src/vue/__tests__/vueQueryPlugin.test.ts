@@ -3,7 +3,7 @@ import { isVue2, isVue3 } from "vue-demi";
 import { QueryClient } from "react-query/types/core";
 
 import { VueQueryPlugin } from "../vueQueryPlugin";
-import { VUE_QUERY_CLIENT } from "../useQueryClient";
+import { VUE_QUERY_CLIENT } from "../utils";
 
 interface TestApp extends App {
   onUnmount: Function;

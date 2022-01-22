@@ -11,6 +11,13 @@ import { isRef, reactive, toRefs, unref, UnwrapRef } from "vue-demi";
 import { QueryFilters } from "./useIsFetching";
 import { MutationFilters } from "./useIsMutating";
 
+export const VUE_QUERY_CLIENT = "VUE_QUERY_CLIENT";
+
+export function getClientKey(key?: string) {
+  const suffix = key ? `:${key}` : "";
+  return `${VUE_QUERY_CLIENT}${suffix}`;
+}
+
 export function isQueryKey(value: unknown): value is QueryKey {
   return typeof value === "string" || Array.isArray(value);
 }
