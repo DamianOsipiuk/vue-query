@@ -20,20 +20,20 @@ Before starting using Vue Query, you need to initialize it.
 
 There are 2 possible ways to do it.
 
-1. [Vue 3 Only] Using `VueQueryPlugin` (recommended)
+1. Using `VueQueryPlugin` (recommended)
 
-```js
-import { VueQueryPlugin } from "vue-query";
+   ```ts
+   import { VueQueryPlugin } from "vue-query";
 
-app.use(VueQueryPlugin);
-```
+   app.use(VueQueryPlugin);
+   ```
 
-1. Calling `useQueryProvider` in the root component
+2. Calling `useQueryProvider` in the root component
 
-```
-<script setup>
-import { useQueryProvider } from 'vue-query';
+   ```vue
+   <script setup>
+   import { useQueryProvider } from 'vue-query';
 
-useQueryProvider();
-</script>
-```
+   useQueryProvider();
+   </script>
+   ```

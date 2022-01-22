@@ -6,7 +6,7 @@ When you begin your Vue Query journey, you'll want these DevTools by your side. 
 
 The DevTools are bundle split into the vue-query/devtools package. No need to install anything extra, just:
 
-```
+```ts
 import { VueQueryDevTools } from "vue-query/devtools";
 ```
 
@@ -20,7 +20,7 @@ Floating Mode will mount the DevTools as a fixed, floating element in your app a
 
 Place the following code as high in your Vue app as you can. The closer it is to the root of the page, the better it will work!
 
-```
+```vue
 <script lang="ts">
 import { defineComponent } from "vue";
 import { VueQueryDevTools } from "vue-query/devtools";
@@ -56,7 +56,7 @@ export default defineComponent({
 
 Embedded Mode will embed the DevTools as a regular component in your application. You can style it however you'd like after that!
 
-```
+```vue
 <script lang="ts">
 import { defineComponent } from "vue";
 import { VueQueryDevToolsPanel } from "vue-query/devtools";

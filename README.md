@@ -39,18 +39,15 @@ For topics not covered in vue-query docs visit https://react-query.tanstack.com/
 
 # Quick Start
 
-1. Attach **Vue Query** to the root component of your Vue application
+1. Initialize **Vue Query** via **VueQueryPlugin**
 
    ```ts
-   import { defineComponent } from "vue";
-   import { useQueryProvider } from "vue-query";
+   import { createApp } from "vue";
+   import { VueQueryPlugin } from "vue-query";
 
-   export default defineComponent({
-     name: "App",
-     setup() {
-       useQueryProvider();
-     },
-   });
+   import App from "./App.vue";
+
+   createApp(App).use(VueQueryPlugin).mount("#app");
    ```
 
 2. Use query
@@ -75,9 +72,7 @@ For topics not covered in vue-query docs visit https://react-query.tanstack.com/
 
    ```ts
    const id = ref(1);
-   const queryKey = ["todos", id];
-   const queryFunction = () => getTodos(id);
    const enabled = ref(false);
 
-   const query = useQuery(queryKey, queryFunction, { enabled });
+   const query = useQuery(["todos", id], () => getTodos(id), { enabled });
    ```
