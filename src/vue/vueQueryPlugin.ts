@@ -1,7 +1,8 @@
 import { isVue2 } from "vue-demi";
 import { QueryClient } from "react-query/core";
 import { VUE_QUERY_CLIENT } from "./useQueryClient";
-import { QueryClientConfig } from "./useQueryProvider";
+
+import { QueryClientConfig } from "react-query/types/core";
 
 import type { Plugin } from "vue";
 
@@ -15,7 +16,7 @@ interface ClientOptions {
   queryClientKey?: string;
 }
 
-type VueQueryPluginOptions = ConfigOptions | ClientOptions;
+export type VueQueryPluginOptions = ConfigOptions | ClientOptions;
 
 export const VueQueryPlugin: Plugin = {
   install: (app, options: VueQueryPluginOptions = {}) => {

@@ -1,12 +1,8 @@
 import { provide, onUnmounted } from "vue-demi";
 import { QueryClient } from "react-query/core";
+import type { QueryClientConfig } from "react-query/types/core";
 
 import { VUE_QUERY_CLIENT } from "./useQueryClient";
-
-// QueryClientConfig isn't exported so we need to extract it
-export type QueryClientConfig = NonNullable<
-  ConstructorParameters<typeof QueryClient>[0]
->;
 
 export function useQueryProvider(
   arg1: QueryClientConfig | QueryClient = {},

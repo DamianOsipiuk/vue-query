@@ -18,7 +18,7 @@ export function useQueryClient(id = ""): QueryClient {
 
   if (!queryClient) {
     throw new Error(
-      "No queryClient found in Vue context, use 'useQueryProvider' to set one in the root component."
+      "No 'queryClient' found in Vue context, use 'VueQueryPlugin' to properly initialize the library."
     );
   }
 
