@@ -7,6 +7,7 @@ import { VUE_QUERY_CLIENT } from "../useQueryClient";
 
 interface TestApp extends App {
   onUnmount: Function;
+  _unmount: Function;
   _mixin: ComponentOptions;
   _provided: Record<string, any>;
 }
@@ -17,7 +18,11 @@ function getAppMock(withUnmountHook = false): TestApp {
   const mock = {
     provide: jest.fn(),
     unmount: jest.fn(),
-    onUnmount: withUnmountHook ? jest.fn() : undefined,
+    onUnmount: withUnmountHook
+      ? jest.fn((u: Function) => {
+          mock._unmount = u;
+        })
+      : undefined,
     mixin: (m: ComponentOptions): any => {
       mock._mixin = m;
     },
@@ -29,6 +34,52 @@ function getAppMock(withUnmountHook = false): TestApp {
 describe("VueQueryPlugin", () => {
   beforeEach(() => {
     jest.clearAllMocks();
+  });
+
+  describe("when app unmounts", () => {
+    test("should call unmount on each client when onUnmount is missing", () => {
+      const appMock = getAppMock();
+      const customClient = {
+        mount: jest.fn(),
+        unmount: jest.fn(),
+      } as unknown as QueryClient;
+      const customClient2 = {
+        mount: jest.fn(),
+        unmount: jest.fn(),
+      } as unknown as QueryClient;
+      const originalUnmount = appMock.unmount;
+      VueQueryPlugin.install?.(appMock, {
+        queryClient: customClient,
+        additionalClients: [
+          {
+            queryClient: customClient2,
+            queryClientKey: "client2",
+          },
+        ],
+      });
+
+      appMock.unmount();
+
+      expect(appMock.unmount).not.toEqual(originalUnmount);
+      expect(customClient.unmount).toHaveBeenCalledTimes(1);
+      expect(customClient2.unmount).toHaveBeenCalledTimes(1);
+      expect(originalUnmount).toHaveBeenCalledTimes(1);
+    });
+
+    test("should call onUnmount if present", () => {
+      const appMock = getAppMock(true);
+      const customClient = {
+        mount: jest.fn(),
+        unmount: jest.fn(),
+      } as unknown as QueryClient;
+      const originalUnmount = appMock.unmount;
+      VueQueryPlugin.install?.(appMock, { queryClient: customClient });
+
+      appMock._unmount();
+
+      expect(appMock.unmount).toEqual(originalUnmount);
+      expect(customClient.unmount).toHaveBeenCalledTimes(1);
+    });
   });
 
   describe("when called without additional options", () => {
@@ -106,7 +157,7 @@ describe("VueQueryPlugin", () => {
     });
   });
 
-  describe("when called with custom client condig", () => {
+  describe("when called with custom client config", () => {
     testIf(isVue2)(
       "should instantiate a client with the provided config",
       () => {
@@ -145,36 +196,91 @@ describe("VueQueryPlugin", () => {
     );
   });
 
-  describe("when app unmounts", () => {
-    test("should wrap unmount if onUnmount is missing", () => {
-      const appMock = getAppMock();
-      const customClient = {
-        mount: jest.fn(),
-        unmount: jest.fn(),
-      } as unknown as QueryClient;
-      const originalUnmount = appMock.unmount;
-      VueQueryPlugin.install?.(appMock, { queryClient: customClient });
+  describe("when additional clients are provided", () => {
+    testIf(isVue2)(
+      "should provide those clients in addition to the default one",
+      () => {
+        const foo = "Foo";
+        const bar = "Bar";
+        const appMock = getAppMock();
+        const fooClient = {
+          mount: jest.fn(),
+          name: foo,
+        } as unknown as QueryClient;
+        const barClient = {
+          mount: jest.fn(),
+          name: bar,
+        } as unknown as QueryClient;
+        VueQueryPlugin.install?.(appMock, {
+          additionalClients: [
+            {
+              queryClient: fooClient,
+              queryClientKey: foo,
+            },
+            {
+              queryClient: barClient,
+              queryClientKey: bar,
+            },
+          ],
+        });
 
-      appMock.unmount();
+        appMock._mixin.beforeCreate?.call(appMock);
 
-      expect(appMock.unmount).not.toEqual(originalUnmount);
-      expect(customClient.unmount).toHaveBeenCalledTimes(1);
-      expect(originalUnmount).toHaveBeenCalledTimes(1);
-    });
+        expect(fooClient.mount).toHaveBeenCalled();
+        expect(barClient.mount).toHaveBeenCalled();
+        expect(appMock._provided).toMatchObject({
+          VUE_QUERY_CLIENT: expect.anything(),
+          [VUE_QUERY_CLIENT + foo]: fooClient,
+          [VUE_QUERY_CLIENT + bar]: barClient,
+        });
+      }
+    );
 
-    test("should call onUnmount if present", () => {
-      const appMock = getAppMock(true);
-      const customClient = {
-        mount: jest.fn(),
-        unmount: jest.fn(),
-      } as unknown as QueryClient;
-      const originalUnmount = appMock.unmount;
-      VueQueryPlugin.install?.(appMock, { queryClient: customClient });
+    testIf(isVue3)(
+      "should provide those clients in addition to the default one",
+      () => {
+        const foo = "Foo";
+        const bar = "Bar";
+        const appMock = getAppMock();
+        const fooClient = {
+          mount: jest.fn(),
+          name: foo,
+        } as unknown as QueryClient;
+        const barClient = {
+          mount: jest.fn(),
+          name: bar,
+        } as unknown as QueryClient;
+        VueQueryPlugin.install?.(appMock, {
+          additionalClients: [
+            {
+              queryClient: fooClient,
+              queryClientKey: foo,
+            },
+            {
+              queryClient: barClient,
+              queryClientKey: bar,
+            },
+          ],
+        });
 
-      appMock.unmount();
-
-      expect(appMock.unmount).toEqual(originalUnmount);
-      expect(appMock.onUnmount).toHaveBeenCalledWith(customClient.unmount);
-    });
+        expect(fooClient.mount).toHaveBeenCalled();
+        expect(barClient.mount).toHaveBeenCalled();
+        expect(appMock.provide).toHaveBeenNthCalledWith(
+          1,
+          VUE_QUERY_CLIENT,
+          expect.anything()
+        );
+        expect(appMock.provide).toHaveBeenNthCalledWith(
+          2,
+          VUE_QUERY_CLIENT + foo,
+          fooClient
+        );
+        expect(appMock.provide).toHaveBeenNthCalledWith(
+          3,
+          VUE_QUERY_CLIENT + bar,
+          barClient
+        );
+      }
+    );
   });
 });

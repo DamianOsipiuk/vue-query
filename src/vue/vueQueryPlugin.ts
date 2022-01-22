@@ -6,14 +6,21 @@ import { QueryClientConfig } from "react-query/types/core";
 
 import type { Plugin } from "vue";
 
+export interface AdditionalClient {
+  queryClient: QueryClient;
+  queryClientKey: string;
+}
+
 interface ConfigOptions {
   queryClientConfig?: QueryClientConfig;
   queryClientKey?: string;
+  additionalClients?: AdditionalClient[];
 }
 
 interface ClientOptions {
   queryClient?: QueryClient;
   queryClientKey?: string;
+  additionalClients?: AdditionalClient[];
 }
 
 export type VueQueryPluginOptions = ConfigOptions | ClientOptions;
@@ -33,14 +40,21 @@ export const VueQueryPlugin: Plugin = {
 
     client.mount();
 
+    const cleanup = () => {
+      client.unmount();
+      options.additionalClients?.forEach((additionalClient) => {
+        additionalClient.queryClient.unmount();
+      });
+    };
+
     // @ts-expect-error onUnmount is not released yet
     if (app.onUnmount) {
       // @ts-expect-error onUnmount is not released yet
-      app.onUnmount(client.unmount);
+      app.onUnmount(cleanup);
     } else {
       const originalUnmount = app.unmount;
       app.unmount = function vueQueryUnmount() {
-        client.unmount();
+        cleanup();
         originalUnmount();
       };
     }
@@ -58,10 +72,24 @@ export const VueQueryPlugin: Plugin = {
             });
           }
           this._provided[VUE_QUERY_CLIENT + clientKeySuffix] = client;
+
+          options.additionalClients?.forEach((additionalClient) => {
+            this._provided[VUE_QUERY_CLIENT + additionalClient.queryClientKey] =
+              additionalClient.queryClient;
+            additionalClient.queryClient.mount();
+          });
         },
       });
     } else {
       app.provide(VUE_QUERY_CLIENT + clientKeySuffix, client);
+
+      options.additionalClients?.forEach((additionalClient) => {
+        app.provide(
+          VUE_QUERY_CLIENT + additionalClient.queryClientKey,
+          additionalClient.queryClient
+        );
+        additionalClient.queryClient.mount();
+      });
     }
   },
 };
