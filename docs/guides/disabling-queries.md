@@ -11,8 +11,6 @@ When `enabled` is `false`:
 - The query will ignore query client `invalidateQueries` and `refetchQueries` calls that would normally result in the query refetching.
 - `refetch` can be used to manually trigger the query to fetch.
 
-?> The example below uses `<script setup>` syntax.
-
 ```vue
 <script setup>
 import { useQuery } from "vue-query";

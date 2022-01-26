@@ -38,8 +38,6 @@ With this information, we can create a "Load More" UI by:
 ?> Note: It's very important you do not call `fetchNextPage` with arguments unless you want them to override the `pageParam` data returned from the `getNextPageParam` function.  
 Do not do this: `<button @click={fetchNextPage} />` as this would send the onClick event to the `fetchNextPage` function.
 
-?> The example below uses `<script setup>` syntax.
-
 ```vue
 <script setup>
 import { defineComponent } from "vue";

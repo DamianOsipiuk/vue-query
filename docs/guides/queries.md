@@ -32,8 +32,6 @@ Beyond those primary states, more information is available depending on the stat
 
 For **most** queries, it's usually sufficient to check for the `isLoading` state, then the `isError` state, then finally, assume that the data is available and render the successful state:
 
-?> The example below uses `<script setup>` syntax.
-
 ```vue
 <script setup>
 import { useQuery } from "vue-query";
