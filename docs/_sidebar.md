@@ -25,6 +25,7 @@
   - [Mutations](guides/mutations.md)
   - [Custom clients (experimental)](guides/custom-clients.md)
   - [SSR & Nuxt.js (experimental)](guides/ssr.md)
+  - [Best Practices](guides/best-practices.md)
 
 - Examples
 
