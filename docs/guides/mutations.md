@@ -3,24 +3,18 @@ Unlike queries, mutations are typically used to create/update/delete data or per
 Here's an example of a mutation that adds a new todo to the server:
 
 ```vue
-<script>
+<script setup>
 import { useQuery } from "vue-query";
 
-export default defineComponent({
-  setup() {
-    const { isLoading, isError, error, isSuccess, mutate } = useMutation(
-      (newTodo) => {
-        return axios.post("/todos", newTodo);
-      }
-    );
+function useAddTodoMutation() {
+  return useMutation((newTodo) => axios.post("/todos", newTodo));
+}
 
-    function addTodo() {
-      mutate({ id: new Date(), title: "Do Laundry" });
-    }
+const { isLoading, isError, error, isSuccess, mutate } = useAddTodoMutation();
 
-    return { isLoading, isError, error, isSuccess, addTodo };
-  },
-});
+function addTodo() {
+  mutate({ id: new Date(), title: "Do Laundry" });
+}
 </script>
 
 <template>
@@ -55,17 +49,15 @@ It's sometimes the case that you need to clear the `error` or `data` of a mutati
 <script>
 import { useQuery } from "vue-query";
 
-export default defineComponent({
-  setup() {
-    const { error, mutate, reset } = useMutation(createTodo);
+function useAddTodoMutation() {
+  return useMutation((newTodo) => axios.post("/todos", newTodo));
+}
 
-    function addTodo() {
-      mutate({ id: new Date(), title: "Do Laundry" });
-    }
+const { error, mutate, reset } = useAddTodoMutation();
 
-    return { error, mutate, reset, addTodo };
-  },
-});
+function addTodo() {
+  mutate({ id: new Date(), title: "Do Laundry" });
+}
 </script>
 
 <template>
@@ -82,37 +74,41 @@ export default defineComponent({
 `useMutation` comes with some helper options that allow quick and easy side-effects at any stage during the mutation lifecycle. These come in handy for both [invalidating and refetching queries after mutations](https://react-query.tanstack.com/guides/invalidations-from-mutations) and even [optimistic updates](https://react-query.tanstack.com/guides/optimistic-updates)
 
 ```js
-useMutation(addTodo, {
-  onMutate: (variables) => {
-    // A mutation is about to happen!
+function useAddTodoMutation() {
+  return useMutation((newTodo) => axios.post("/todos", newTodo), {
+    onMutate: (variables) => {
+      // A mutation is about to happen!
 
-    // Optionally return a context containing data to use when for example rolling back
-    return { id: 1 };
-  },
-  onError: (error, variables, context) => {
-    // An error happened!
-    console.log(`rolling back optimistic update with id ${context.id}`);
-  },
-  onSuccess: (data, variables, context) => {
-    // Boom baby!
-  },
-  onSettled: (data, error, variables, context) => {
-    // Error or success... doesn't matter!
-  },
-});
+      // Optionally return a context containing data to use when for example rolling back
+      return { id: 1 };
+    },
+    onError: (error, variables, context) => {
+      // An error happened!
+      console.log(`rolling back optimistic update with id ${context.id}`);
+    },
+    onSuccess: (data, variables, context) => {
+      // Boom baby!
+    },
+    onSettled: (data, error, variables, context) => {
+      // Error or success... doesn't matter!
+    },
+  });
+}
 ```
 
 When returning a promise in any of the callback functions it will first be awaited before the next callback is called:
 
 ```js
-useMutation(addTodo, {
-  onSuccess: async () => {
-    console.log("I'm first!");
-  },
-  onSettled: async () => {
-    console.log("I'm second!");
-  },
-});
+function useAddTodoMutation() {
+  return useMutation((newTodo) => axios.post("/todos", newTodo), {
+    onSuccess: async () => {
+      console.log("I'm first!");
+    },
+    onSettled: async () => {
+      console.log("I'm second!");
+    },
+  });
+}
 ```
 
 You might find that you want to **trigger additional callbacks** than the ones defined on `useMutation` when calling `mutate`.  
@@ -122,17 +118,21 @@ Supported overrides include: `onSuccess`, `onError` and `onSettled`.
 Please keep in mind that those additional callbacks won't run if your component unmounts **before** the mutation finishes.
 
 ```js
-useMutation(addTodo, {
-  onSuccess: (data, variables, context) => {
-    // I will fire first
-  },
-  onError: (error, variables, context) => {
-    // I will fire first
-  },
-  onSettled: (data, error, variables, context) => {
-    // I will fire first
-  },
-});
+function useAddTodoMutation() {
+  return useMutation((newTodo) => axios.post("/todos", newTodo), {
+    onSuccess: (data, variables, context) => {
+      // I will fire first
+    },
+    onError: (error, variables, context) => {
+      // I will fire first
+    },
+    onSettled: (data, error, variables, context) => {
+      // I will fire first
+    },
+  });
+}
+
+const { mutate } = useAddTodoMutation();
 
 mutate(todo, {
   onSuccess: (data, variables, context) => {
@@ -152,11 +152,11 @@ mutate(todo, {
 Use `mutateAsync` instead of `mutate` to get a promise which will resolve on success or throw on an error. This can for example be used to compose side effects.
 
 ```js
-const mutation = useMutation(addTodo);
+const { mutateAsync } = useAddTodoMutation();
 
 function myAction() {
   try {
-    const todo = await mutation.mutateAsync(todo);
+    const todo = await mutateAsync(todo);
     console.log(todo);
   } catch (error) {
     console.error(error);

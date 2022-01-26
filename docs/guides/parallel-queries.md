@@ -16,18 +16,18 @@ const projectsQuery = useQuery('projects', fetchProjects)
 
 ## Dynamic Parallel Queries with `useQueries`
 
-If the number of queries you need to execute is changing from render to render, you cannot use manual querying since that would violate the rules of hooks. Instead, Vue Query provides a `useQueries` hook, which you can use to dynamically execute as many queries in parallel as you'd like.
+If the number of queries you need to execute is changing over the lifetime of a component, you cannot use manual querying since that would violate the rules of Composables - they should be executed synchronously in `<script setup>` or the `setup()` function. Instead, Vue Query provides a `useQueries` hook, which you can use to dynamically execute as many queries in parallel as you'd like.
 
-`useQueries` accepts an **array of query options objects** and returns an **array of query results**:
+`useQueries` accepts an **array of query options objects** and returns a **reactive array of query results**:
 
 ```js
 const users = computed(...)
-const userQueries = useQueries(
-  users.value.map(user => {
+const usersQueriesOptions = computed(() => users.value.map(user => {
     return {
       queryKey: ['user', user.id],
       queryFn: () => fetchUserById(user.id),
     }
   })
-)
+);
+const userQueries = useQueries(usersQueriesOptions)
 ```

@@ -16,20 +16,15 @@ There are a few ways to supply placeholder data for a query to the cache before 
 ### Placeholder Data as a Value
 
 ```js
-const result = useQuery("todos", () => fetch("/todos"), {
-  placeholderData: placeholderTodos,
-});
-```
+function useTodosQuery() {
+  const placeholderTodos = [...];
 
-### Placeholder Data as a Function
-
-```js
-function generateFakeTodos() {
-  // fake todos
+  return useQuery("todos", () => fetch("/todos"), {
+    placeholderData: placeholderTodos,
+  });
 }
-const result = useQuery("todos", () => fetch("/todos"), {
-  placeholderData: generateFakeTodos(),
-});
+
+const { data, isLoading } = useTodosQuery();
 ```
 
 ### Placeholder Data from Cache
@@ -38,16 +33,20 @@ In some circumstances, you may be able to provide the placeholder data for a que
 A good example of this would be searching the cached data from a blog post list query for a preview version of the post, then using that as the placeholder data for your individual post query:
 
 ```js
-const result = useQuery(
-  ["blogPost", blogPostId],
-  () => fetch(`/blogPosts/${blogPostId}`),
-  {
-    placeholderData: () => {
-      // Use the smaller/preview version of the blogPost from the 'blogPosts' query as the placeholder data for this blogPost query
-      return queryClient
-        .getQueryData("blogPosts")
-        ?.find((d) => d.id === blogPostId);
-    },
-  }
-);
+function useBlogPostQuery(blogPostId) {
+  return useQuery(
+    ["blogPost", blogPostId],
+    () => fetch(`/blogPosts/${blogPostId.value}`),
+    {
+      placeholderData: () => {
+        // Use the smaller/preview version of the blogPost from the 'blogPosts' query as the placeholder data for this blogPost query
+        return queryClient
+          .getQueryData("blogPosts")
+          ?.find((d) => d.id === blogPostId.value);
+      },
+    }
+  );
+}
+
+const { data, isLoading } = useBlogPostQuery(blogPostId);
 ```
