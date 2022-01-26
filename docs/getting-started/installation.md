@@ -44,7 +44,7 @@ All examples in our documentation use [`<script setup>`](https://staging.vuejs.o
 
 Vue 2 users can also use that syntax using [this plugin](https://github.com/antfu/unplugin-vue2-script-setup). Please check the plugin documentation for installation details.
 
-If you are not a fan of `<script setup>` syntax, you can easily translate all the examples into normal Composition API syntax by moving the code under `setup()()` function and returning the values used in the template.
+If you are not a fan of `<script setup>` syntax, you can easily translate all the examples into normal Composition API syntax by moving the code under `setup()` function and returning the values used in the template.
 
 ```vue
 <script>
