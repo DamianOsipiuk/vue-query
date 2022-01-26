@@ -38,7 +38,11 @@ For **most** queries, it's usually sufficient to check for the `isLoading` state
 <script setup>
 import { useQuery } from "vue-query";
 
-const { isLoading, isError, data, error } = useQuery("todos", fetchTodoList);
+function useTodosQuery() {
+  return useQuery("todos", fetchTodoList);
+}
+
+const { isLoading, isError, data, error } = useTodosQuery();
 </script>
 
 <template>
@@ -57,7 +61,11 @@ If booleans aren't your thing, you can always use the `status` state as well:
 <script setup>
 import { useQuery } from "vue-query";
 
-const { status, data, error } = useQuery("todos", fetchTodoList);
+function useTodosQuery() {
+  return useQuery("todos", fetchTodoList);
+}
+
+const { status, data, error } = useTodosQuery();
 </script>
 
 <template>

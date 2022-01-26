@@ -90,7 +90,7 @@ A good example of this would be searching the cached data from a todos list quer
 ```js
 function useTodoQuery(todoId) {
   return useQuery(["todo", todoId], () => fetch(`/todos/${todoId.value}`), {
-      // Use a todo from the 'todos' query as the initial data for this todo query
+    // Use a todo from the 'todos' query as the initial data for this todo query
     initialData: queryClient.getQueryData("todos")?.find((d) => d.id === todoId.value);
   });
 }
