@@ -1,7 +1,7 @@
 Rendering paginated data is a very common UI pattern and in Vue Query, it **"just works"** by including the page information in the query key:
 
 ```js
-const result = useQuery(["projects", { page }], fetchProjects);
+const result = useQuery(["projects", page], fetchProjects);
 ```
 
 However, if you run this simple example, you might notice something strange:

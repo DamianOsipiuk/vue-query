@@ -38,40 +38,32 @@ With this information, we can create a "Load More" UI by:
 ?> Note: It's very important you do not call `fetchNextPage` with arguments unless you want them to override the `pageParam` data returned from the `getNextPageParam` function.  
 Do not do this: `<button @click={fetchNextPage} />` as this would send the onClick event to the `fetchNextPage` function.
 
+?> The example below uses `<script setup>` syntax.
+
 ```vue
-<script>
+<script setup>
 import { defineComponent } from "vue";
 import { useInfiniteQuery } from "vue-query";
 
 const fetchProjects = ({ pageParam = 0 }) =>
   fetch("/api/projects?cursor=" + pageParam);
 
-export default defineComponent({
-  setup() {
-    const {
-      data,
-      error,
-      fetchNextPage,
-      hasNextPage,
-      isFetching,
-      isFetchingNextPage,
-      isLoading,
-      isError,
-    } = useInfiniteQuery("projects", fetchProjects, {
-      getNextPageParam: (lastPage, pages) => lastPage.nextCursor,
-    });
-    return {
-      data,
-      error,
-      fetchNextPage,
-      hasNextPage,
-      isFetching,
-      isFetchingNextPage,
-      isLoading,
-      isError,
-    };
-  },
-});
+function useProjectsInfiniteQuery() {
+  return useInfiniteQuery("projects", fetchProjects, {
+    getNextPageParam: (lastPage, pages) => lastPage.nextCursor,
+  });
+}
+
+const {
+  data,
+  error,
+  fetchNextPage,
+  hasNextPage,
+  isFetching,
+  isFetchingNextPage,
+  isLoading,
+  isError,
+} = useProjectsInfiniteQuery();
 </script>
 
 <template>
@@ -107,9 +99,13 @@ If an infinite query's results are ever removed from the `queryCache`, the pagin
 If you only want to actively refetch a subset of all pages, you can pass the `refetchPage` function to `refetch` returned from `useInfiniteQuery`.
 
 ```js
-const { refetch } = useInfiniteQuery("projects", fetchProjects, {
-  getNextPageParam: (lastPage, pages) => lastPage.nextCursor,
-});
+function useProjectsInfiniteQuery() {
+  return useInfiniteQuery("projects", fetchProjects, {
+    getNextPageParam: (lastPage, pages) => lastPage.nextCursor,
+  });
+}
+
+const { refetch } = useProjectsInfiniteQuery();
 
 // only refetch the first page
 refetch({ refetchPage: (page, index) => index === 0 });
@@ -132,9 +128,13 @@ You can pass custom variables to the `fetchNextPage` function which will overrid
 const fetchProjects = ({ pageParam = 0 }) =>
   fetch("/api/projects?cursor=" + pageParam);
 
-const { fetchNextPage } = useInfiniteQuery("projects", fetchProjects, {
-  getNextPageParam: (lastPage, pages) => lastPage.nextCursor,
-});
+function useProjectsInfiniteQuery() {
+  return useInfiniteQuery("projects", fetchProjects, {
+    getNextPageParam: (lastPage, pages) => lastPage.nextCursor,
+  });
+}
+
+const { fetchNextPage } = useProjectsInfiniteQuery();
 
 // Pass your own page param
 const skipToCursor50 = () => fetchNextPage({ pageParam: 50 });
@@ -156,12 +156,14 @@ useInfiniteQuery("projects", fetchProjects, {
 Sometimes you may want to show the pages in reversed order. If this is case, you can use the `select` option:
 
 ```js
-useInfiniteQuery("projects", fetchProjects, {
-  select: (data) => ({
-    pages: [...data.pages].reverse(),
-    pageParams: [...data.pageParams].reverse(),
-  }),
-});
+function useProjectsInfiniteQuery() {
+  return useInfiniteQuery("projects", fetchProjects, {
+    select: (data) => ({
+      pages: [...data.pages].reverse(),
+      pageParams: [...data.pageParams].reverse(),
+    }),
+  });
+}
 ```
 
 ## What if I want to manually update the infinite query?

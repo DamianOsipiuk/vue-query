@@ -2,21 +2,17 @@ A query's `status === 'loading'` state is sufficient enough to show the initial 
 
 To do this, queries also supply you with an `isFetching` boolean that you can use to show that it's in a fetching state, regardless of the state of the `status` variable:
 
+?> The example below uses `<script setup>` syntax.
+
 ```vue
-<script>
-import { defineComponent } from "vue";
+<script setup>
 import { useQuery } from "vue-query";
 
-export default defineComponent({
-  name: "Todo",
-  setup(props) {
-    const { isLoading, isError, data, error, isFetching } = useQuery(
-      "todos",
-      fetchTodoList
-    );
-    return { isLoading, isError, data, error, isFetching };
-  },
-});
+function useTodosQuery() {
+  return useQuery("todos", fetchTodoList);
+}
+
+const { isLoading, isError, data, error, isFetching } = useTodosQuery();
 </script>
 
 <template>
@@ -35,17 +31,13 @@ export default defineComponent({
 
 In addition to individual query loading states, if you would like to show a global loading indicator when **any** queries are fetching (including in the background), you can use the `useIsFetching` hook:
 
+?> The example below uses `<script setup>` syntax.
+
 ```vue
-<script>
-import { defineComponent } from "vue";
+<script setup>
 import { useIsFetching } from "vue-query";
 
-export default defineComponent({
-  setup(props) {
-    const isFetching = useIsFetching();
-    return { isFetching };
-  },
-});
+const isFetching = useIsFetching();
 </script>
 
 <template>

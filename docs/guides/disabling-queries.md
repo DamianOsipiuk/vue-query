@@ -11,20 +11,18 @@ When `enabled` is `false`:
 - The query will ignore query client `invalidateQueries` and `refetchQueries` calls that would normally result in the query refetching.
 - `refetch` can be used to manually trigger the query to fetch.
 
+?> The example below uses `<script setup>` syntax.
+
 ```vue
-<script>
-import { defineComponent } from "vue";
+<script setup>
 import { useQuery } from "vue-query";
 
-export default defineComponent({
-  setup(props) {
-    const { isIdle, isError, data, error, isFetching, refetch } = useQuery(
-      "todos",
-      fetchTodoList,
-      { enabled: false }
-    );
-    return { isIdle, isError, data, error, isFetching, refetch };
-  },
+function useTodosQuery({ enabled }) {
+  return useQuery("todos", fetchTodoList, { enabled });
+}
+
+const { isIdle, isError, data, error, isFetching, refetch } = useTodosQuery({
+  enabled: false,
 });
 </script>
 

@@ -28,23 +28,17 @@ Beyond those primary states, more information is available depending on the stat
 - `data` - If the query is in a `success` state, the data is available via the `data` property.
 - `isFetching` - In any state, if the query is fetching at any time (including background refetching) `isFetching` will be `true`.
 
+?> Every property of the `result` object is wrapped into a `ref`, so it can be safely destructured while retaining reactivity.
+
 For **most** queries, it's usually sufficient to check for the `isLoading` state, then the `isError` state, then finally, assume that the data is available and render the successful state:
 
+?> The example below uses `<script setup>` syntax.
+
 ```vue
-<script>
-import { defineComponent } from "vue";
+<script setup>
 import { useQuery } from "vue-query";
 
-export default defineComponent({
-  name: "Todo",
-  setup(props) {
-    const { isLoading, isError, data, error } = useQuery(
-      "todos",
-      fetchTodoList
-    );
-    return { isLoading, isError, data, error };
-  },
-});
+const { isLoading, isError, data, error } = useQuery("todos", fetchTodoList);
 </script>
 
 <template>
@@ -60,17 +54,10 @@ export default defineComponent({
 If booleans aren't your thing, you can always use the `status` state as well:
 
 ```vue
-<script>
-import { defineComponent } from "vue";
+<script setup>
 import { useQuery } from "vue-query";
 
-export default defineComponent({
-  name: "Todo",
-  setup(props) {
-    const { status, data, error } = useQuery("todos", fetchTodoList);
-    return { status, data, error };
-  },
-});
+const { status, data, error } = useQuery("todos", fetchTodoList);
 </script>
 
 <template>
