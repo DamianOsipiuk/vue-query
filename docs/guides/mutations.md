@@ -4,7 +4,7 @@ Here's an example of a mutation that adds a new todo to the server:
 
 ```vue
 <script setup>
-import { useQuery } from "vue-query";
+import { useMutation } from "vue-query";
 
 function useAddTodoMutation() {
   return useMutation((newTodo) => axios.post("/todos", newTodo));
@@ -47,7 +47,7 @@ It's sometimes the case that you need to clear the `error` or `data` of a mutati
 
 ```vue
 <script>
-import { useQuery } from "vue-query";
+import { useMutation } from "vue-query";
 
 function useAddTodoMutation() {
   return useMutation((newTodo) => axios.post("/todos", newTodo));
@@ -111,10 +111,10 @@ function useAddTodoMutation() {
 }
 ```
 
-You might find that you want to **trigger additional callbacks** than the ones defined on `useMutation` when calling `mutate`.  
-This can be used to trigger component-specific side effects.  
-To do that, you can provide any of the same callback options to the `mutate` function after your mutation variable.  
-Supported overrides include: `onSuccess`, `onError` and `onSettled`.  
+You might find that you want to **trigger additional callbacks** than the ones defined on `useMutation` when calling `mutate`.
+This can be used to trigger component-specific side effects.
+To do that, you can provide any of the same callback options to the `mutate` function after your mutation variable.
+Supported overrides include: `onSuccess`, `onError` and `onSettled`.
 Please keep in mind that those additional callbacks won't run if your component unmounts **before** the mutation finishes.
 
 ```js
