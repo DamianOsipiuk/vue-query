@@ -125,7 +125,7 @@ export function cloneDeep<T>(
 ): T {
   if (customizer) {
     const result = customizer(value);
-    if (result !== undefined) {
+    if (result !== undefined || isRef(value)) {
       return result as typeof value;
     }
   }
