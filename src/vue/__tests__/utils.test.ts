@@ -260,5 +260,9 @@ describe("utils", () => {
         d: { e: "e" },
       });
     });
+
+    test("should unref undefined", () => {
+      expect(cloneDeepUnref(ref(undefined))).toBe(undefined);
+    });
   });
 });
