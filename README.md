@@ -20,7 +20,7 @@ Based on [react-query](https://github.com/tannerlinsley/react-query)
 
 Visit https://vue-query.vercel.app
 
-For topics not covered in vue-query docs visit https://react-query.tanstack.com/reference/useQuery as most of the concepts and API are the same.
+For topics not covered in `vue-query` docs visit [react-query docs](https://react-query.tanstack.com/reference/useQuery) as most of the concepts and APIs are the same.
 
 # Quick Features
 
@@ -39,7 +39,16 @@ For topics not covered in vue-query docs visit https://react-query.tanstack.com/
 
 # Quick Start
 
-1. Initialize **Vue Query** via **VueQueryPlugin**
+1. Install `vue-query`
+    ```bash
+    npm install vue-query
+    # or
+    yarn add vue-query
+    ```
+
+    > If you are using Vue 2.x, make sure to also setup [@vue/composition-api](https://github.com/vuejs/composition-api)
+
+2. Initialize **Vue Query** via **VueQueryPlugin**
 
    ```ts
    import { createApp } from "vue";
@@ -50,7 +59,7 @@ For topics not covered in vue-query docs visit https://react-query.tanstack.com/
    createApp(App).use(VueQueryPlugin).mount("#app");
    ```
 
-2. Use query
+3. Use query
 
    ```ts
    import { defineComponent } from "vue";
@@ -68,7 +77,7 @@ For topics not covered in vue-query docs visit https://react-query.tanstack.com/
    });
    ```
 
-3. If you need to update options on your query dynamically, make sure to pass them as reactive variables
+4. If you need to update options on your query dynamically, make sure to pass them as reactive variables
 
    ```ts
    const id = ref(1);

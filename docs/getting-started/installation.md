@@ -1,18 +1,12 @@
 You can install Vue Query with [NPM](https://www.npmjs.com/) or [Yarn](https://yarnpkg.com/)
 
-### NPM
-
-```
+```bash
 npm install vue-query
-```
-
-### Yarn
-
-```
+# or
 yarn add vue-query
 ```
 
-Vue Query is compatible with Vue 2.x + composition API or 3.x
+> If you are using Vue 2.x, make sure to also setup [@vue/composition-api](https://github.com/vuejs/composition-api)
 
 ### Vue Query Initialization
 
