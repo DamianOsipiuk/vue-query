@@ -100,7 +100,9 @@ export default defineComponent({
     const stringifiedValue = computed(() =>
       JSON.stringify(
         props.value,
-        Object.getOwnPropertyNames(Object(props.value))
+        Object.getOwnPropertyNames(Object(props.value)).filter(
+          (key) => !key.startsWith("__")
+        )
       )
     );
 
