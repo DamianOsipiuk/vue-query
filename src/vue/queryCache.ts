@@ -1,8 +1,8 @@
 import { QueryCache as QC } from "react-query/core";
 import type { Query, QueryKey } from "react-query/core";
 import type { QueryFilters } from "react-query/types/core/utils";
-import type { MaybeRef, MaybeRefParams } from "./types";
-import { cloneDeepUnref } from "./utils";
+import type { MaybeRef } from "./types";
+import { cloneDeepUnref, isQueryKey } from "./utils";
 
 export class QueryCache extends QC {
   constructor(config?: MaybeRef<QC["config"]>) {
@@ -16,7 +16,23 @@ export class QueryCache extends QC {
     return super.find(cloneDeepUnref(arg1), cloneDeepUnref(arg2));
   }
 
-  findAll: MaybeRefParams<QC["findAll"]> = (arg1, arg2) => {
-    return super.findAll(cloneDeepUnref(arg1), cloneDeepUnref(arg2));
-  };
+  findAll(
+    queryKey?: MaybeRef<QueryKey>,
+    filters?: MaybeRef<QueryFilters>
+  ): Query[];
+  findAll(filters?: MaybeRef<QueryFilters>): Query[];
+  findAll(
+    arg1?: MaybeRef<QueryKey | QueryFilters>,
+    arg2?: MaybeRef<QueryFilters>
+  ): Query[];
+  findAll(
+    arg1?: MaybeRef<QueryKey | QueryFilters>,
+    arg2?: MaybeRef<QueryFilters>
+  ): Query[] {
+    const arg1Unreffed = cloneDeepUnref(arg1);
+    if (isQueryKey(arg1Unreffed)) {
+      return super.findAll(arg1Unreffed, cloneDeepUnref(arg2));
+    }
+    return super.findAll(arg1Unreffed);
+  }
 }

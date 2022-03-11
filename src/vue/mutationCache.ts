@@ -1,7 +1,7 @@
 import { MutationCache as MC } from "react-query/core";
 import type { Mutation } from "react-query/core";
 import type { MutationFilters } from "react-query/types/core/utils";
-import type { MaybeRef, MaybeRefParams } from "./types";
+import type { MaybeRef } from "./types";
 import { cloneDeepUnref } from "./utils";
 
 export class MutationCache extends MC {
@@ -15,7 +15,7 @@ export class MutationCache extends MC {
     return super.find(cloneDeepUnref(filters));
   }
 
-  findAll: MaybeRefParams<MC["findAll"]> = (filters) => {
+  findAll(filters: MaybeRef<MutationFilters>): Mutation[] {
     return super.findAll(cloneDeepUnref(filters));
-  };
+  }
 }
