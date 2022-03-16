@@ -2,7 +2,6 @@ import { isVue2 } from "vue-demi";
 import { QueryClient } from "react-query/core";
 
 import type { QueryClientConfig } from "react-query/types/core";
-import type { Plugin } from "vue";
 
 import { getClientKey } from "./utils";
 
@@ -25,8 +24,8 @@ interface ClientOptions {
 
 export type VueQueryPluginOptions = ConfigOptions | ClientOptions;
 
-export const VueQueryPlugin: Plugin = {
-  install: (app, options: VueQueryPluginOptions = {}) => {
+export const VueQueryPlugin = {
+  install: (app: any, options: VueQueryPluginOptions = {}) => {
     const clientKey = getClientKey(options.queryClientKey);
     let client: QueryClient;
 
@@ -47,9 +46,7 @@ export const VueQueryPlugin: Plugin = {
       });
     };
 
-    // @ts-expect-error onUnmount is not released yet
     if (app.onUnmount) {
-      // @ts-expect-error onUnmount is not released yet
       app.onUnmount(cleanup);
     } else {
       const originalUnmount = app.unmount;
