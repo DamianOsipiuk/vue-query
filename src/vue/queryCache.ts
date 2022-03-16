@@ -9,7 +9,9 @@ export class QueryCache extends QC {
     arg1: MaybeRefDeep<QueryKey>,
     arg2?: MaybeRefDeep<QueryFilters>
   ): Query<TQueryFnData, TError, TData> | undefined {
-    return super.find(cloneDeepUnref(arg1), cloneDeepUnref(arg2));
+    const arg1Unreffed = cloneDeepUnref(arg1);
+    const arg2Unreffed = cloneDeepUnref(arg2) as QueryFilters;
+    return super.find(arg1Unreffed, arg2Unreffed);
   }
 
   findAll(
@@ -22,12 +24,13 @@ export class QueryCache extends QC {
     arg2?: MaybeRefDeep<QueryFilters>
   ): Query[];
   findAll(
-    arg1?: MaybeRefDeep<QueryKey | QueryFilters>,
+    arg1?: MaybeRefDeep<QueryKey> | MaybeRefDeep<QueryFilters>,
     arg2?: MaybeRefDeep<QueryFilters>
   ): Query[] {
-    const arg1Unreffed = cloneDeepUnref(arg1);
+    const arg1Unreffed = cloneDeepUnref(arg1) as QueryKey | QueryFilters;
+    const arg2Unreffed = cloneDeepUnref(arg2) as QueryFilters;
     if (isQueryKey(arg1Unreffed)) {
-      return super.findAll(arg1Unreffed, cloneDeepUnref(arg2));
+      return super.findAll(arg1Unreffed, arg2Unreffed);
     }
     return super.findAll(arg1Unreffed);
   }

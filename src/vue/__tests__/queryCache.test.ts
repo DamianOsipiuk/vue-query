@@ -38,7 +38,7 @@ describe("QueryCache", () => {
       expect(QueryCacheOrigin.prototype.findAll).toBeCalledWith(
         ["foo", "bar"],
         {
-          queryKey: "bsaz",
+          queryKey: "baz",
         }
       );
     });
