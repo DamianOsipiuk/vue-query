@@ -9,7 +9,7 @@ export type MaybeRef<T> = Ref<T> | T;
 export type MaybeRefDeep<T> = MaybeRef<
   T extends object
     ? {
-        [Property in keyof T]: MaybeRef<T[Property]>;
+        [Property in keyof T]: MaybeRefDeep<T[Property]>;
       }
     : T
 >;
