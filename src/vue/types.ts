@@ -6,6 +6,13 @@ import type {
 import { Ref } from "vue-demi";
 
 export type MaybeRef<T> = Ref<T> | T;
+export type MaybeRefDeep<T> = MaybeRef<
+  T extends object
+    ? {
+        [Property in keyof T]: MaybeRefDeep<T[Property]>;
+      }
+    : T
+>;
 
 export type WithQueryClientKey<T> = T & { queryClientKey?: string };
 

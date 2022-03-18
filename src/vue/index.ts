@@ -4,6 +4,9 @@ export { useQueryClient } from "./useQueryClient";
 export { useQueryProvider } from "./useQueryProvider";
 export { VueQueryPlugin } from "./vueQueryPlugin";
 
+export { QueryClient } from "./queryClient";
+export { QueryCache } from "./queryCache";
+export { MutationCache } from "./mutationCache";
 export { useQuery } from "./useQuery";
 export { useQueries } from "./useQueries";
 export { useInfiniteQuery } from "./useInfiniteQuery";
