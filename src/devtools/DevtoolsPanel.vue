@@ -47,7 +47,12 @@ const getSortedQueries = (queryCache: QueryCache, filterOptions: Options) => {
   }).filter((d) => d.queryHash);
 };
 
-export default defineComponent({
+/**
+ * @deprecated Vue Query Devtools are now available as a plugin to the official Vue Devtools.
+ * Standalone devtools will be removed in v2 of vue-query.
+ * Please visit https://vue-query.vercel.app/#/getting-started/devtools for more information.
+ */
+const DevtoolsPanel = defineComponent({
   name: "DevtoolsPanel",
   props: {
     isOpen: {
@@ -64,6 +69,13 @@ export default defineComponent({
     },
   },
   setup(props, { emit }) {
+    if (process.env.NODE_ENV === "development") {
+      // eslint-disable-next-line no-console
+      console.warn(
+        `[vue-query] Deprecation warning: Vue Query Devtools are now available as a plugin to the official Vue Devtools.\nStandalone devtools will be removed in v2 of vue-query.\nPlease visit https://vue-query.vercel.app/#/getting-started/devtools for more information.`
+      );
+    }
+
     let queryCache: QueryCache;
     let unsubscribe = () => {
       // NOOP
@@ -247,6 +259,8 @@ export default defineComponent({
     );
   },
 });
+
+export default DevtoolsPanel;
 </script>
 
 <style>
