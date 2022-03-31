@@ -1,3 +1,5 @@
+/* istanbul ignore file */
+
 import { CustomInspectorNode, setupDevtoolsPlugin } from "@vue/devtools-api";
 import { matchSorter } from "match-sorter";
 import { QueryClient } from "./queryClient";

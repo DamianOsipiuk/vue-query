@@ -4,6 +4,9 @@ import { QueryClient } from "react-query/types/core";
 
 import { VueQueryPlugin } from "../vueQueryPlugin";
 import { VUE_QUERY_CLIENT } from "../utils";
+import { setupDevtools } from "../devtools";
+
+jest.mock("../devtools");
 
 interface TestApp extends App {
   onUnmount: Function;
@@ -34,6 +37,16 @@ function getAppMock(withUnmountHook = false): TestApp {
 describe("VueQueryPlugin", () => {
   beforeEach(() => {
     jest.clearAllMocks();
+  });
+
+  test("should setup devtools", () => {
+    // @ts-ignore
+    global.__VUE_PROD_DEVTOOLS__ = true;
+    const setupDevtoolsMock = setupDevtools as jest.Mock;
+    const appMock = getAppMock();
+    VueQueryPlugin.install?.(appMock);
+
+    expect(setupDevtoolsMock).toHaveBeenCalledTimes(1);
   });
 
   describe("when app unmounts", () => {

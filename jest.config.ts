@@ -18,6 +18,10 @@ const config: Config.InitialOptions = {
     // Exlude devtools
     "!src/devtools/**/*",
   ],
+  globals: {
+    "ts-jest": {},
+    __VUE_PROD_DEVTOOLS__: false,
+  },
 };
 
 export default config;
