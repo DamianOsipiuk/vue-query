@@ -39,14 +39,24 @@ describe("VueQueryPlugin", () => {
     jest.clearAllMocks();
   });
 
-  test("should setup devtools", () => {
-    // @ts-ignore
-    global.__VUE_PROD_DEVTOOLS__ = true;
-    const setupDevtoolsMock = setupDevtools as jest.Mock;
-    const appMock = getAppMock();
-    VueQueryPlugin.install?.(appMock);
+  describe("devtools", () => {
+    test("should NOT setup devtools", () => {
+      const setupDevtoolsMock = setupDevtools as jest.Mock;
+      const appMock = getAppMock();
+      VueQueryPlugin.install?.(appMock);
 
-    expect(setupDevtoolsMock).toHaveBeenCalledTimes(1);
+      expect(setupDevtoolsMock).toHaveBeenCalledTimes(0);
+    });
+
+    test("should setup devtools", () => {
+      // @ts-ignore
+      global.__VUE_PROD_DEVTOOLS__ = true;
+      const setupDevtoolsMock = setupDevtools as jest.Mock;
+      const appMock = getAppMock();
+      VueQueryPlugin.install?.(appMock);
+
+      expect(setupDevtoolsMock).toHaveBeenCalledTimes(1);
+    });
   });
 
   describe("when app unmounts", () => {
