@@ -5,5 +5,5 @@ import vue from "@vitejs/plugin-vue";
 export default defineConfig({
   plugins: [vue()],
   // For dev purpose, when using `npm link`. This breaks codesandbox somehow.
-  optimizeDeps: { exclude: ["vue-query", "vue-demi"] },
+  // optimizeDeps: { exclude: ["vue-query", "vue-demi"] },
 });
