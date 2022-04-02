@@ -1,5 +1,5 @@
 import { onUnmounted, Ref, ref } from "vue-demi";
-import type { QueryKey } from "react-query/types/core";
+import type { MutationKey } from "react-query/types/core";
 import type { MutationFilters as MF } from "react-query/types/core/utils";
 
 import { useQueryClient } from "./useQueryClient";
@@ -10,12 +10,12 @@ export type MutationFilters = WithQueryClientKey<MF>;
 
 export function useIsMutating(filters?: MutationFilters): Ref<number>;
 export function useIsMutating(
-  queryKey?: QueryKey,
-  filters?: MutationFilters
+  mutationKey?: MutationKey,
+  filters?: Omit<MutationFilters, "mutationKey">
 ): Ref<number>;
 export function useIsMutating(
-  arg1?: QueryKey | MutationFilters,
-  arg2?: MutationFilters
+  arg1?: MutationKey | MutationFilters,
+  arg2?: Omit<MutationFilters, "mutationKey">
 ): Ref<number> {
   const filters = parseMutationFilterArgs(arg1, arg2);
   const queryClient = useQueryClient(filters?.queryClientKey);
