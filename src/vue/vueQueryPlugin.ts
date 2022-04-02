@@ -4,7 +4,7 @@ import { QueryClient } from "react-query/core";
 import type { QueryClientConfig } from "react-query/types/core";
 
 import { getClientKey } from "./utils";
-import { setupDevtools } from "./devtools";
+import { setupDevtools } from "./devtools/devtools";
 
 export interface AdditionalClient {
   queryClient: QueryClient;

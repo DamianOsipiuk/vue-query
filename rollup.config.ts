@@ -16,7 +16,7 @@ const common = {
   ],
   watch: {
     include: "src/**",
-    exclude: ["node_modules/**", "tests"],
+    exclude: ["node_modules/**", "__tests__", "__mocks__"],
   },
 };
 export default defineConfig([

@@ -15,6 +15,7 @@
   "scripts": {
     "prepare": "husky install",
     "build": "rollup -c rollup.config.ts",
+    "watch": "rollup -c rollup.config.ts -w",
     "lint": "eslint ./src/**/*.{ts,vue}",
     "test": "npm run test:2 && npm run test:3",
     "test:2": "vue-demi-switch 2 vue2 && jest",
