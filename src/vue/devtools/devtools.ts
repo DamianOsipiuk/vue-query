@@ -1,5 +1,3 @@
-/* istanbul ignore file */
-
 import { CustomInspectorNode, setupDevtoolsPlugin } from "@vue/devtools-api";
 import { matchSorter } from "match-sorter";
 import type { Query } from "react-query/core";

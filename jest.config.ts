@@ -17,6 +17,7 @@ const config: Config.InitialOptions = {
     "!src/**/*.d.ts",
     // Exlude devtools
     "!src/devtools/**/*",
+    "!src/vue/devtools/**/*",
   ],
   globals: {
     "ts-jest": {},

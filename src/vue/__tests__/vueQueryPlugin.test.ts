@@ -6,7 +6,7 @@ import { VueQueryPlugin } from "../vueQueryPlugin";
 import { VUE_QUERY_CLIENT } from "../utils";
 import { setupDevtools } from "../devtools/devtools";
 
-jest.mock("../devtools");
+jest.mock("../devtools/devtools");
 
 interface TestApp extends App {
   onUnmount: Function;
