@@ -4,6 +4,7 @@ import { QueryClient } from "react-query/core";
 import type { QueryClientConfig } from "react-query/types/core";
 
 import { getClientKey } from "./utils";
+import { setupDevtools } from "./devtools/devtools";
 
 export interface AdditionalClient {
   queryClient: QueryClient;
@@ -75,6 +76,11 @@ export const VueQueryPlugin = {
             this._provided[key] = additionalClient.queryClient;
             additionalClient.queryClient.mount();
           });
+
+          // @ts-expect-error Threeshakeable flags
+          if (process.env.NODE_ENV === "development" || __VUE_PROD_DEVTOOLS__) {
+            setupDevtools(this, client);
+          }
         },
       });
     } else {
@@ -85,6 +91,10 @@ export const VueQueryPlugin = {
         app.provide(key, additionalClient.queryClient);
         additionalClient.queryClient.mount();
       });
+    }
+    // @ts-expect-error Threeshakeable flags
+    if (process.env.NODE_ENV === "development" || __VUE_PROD_DEVTOOLS__) {
+      setupDevtools(app, client);
     }
   },
 };

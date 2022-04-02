@@ -1,12 +1,11 @@
 <script lang="ts">
 import { defineComponent } from "vue";
-import { VueQueryDevTools } from "vue-query/devtools";
 
 import Content from "./Content.vue";
 
 export default defineComponent({
   name: "App",
-  components: { Content, VueQueryDevTools },
+  components: { Content },
 });
 </script>
 
@@ -24,7 +23,6 @@ export default defineComponent({
       <div>Loading...</div>
     </template>
   </Suspense>
-  <VueQueryDevTools :initialIsOpen="true" />
 </template>
 
 <style>

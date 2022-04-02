@@ -1,3 +1,4 @@
+import { defineConfig } from "rollup";
 import resolve from "@rollup/plugin-node-resolve";
 import postcss from "rollup-plugin-postcss";
 import typescript from "rollup-plugin-typescript2";
@@ -15,10 +16,10 @@ const common = {
   ],
   watch: {
     include: "src/**",
-    exclude: ["node_modules/**", "tests"],
+    exclude: ["node_modules/**", "__tests__", "__mocks__"],
   },
 };
-export default [
+export default defineConfig([
   {
     input: "src/index.ts",
     output: {
@@ -73,4 +74,4 @@ export default [
     },
     ...common,
   },
-];
+]);

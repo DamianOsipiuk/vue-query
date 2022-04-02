@@ -1,13 +1,12 @@
 <script lang="ts">
 import { defineComponent, ref } from "vue";
-import { VueQueryDevTools } from "vue-query/devtools";
 
 import Posts from "./Posts.vue";
 import Post from "./Post.vue";
 
 export default defineComponent({
   name: "App",
-  components: { Posts, Post, VueQueryDevTools },
+  components: { Posts, Post },
   setup() {
     const visitedPosts = ref(new Set());
     const isVisited = (id: number) => visitedPosts.value.has(id);
@@ -39,12 +38,6 @@ export default defineComponent({
       sequences)
     </strong>
   </p>
-  <Post
-    v-if="postId > -1"
-    :postId="postId"
-    :style="{}"
-    @setPostId="setPostId"
-  />
+  <Post v-if="postId > -1" :postId="postId" @setPostId="setPostId" />
   <Posts v-else :isVisited="isVisited" @setPostId="setPostId" />
-  <VueQueryDevTools :initialIsOpen="true" />
 </template>

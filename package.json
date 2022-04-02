@@ -15,6 +15,7 @@
   "scripts": {
     "prepare": "husky install",
     "build": "rollup -c rollup.config.ts",
+    "watch": "rollup -c rollup.config.ts -w",
     "lint": "eslint ./src/**/*.{ts,vue}",
     "test": "npm run test:2 && npm run test:3",
     "test:2": "vue-demi-switch 2 vue2 && jest",
@@ -40,6 +41,7 @@
   },
   "homepage": "https://github.com/DamianOsipiuk/vue-query#readme",
   "dependencies": {
+    "@vue/devtools-api": "^6.1.4",
     "match-sorter": "^6.3.1",
     "react-query": "^3.34.9",
     "vue-demi": "0.10.1"

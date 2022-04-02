@@ -8,7 +8,12 @@ import { Position } from "./utils";
 
 import type { ButtonProps, PanelProps } from "./types";
 
-export default defineComponent({
+/**
+ * @deprecated Vue Query Devtools are now available as a plugin to the official Vue Devtools.
+ * Standalone devtools will be removed in v2 of vue-query.
+ * Please visit https://vue-query.vercel.app/#/getting-started/devtools for more information.
+ */
+const VueQueryDevTools = defineComponent({
   name: "VueQueryDevTools",
   props: {
     initialIsOpen: {
@@ -155,6 +160,8 @@ export default defineComponent({
     ]);
   },
 });
+
+export default VueQueryDevTools;
 </script>
 
 <style>

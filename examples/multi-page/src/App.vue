@@ -1,11 +1,10 @@
 <script lang="ts">
 import { defineComponent, ref } from "vue";
-import { VueQueryDevTools } from "vue-query/devtools";
 import Page from "./Page.vue";
 
 export default defineComponent({
   name: "App",
-  components: { VueQueryDevTools, Page },
+  components: { Page },
   setup() {
     const firstPage = ref(1);
 
@@ -28,7 +27,6 @@ export default defineComponent({
   <button @click="remove">Remove page</button>
   <Page v-if="firstPage === 1" title="Page1" />
   <Page v-else-if="firstPage === 2" title="Page2" />
-  <VueQueryDevTools :initialIsOpen="true" />
 </template>
 
 <style>
