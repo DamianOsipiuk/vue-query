@@ -4,7 +4,7 @@ import { QueryClient } from "react-query/types/core";
 
 import { VueQueryPlugin } from "../vueQueryPlugin";
 import { VUE_QUERY_CLIENT } from "../utils";
-import { setupDevtools } from "../devtools";
+import { setupDevtools } from "../devtools/devtools";
 
 jest.mock("../devtools");
 

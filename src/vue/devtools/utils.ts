@@ -1,3 +1,5 @@
+/* istanbul ignore file */
+
 import type { Query } from "react-query/core";
 
 type SortFn = (a: Query, b: Query) => number;
