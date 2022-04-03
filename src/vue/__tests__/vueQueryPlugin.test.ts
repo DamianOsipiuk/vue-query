@@ -49,11 +49,12 @@ describe("VueQueryPlugin", () => {
     });
 
     test("should setup devtools", () => {
-      // @ts-ignore
-      global.__VUE_PROD_DEVTOOLS__ = true;
+      const envCopy = process.env.NODE_ENV;
+      process.env.NODE_ENV = "development";
       const setupDevtoolsMock = setupDevtools as jest.Mock;
       const appMock = getAppMock();
       VueQueryPlugin.install?.(appMock);
+      process.env.NODE_ENV = envCopy;
 
       expect(setupDevtoolsMock).toHaveBeenCalledTimes(1);
     });

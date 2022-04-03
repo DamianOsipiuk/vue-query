@@ -19,10 +19,6 @@ const config: Config.InitialOptions = {
     "!src/devtools/**/*",
     "!src/vue/devtools/**/*",
   ],
-  globals: {
-    "ts-jest": {},
-    __VUE_PROD_DEVTOOLS__: false,
-  },
 };
 
 export default config;
