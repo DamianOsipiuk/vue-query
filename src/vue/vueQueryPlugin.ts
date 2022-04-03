@@ -77,8 +77,7 @@ export const VueQueryPlugin = {
             additionalClient.queryClient.mount();
           });
 
-          // @ts-expect-error Threeshakeable flags
-          if (process.env.NODE_ENV === "development" || __VUE_PROD_DEVTOOLS__) {
+          if (process.env.NODE_ENV === "development") {
             setupDevtools(this, client);
           }
         },
@@ -92,8 +91,7 @@ export const VueQueryPlugin = {
         additionalClient.queryClient.mount();
       });
     }
-    // @ts-expect-error Threeshakeable flags
-    if (process.env.NODE_ENV === "development" || __VUE_PROD_DEVTOOLS__) {
+    if (process.env.NODE_ENV === "development") {
       setupDevtools(app, client);
     }
   },
