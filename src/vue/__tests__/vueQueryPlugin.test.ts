@@ -1,7 +1,7 @@
 import { App, ComponentOptions } from "vue";
 import { isVue2, isVue3 } from "vue-demi";
-import { QueryClient } from "react-query/types/core";
 
+import type { QueryClient } from "../queryClient";
 import { VueQueryPlugin } from "../vueQueryPlugin";
 import { VUE_QUERY_CLIENT } from "../utils";
 import { setupDevtools } from "../devtools/devtools";
