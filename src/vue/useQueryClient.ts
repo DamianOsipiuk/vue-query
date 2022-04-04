@@ -1,6 +1,6 @@
 import { getCurrentInstance, inject } from "vue-demi";
 
-import type { QueryClient } from "react-query/types/core";
+import type { QueryClient } from "./queryClient";
 import { getClientKey } from "./utils";
 
 export function useQueryClient(id = ""): QueryClient {

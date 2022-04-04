@@ -1,10 +1,10 @@
 import { isVue2 } from "vue-demi";
-import { QueryClient } from "react-query/core";
-
 import type { QueryClientConfig } from "react-query/types/core";
 
+import { QueryClient } from "./queryClient";
 import { getClientKey } from "./utils";
 import { setupDevtools } from "./devtools/devtools";
+import { MaybeRefDeep } from "./types";
 
 export interface AdditionalClient {
   queryClient: QueryClient;
@@ -12,7 +12,7 @@ export interface AdditionalClient {
 }
 
 interface ConfigOptions {
-  queryClientConfig?: QueryClientConfig;
+  queryClientConfig?: MaybeRefDeep<QueryClientConfig>;
   queryClientKey?: string;
   additionalClients?: AdditionalClient[];
 }

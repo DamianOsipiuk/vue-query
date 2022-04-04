@@ -1,4 +1,4 @@
-import { QueryClient } from "react-query/core";
+import { QueryClient } from "../queryClient";
 
 const queryClient = new QueryClient({
   defaultOptions: {
