@@ -150,7 +150,11 @@ export function setupDevtools(app: any, queryClient: QueryClient) {
 
       api.on.getInspectorState((payload) => {
         if (payload.inspectorId === pluginId) {
-          const query = queryCache.get(payload.nodeId) as Query;
+          const query = queryCache.get(payload.nodeId);
+
+          if (!query) {
+            return;
+          }
 
           payload.state = {
             " Query Details": [
