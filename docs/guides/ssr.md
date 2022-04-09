@@ -4,7 +4,7 @@ Vue Query supports prefetching multiple queries on the server and then _dehydrat
 
 ### Nuxt 3
 
-First create `vue-query.ts` file in your `plugins` directory with following content:
+First create `vue-query.ts` file in your `plugins` directory with the following content:
 ```ts
 import {
   VueQueryPlugin,
@@ -23,14 +23,12 @@ export default (nuxt) => {
 
   nuxt.vueApp.use(VueQueryPlugin, options);
 
-  // @ts-expect-error Nuxt process variable
   if (process.server) {
     nuxt.hooks.hook("app:rendered", () => {
       nuxt.nuxtState["vue-query"] = dehydrate(queryClient);
     });
   }
 
-  // @ts-expect-error Nuxt process variable
   if (process.client) {
     nuxt.hooks.hook("app:created", () => {
       hydrate(queryClient, nuxt.nuxtState["vue-query"]);
@@ -39,7 +37,8 @@ export default (nuxt) => {
 };
 ```
 
-Then use query in your component
+Now you are ready to prefetch some data in your pages with `onServerPrefetch`.
+- Prefetch all the queries that you need with `queryClient.prefetchQuery` or `suspense`
 
 ```ts
 export default defineComponent({
@@ -57,35 +56,43 @@ export default defineComponent({
 
 ### Nuxt 2
 
-Use `useNuxtQueryProvider` inside setup function of your layout component
+First create `vue-query.js` file in your `plugins` directory with the following content:
 
 ```js
-// layouts/default.vue
-<template>
-  <div>
-    <nuxt />
-  </div>
-</template>
+import Vue from "vue";
+import { VueQueryPlugin, QueryClient, hydrate } from "vue-query";
 
-<script>
-import { defineComponent } from "@nuxtjs/composition-api";
-import { useNuxtQueryProvider } from "vue-query/nuxt";
+export default (context) => {
+  // Modify your Vue Query global settings here
+  const queryClient = new QueryClient({
+    defaultOptions: { queries: { staleTime: 1000 } },
+  });
+  const options = { queryClient };
 
-export default defineComponent({
-  setup() {
-    useNuxtQueryProvider();
-  },
-});
-</script>
+  Vue.use(VueQueryPlugin, options);
 
+  if (process.client) {
+    if (context.nuxtState && context.nuxtState["vue-query"]) {
+      hydrate(queryClient, context.nuxtState["vue-query"]);
+    }
+  }
+};
+```
+
+Add this plugin to your `nuxt.config.js`
+```js
+module.exports = {
+  ...
+  plugins: ['~/plugins/vue-query.js'],
+};
 ```
 
 Now you are ready to prefetch some data in your pages with `onServerPrefetch`.
 
-- Use `useQueryClient` to get server-side instance of queryClient
 - Use `useContext` to get nuxt context
-- Prefetch all the queries that you need with `prefetchQuery`
-- Use `useNuxtDehydrate` to dehydrate the query cache and pass it to the client-side via nuxt context.
+- Use `useQueryClient` to get server-side instance of `queryClient`
+- Prefetch all the queries that you need with `queryClient.prefetchQuery` or `suspense`
+- Dehydrate `queryClient` to the `nuxtContext`
 
 ```js
 // pages/todos.vue
@@ -102,22 +109,21 @@ import {
   onServerPrefetch,
   useContext,
 } from "@nuxtjs/composition-api";
-import { useQuery, useQueryClient } from "vue-query";
-import { useNuxtDehydrate } from "vue-query/nuxt";
+import { useQuery, useQueryClient, dehydrate } from "vue-query";
 
 export default defineComponent({
   setup() {
     // This will be prefetched and sent from the server
-    const { refetch, data } = useQuery("todos", getTodos);
+    const { refetch, data, suspense } = useQuery("todos", getTodos);
     // This won't be prefetched, it will start fetching on client side
     const { data2 } = useQuery("todos2", getTodos);
 
     onServerPrefetch(async () => {
-      const { ssrContext } = useContext();
+     const { ssrContext } = useContext();
       const queryClient = useQueryClient();
-      await queryClient.prefetchQuery("todos", getTodos);
+      await suspense();
 
-      useNuxtDehydrate(ssrContext, queryClient);
+      ssrContext.nuxt.vueQueryState = dehydrate(queryClient);
     });
 
     return {
@@ -129,7 +135,7 @@ export default defineComponent({
 </script>
 ```
 
-As demonstrated, it's fine to prefetch some queries and let others fetch on the queryClient. This means you can control what content server renders or not by adding or removing `prefetchQuery` for a specific query.
+As demonstrated, it's fine to prefetch some queries and let others fetch on the queryClient. This means you can control what content server renders or not by adding or removing `prefetchQuery` or `suspense` for a specific query.
 
 ## Using Vite SSR
 

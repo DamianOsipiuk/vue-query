@@ -34,4 +34,5 @@ module.exports = {
     },
   },
   buildModules: ["@nuxtjs/composition-api/module"],
+  plugins: ['~/plugins/vue-query.js'],
 };
