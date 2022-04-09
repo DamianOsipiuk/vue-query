@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - alpha
       - beta
   pull_request:
 
@@ -45,7 +46,7 @@ jobs:
 
   publish:
     # publish only when merged in master on original repo, not on PR
-    if: github.repository == 'DamianOsipiuk/vue-query' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/beta')
+    if: github.repository == 'DamianOsipiuk/vue-query' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/beta'  || github.ref == 'refs/heads/alpha')
     needs: [verify, commitlint]
     runs-on: ubuntu-latest
 
