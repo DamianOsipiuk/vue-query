@@ -1,20 +1,63 @@
-Vue Query supports two ways of prefetching data on the server and passing that to the queryClient.
-
-- Prefetch the data yourself and pass it in as `initialData`
-  - Quick to set up for simple cases
-  - Has some caveats
-- Prefetch the query on the server, dehydrate the cache and rehydrate it on the client
-  - Requires slightly more setup up front
+Vue Query supports prefetching multiple queries on the server and then _dehydrating_ those queries to the queryClient. This means the server can prerender markup that is immediately available on page load and as soon as JS is available, Vue Query can upgrade or _hydrate_ those queries with the full functionality of the library. This includes refetching those queries on the client if they have become stale since the time they were rendered on the server.
 
 ## Using Nuxt.js
 
-### Using Hydration
+### Nuxt 3
 
-Vue Query supports prefetching multiple queries on the server in Nuxt.js and then _dehydrating_ those queries to the queryClient. This means the server can prerender markup that is immediately available on page load and as soon as JS is available, Vue Query can upgrade or _hydrate_ those queries with the full functionality of the library. This includes refetching those queries on the client if they have become stale since the time they were rendered on the server.
+First create `vue-query.ts` file in your `plugins` directory with following content:
+```ts
+import {
+  VueQueryPlugin,
+  VueQueryPluginOptions,
+  QueryClient,
+  hydrate,
+  dehydrate,
+} from "vue-query";
 
-To support caching queries on the server and set up hydration:
+export default (nuxt) => {
+  // Modify your Vue Query global settings here
+  const queryClient = new QueryClient({
+    defaultOptions: { queries: { staleTime: 1000 } },
+  });
+  const options: VueQueryPluginOptions = { queryClient };
 
-- Use `useNuxtQueryProvider` inside setup function of your layout component
+  nuxt.vueApp.use(VueQueryPlugin, options);
+
+  // @ts-expect-error Nuxt process variable
+  if (process.server) {
+    nuxt.hooks.hook("app:rendered", () => {
+      nuxt.nuxtState["vue-query"] = dehydrate(queryClient);
+    });
+  }
+
+  // @ts-expect-error Nuxt process variable
+  if (process.client) {
+    nuxt.hooks.hook("app:created", () => {
+      hydrate(queryClient, nuxt.nuxtState["vue-query"]);
+    });
+  }
+};
+```
+
+Then use query in your component
+
+```ts
+export default defineComponent({
+  setup() {
+    const { data, suspense } = useQuery("test", fetcher);
+
+    onServerPrefetch(async () => {
+      await suspense();
+    });
+
+    return { data };
+  },
+});
+```
+
+### Nuxt 2
+
+Use `useNuxtQueryProvider` inside setup function of your layout component
 
 ```js
 // layouts/default.vue
