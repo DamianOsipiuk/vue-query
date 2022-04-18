@@ -1,5 +1,6 @@
 import { QueryObserver } from "react-query/core";
 import type { QueryFunction, QueryKey } from "react-query/types/core";
+import { watch } from "vue-demi";
 import { useBaseQuery, UseQueryReturnType } from "./useBaseQuery";
 import type { WithQueryClientKey, VueQueryObserverOptions } from "./types";
 
@@ -57,6 +58,22 @@ export function useQuery<
     | QueryFunction<TQueryFnData, TQueryKey>
     | UseQueryOptions<TQueryFnData, TError, TData, TQueryKey>,
   arg3?: UseQueryOptions<TQueryFnData, TError, TData, TQueryKey>
-): UseQueryReturnType<TData, TError> {
-  return useBaseQuery(QueryObserver, arg1, arg2, arg3);
+): UseQueryReturnType<TData, TError> &
+  Promise<UseQueryReturnType<TData, TError>> {
+  const returnValue = useBaseQuery(QueryObserver, arg1, arg2, arg3);
+
+  const asyncDataPromise = new Promise<UseQueryReturnType<TData, TError>>(
+    (resolve) => {
+      const stopWatcher = watch(returnValue.isFetched, (isFetched) => {
+        if (isFetched || returnValue.isIdle) {
+          resolve(returnValue);
+          stopWatcher();
+        }
+      });
+    }
+  );
+  Object.assign(asyncDataPromise, returnValue);
+
+  return asyncDataPromise as UseQueryReturnType<TData, TError> &
+    Promise<UseQueryReturnType<TData, TError>>;
 }
