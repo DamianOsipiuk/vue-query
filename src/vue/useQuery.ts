@@ -64,8 +64,13 @@ export function useQuery<
 
   const asyncDataPromise = new Promise<UseQueryReturnType<TData, TError>>(
     (resolve) => {
+      if (returnValue.isIdle.value || returnValue.isFetched.value) {
+        resolve(returnValue);
+        return;
+      }
+
       const stopWatcher = watch(returnValue.isFetched, (isFetched) => {
-        if (isFetched || returnValue.isIdle) {
+        if (isFetched) {
           resolve(returnValue);
           stopWatcher();
         }
