@@ -24,7 +24,7 @@ export type UseQueryReturnType<
   TError,
   Result = QueryObserverResult<TData, TError>
 > = ToRefs<Readonly<Result>> & {
-  suspense: () => Promise<Result>;
+  suspense: () => Promise<UseQueryReturnType<TData, TError>>;
 };
 
 type UseQueryOptionsGeneric<
@@ -75,9 +75,30 @@ export function useBaseQuery<
     unsubscribe();
   });
 
+  const refState = toRefs(readonly(state)) as UseQueryReturnType<TData, TError>;
+  const suspense = () => {
+    return new Promise<UseQueryReturnType<TData, TError>>((resolve) => {
+      if (
+        refState.isIdle.value ||
+        refState.isFetched.value ||
+        refState.isSuccess.value
+      ) {
+        resolve(refState);
+        return;
+      }
+
+      const stopWatcher = watch(refState.isFetched, (isFetched) => {
+        if (isFetched) {
+          resolve(refState);
+          stopWatcher();
+        }
+      });
+    });
+  };
+
   return {
-    ...(toRefs(readonly(state)) as UseQueryReturnType<TData, TError>),
-    suspense: () => observer.fetchOptimistic(defaultedOptions),
+    ...refState,
+    suspense,
   };
 
   /**

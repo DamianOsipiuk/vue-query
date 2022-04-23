@@ -17,7 +17,7 @@ import {
 export default (nuxt) => {
   // Modify your Vue Query global settings here
   const queryClient = new QueryClient({
-    defaultOptions: { queries: { staleTime: 1000 } },
+    defaultOptions: { queries: { staleTime: 5000 } },
   });
   const options: VueQueryPluginOptions = { queryClient };
 
@@ -42,12 +42,10 @@ Now you are ready to prefetch some data in your pages with `onServerPrefetch`.
 
 ```ts
 export default defineComponent({
-  setup() {
+  async setup() {
     const { data, suspense } = useQuery("test", fetcher);
-
-    onServerPrefetch(async () => {
-      await suspense();
-    });
+    // This will prefetch query on server, and if `staleTime` is high enough skip fetching on client
+    await suspense();
 
     return { data };
   },
@@ -58,14 +56,14 @@ export default defineComponent({
 
 First create `vue-query.js` file in your `plugins` directory with the following content:
 
-```js
+```ts
 import Vue from "vue";
 import { VueQueryPlugin, QueryClient, hydrate } from "vue-query";
 
 export default (context) => {
   // Modify your Vue Query global settings here
   const queryClient = new QueryClient({
-    defaultOptions: { queries: { staleTime: 1000 } },
+    defaultOptions: { queries: { staleTime: 5000 } },
   });
   const options = { queryClient };
 
@@ -94,16 +92,7 @@ Now you are ready to prefetch some data in your pages with `onServerPrefetch`.
 - Prefetch all the queries that you need with `queryClient.prefetchQuery` or `suspense`
 - Dehydrate `queryClient` to the `nuxtContext`
 
-```js
-// pages/todos.vue
-<template>
-  <div>
-    <button @click="refetch">Refetch</button>
-    <p>{{ data }}</p>
-  </div>
-</template>
-
-<script lang="ts">
+```ts
 import {
   defineComponent,
   onServerPrefetch,
@@ -132,7 +121,6 @@ export default defineComponent({
     };
   },
 });
-</script>
 ```
 
 As demonstrated, it's fine to prefetch some queries and let others fetch on the queryClient. This means you can control what content server renders or not by adding or removing `prefetchQuery` or `suspense` for a specific query.

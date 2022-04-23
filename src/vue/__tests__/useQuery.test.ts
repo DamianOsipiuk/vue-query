@@ -233,15 +233,54 @@ describe("useQuery", () => {
     expect(status.value).toStrictEqual("loading");
   });
 
+  test("should not call fetcher when data is not stale", async () => {
+    const mock = jest.fn();
+    const query = useQuery("initialNotStale", {
+      queryFn: mock,
+      initialData: "foo",
+      initialDataUpdatedAt: Date.now(),
+      staleTime: 10000,
+    });
+
+    expect(query).toMatchObject({
+      status: { value: "success" },
+      data: { value: "foo" },
+      isLoading: { value: false },
+      isFetching: { value: false },
+      isFetched: { value: false },
+      isSuccess: { value: true },
+    });
+  });
+
   describe("suspense", () => {
     test("should return a Promise", () => {
       const getCurrentInstanceSpy = getCurrentInstance as jest.Mock;
       getCurrentInstanceSpy.mockImplementation(() => ({ suspense: {} }));
 
-      const query = useQuery("suspense3", simpleFetcher);
+      const query = useQuery("suspense1", simpleFetcher);
       const result = query.suspense();
 
       expect(result).toBeInstanceOf(Promise);
+    });
+
+    test("should resolve to fetched state", async () => {
+      const getCurrentInstanceSpy = getCurrentInstance as jest.Mock;
+      getCurrentInstanceSpy.mockImplementation(() => ({ suspense: {} }));
+
+      const query = useQuery("suspense2", simpleFetcher);
+      await query.suspense();
+
+      expect(query.isFetched.value).toBe(true);
+    });
+
+    test("should immidiately resolve for disabled queries", async () => {
+      const getCurrentInstanceSpy = getCurrentInstance as jest.Mock;
+      getCurrentInstanceSpy.mockImplementation(() => ({ suspense: {} }));
+
+      const query = useQuery("suspense3", simpleFetcher, { enabled: false });
+      await query.suspense();
+
+      expect(query.isIdle.value).toBe(true);
     });
   });
 });
