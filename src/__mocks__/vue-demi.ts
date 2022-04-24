@@ -9,6 +9,6 @@ module.exports = {
   ...vue,
   inject: jest.fn(),
   provide: jest.fn(),
-  onUnmounted: jest.fn(),
+  onScopeDispose: jest.fn(),
   getCurrentInstance: jest.fn(() => ({ proxy: {} })),
 };

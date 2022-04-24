@@ -1,4 +1,4 @@
-import { provide, onUnmounted } from "vue-demi";
+import { provide, onScopeDispose } from "vue-demi";
 import type { QueryClientConfig } from "react-query/types/core";
 import { QueryClient } from "./queryClient";
 import { getClientKey } from "./utils";
@@ -15,7 +15,7 @@ export function useQueryProvider(
   const key = getClientKey(id);
   provide(key, client);
 
-  onUnmounted(() => {
+  onScopeDispose(() => {
     client.unmount();
   });
 }

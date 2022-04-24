@@ -9,7 +9,7 @@ import {
   Ref,
   ref,
   h,
-  onUnmounted,
+  onScopeDispose,
 } from "vue-demi";
 import { useQueryClient } from "vue-query";
 
@@ -140,7 +140,7 @@ const DevtoolsPanel = defineComponent({
 
     selectQueryClient();
 
-    onUnmounted(() => unsubscribe);
+    onScopeDispose(() => unsubscribe);
 
     return {
       theme,
