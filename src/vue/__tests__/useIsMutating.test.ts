@@ -43,7 +43,7 @@ describe("useIsMutating", () => {
     onScopeDisposeMock.mockImplementation((fn) => fn());
     const onUnmountedMock = onUnmounted as jest.MockedFunction<
       typeof onUnmounted
-      >;
+    >;
     onUnmountedMock.mockImplementation((fn) => fn());
 
     const mutation = useMutation((params: string) => successMutator(params));
