@@ -1,4 +1,4 @@
-import { onScopeDispose, onUnmounted } from "vue-demi";
+import { onScopeDispose } from "vue-demi";
 import { setLogger } from "react-query/core";
 
 import { flushPromises, noop, successMutator } from "./test-utils";
@@ -41,10 +41,6 @@ describe("useIsMutating", () => {
       typeof onScopeDispose
     >;
     onScopeDisposeMock.mockImplementation((fn) => fn());
-    const onUnmountedMock = onUnmounted as jest.MockedFunction<
-      typeof onUnmounted
-    >;
-    onUnmountedMock.mockImplementation((fn) => fn());
 
     const mutation = useMutation((params: string) => successMutator(params));
     const mutation2 = useMutation((params: string) => successMutator(params));
@@ -64,7 +60,6 @@ describe("useIsMutating", () => {
     expect(isMutating.value).toStrictEqual(0);
 
     onScopeDisposeMock.mockReset();
-    onUnmountedMock.mockReset();
   });
 
   test("should call `useQueryClient` with a proper `queryClientKey`", async () => {

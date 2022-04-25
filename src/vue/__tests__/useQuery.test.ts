@@ -3,7 +3,6 @@ import {
   reactive,
   ref,
   onScopeDispose,
-  onUnmounted,
   getCurrentInstance,
 } from "vue-demi";
 import { QueryObserver, setLogger } from "react-query/core";
@@ -220,10 +219,6 @@ describe("useQuery", () => {
       typeof onScopeDispose
     >;
     onScopeDisposeMock.mockImplementationOnce((fn) => fn());
-    const onUnmountedMock = onUnmounted as jest.MockedFunction<
-      typeof onUnmounted
-    >;
-    onUnmountedMock.mockImplementationOnce((fn) => fn());
 
     const { status } = useQuery("onUnmount", simpleFetcher);
 

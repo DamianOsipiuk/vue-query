@@ -1,7 +1,7 @@
-import { provide } from "vue-demi";
+import { provide, onScopeDispose } from "vue-demi";
 import type { QueryClientConfig } from "react-query/types/core";
 import { QueryClient } from "./queryClient";
-import { getClientKey, onUnmountedOrScopeDispose } from "./utils";
+import { getClientKey } from "./utils";
 import { MaybeRefDeep } from "./types";
 
 export function useQueryProvider(
@@ -15,7 +15,7 @@ export function useQueryProvider(
   const key = getClientKey(id);
   provide(key, client);
 
-  onUnmountedOrScopeDispose(() => {
+  onScopeDispose(() => {
     client.unmount();
   });
 }

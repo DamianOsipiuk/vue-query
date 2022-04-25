@@ -47,8 +47,8 @@
     "vue-demi": "0.10.1"
   },
   "peerDependencies": {
-    "@nuxtjs/composition-api": "^0.24.4",
-    "@vue/composition-api": "^1.0.0",
+    "@nuxtjs/composition-api": "^0.28.0",
+    "@vue/composition-api": "^1.1.2",
     "vue": "^2.0.0 || >=3.0.0"
   },
   "peerDependenciesMeta": {
