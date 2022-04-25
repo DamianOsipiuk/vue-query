@@ -1,4 +1,4 @@
-import { onScopeDispose, reactive } from "vue-demi";
+import { onScopeDispose, onUnmounted, reactive } from 'vue-demi'
 import { setLogger } from "react-query/core";
 
 import {
@@ -166,12 +166,15 @@ describe("useQueries", () => {
     ]);
   });
 
-  test("should stop listening to changes on onScopeDispose", async () => {
+  test("should stop listening to changes on onUnmount", async () => {
     const onScopeDisposeMock = onScopeDispose as jest.MockedFunction<
       typeof onScopeDispose
     >;
     onScopeDisposeMock.mockImplementationOnce((fn) => fn());
-
+    const onUnmountedMock = onUnmounted as jest.MockedFunction<
+      typeof onUnmounted
+      >;
+    onUnmountedMock.mockImplementationOnce((fn) => fn());
     const queries = [
       {
         queryKey: "key41",

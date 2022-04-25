@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { QueriesObserver } from "react-query/core";
 import {
-  onScopeDispose,
   reactive,
   readonly,
   watch,
@@ -18,6 +17,7 @@ import type {
 
 import { useQueryClient } from "./useQueryClient";
 import { UseQueryOptions } from "./useQuery";
+import { onUnmountedOrScopeDispose } from "./utils";
 
 // Avoid TS depth-limit error in case of large array literal
 type MAXIMUM_DEPTH = 20;
@@ -164,7 +164,7 @@ export function useQueries<T extends any[]>(
     });
   }
 
-  onScopeDispose(() => {
+  onUnmountedOrScopeDispose(() => {
     unsubscribe();
   });
 

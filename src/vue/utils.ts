@@ -7,7 +7,7 @@ import type {
   QueryObserverOptions,
   QueryKey,
 } from "react-query/types/core";
-import { isRef, reactive, toRefs, unref, UnwrapRef } from "vue-demi";
+import { isRef, reactive, toRefs, unref, UnwrapRef, isVue2, onUnmounted, onScopeDispose } from "vue-demi";
 import { QueryFilters } from "./useIsFetching";
 import { MutationFilters } from "./useIsMutating";
 
@@ -160,4 +160,12 @@ function isPlainObject(value: unknown): boolean {
 
   const prototype = Object.getPrototypeOf(value);
   return prototype === null || prototype === Object.prototype;
+}
+
+export function onUnmountedOrScopeDispose(callback: () => void): void {
+  if (isVue2) {
+    onUnmounted(callback)
+  } else {
+    onScopeDispose(callback)
+  }
 }

@@ -1,5 +1,4 @@
 import {
-  onScopeDispose,
   toRefs,
   readonly,
   ToRefs,
@@ -14,7 +13,7 @@ import type {
 } from "react-query/core";
 import type { QueryFunction } from "react-query/types/core";
 import { useQueryClient } from "./useQueryClient";
-import { updateState, isQueryKey, cloneDeepUnref } from "./utils";
+import { updateState, isQueryKey, cloneDeepUnref, onUnmountedOrScopeDispose } from "./utils";
 import { WithQueryClientKey } from "./types";
 import { UseQueryOptions } from "./useQuery";
 import { UseInfiniteQueryOptions } from "./useInfiniteQuery";
@@ -71,7 +70,7 @@ export function useBaseQuery<
     { deep: true }
   );
 
-  onScopeDispose(() => {
+  onUnmountedOrScopeDispose(() => {
     unsubscribe();
   });
 

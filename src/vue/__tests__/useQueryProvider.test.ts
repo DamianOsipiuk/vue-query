@@ -1,4 +1,4 @@
-import { provide, onScopeDispose } from "vue-demi";
+import { provide, onScopeDispose, onUnmounted } from "vue-demi";
 import { QueryClient } from "../queryClient";
 
 import { useQueryProvider } from "../useQueryProvider";
@@ -11,6 +11,7 @@ jest.mock("../queryClient", () => ({
 describe("useQueryProvider", () => {
   const provideSpy = provide as jest.Mock;
   const onScopeDisposeSpy = onScopeDispose as jest.Mock;
+  const onUnmountedSpy = onUnmounted as jest.Mock;
   const queryClientSpy = QueryClient as jest.Mock;
 
   const mount = jest.fn();
@@ -76,6 +77,7 @@ describe("useQueryProvider", () => {
 
   test("should call onScopeDispose on QueryClient", () => {
     onScopeDisposeSpy.mockImplementationOnce((fn) => fn());
+    onUnmountedSpy.mockImplementationOnce((fn) => fn());
 
     useQueryProvider();
 

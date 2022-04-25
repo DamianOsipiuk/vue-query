@@ -1,5 +1,4 @@
 import {
-  onScopeDispose,
   reactive,
   watchEffect,
   readonly,
@@ -17,7 +16,7 @@ import {
   MutationObserverOptions,
   MutateFunction,
 } from "react-query/types/core";
-import { parseMutationArgs, updateState } from "./utils";
+import { parseMutationArgs, updateState, onUnmountedOrScopeDispose } from "./utils";
 import { useQueryClient } from "./useQueryClient";
 import { WithQueryClientKey } from "./types";
 
@@ -134,7 +133,7 @@ export function useMutation<
     observer.setOptions(options);
   });
 
-  onScopeDispose(() => {
+  onUnmountedOrScopeDispose(() => {
     unsubscribe();
   });
 

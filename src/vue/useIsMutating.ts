@@ -1,9 +1,9 @@
-import { onScopeDispose, Ref, ref } from "vue-demi";
+import { Ref, ref } from "vue-demi";
 import type { MutationKey } from "react-query/types/core";
 import type { MutationFilters as MF } from "react-query/types/core/utils";
 
 import { useQueryClient } from "./useQueryClient";
-import { parseMutationFilterArgs } from "./utils";
+import { parseMutationFilterArgs, onUnmountedOrScopeDispose } from "./utils";
 import type { WithQueryClientKey } from "./types";
 
 export type MutationFilters = WithQueryClientKey<MF>;
@@ -26,7 +26,7 @@ export function useIsMutating(
     isMutating.value = queryClient.isMutating(filters);
   });
 
-  onScopeDispose(() => {
+  onUnmountedOrScopeDispose(() => {
     unsubscribe();
   });
 

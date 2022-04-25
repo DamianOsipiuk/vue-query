@@ -1,4 +1,4 @@
-import { onScopeDispose } from "vue-demi";
+import { onScopeDispose, onUnmounted } from "vue-demi";
 import { setLogger } from "react-query/core";
 
 import { flushPromises, simpleFetcher, noop } from "./test-utils";
@@ -33,13 +33,17 @@ describe("useIsFetching", () => {
     expect(isFetching.value).toStrictEqual(0);
   });
 
-  test("should stop listening to changes on onScopeDispose", async () => {
+  test("should stop listening to changes on onUnmount", async () => {
     const onScopeDisposeMock = onScopeDispose as jest.MockedFunction<
       typeof onScopeDispose
     >;
     onScopeDisposeMock.mockImplementation((fn) => fn());
+    const onUnmountedMock = onUnmounted as jest.MockedFunction<
+      typeof onUnmounted
+    >;
+    onUnmountedMock.mockImplementation((fn) => fn());
 
-    const { status } = useQuery("onScopeDispose", simpleFetcher);
+    const { status } = useQuery("onUnmount", simpleFetcher);
     const isFetching = useIsFetching();
 
     expect(status.value).toStrictEqual("loading");
@@ -56,5 +60,6 @@ describe("useIsFetching", () => {
     expect(isFetching.value).toStrictEqual(1);
 
     onScopeDisposeMock.mockReset();
+    onUnmountedMock.mockReset();
   });
 });
