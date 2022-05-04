@@ -1,4 +1,4 @@
-import { onUnmounted, Ref, ref, watchEffect } from "vue-demi";
+import { onScopeDispose, Ref, ref, watchEffect } from "vue-demi";
 import type { QueryKey } from "react-query/types/core";
 import type { QueryFilters as QF } from "react-query/types/core/utils";
 
@@ -34,7 +34,7 @@ export function useIsFetching(
     filters.value = parsedFiltersUpdate;
   });
 
-  onUnmounted(() => {
+  onScopeDispose(() => {
     unsubscribe();
   });
 

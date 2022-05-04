@@ -1,5 +1,5 @@
 import {
-  onUnmounted,
+  onScopeDispose,
   toRefs,
   readonly,
   ToRefs,
@@ -71,7 +71,7 @@ export function useBaseQuery<
     { deep: true }
   );
 
-  onUnmounted(() => {
+  onScopeDispose(() => {
     unsubscribe();
   });
 

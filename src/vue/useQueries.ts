@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { QueriesObserver } from "react-query/core";
 import {
-  onUnmounted,
+  onScopeDispose,
   reactive,
   readonly,
   watch,
@@ -164,7 +164,7 @@ export function useQueries<T extends any[]>(
     });
   }
 
-  onUnmounted(() => {
+  onScopeDispose(() => {
     unsubscribe();
   });
 

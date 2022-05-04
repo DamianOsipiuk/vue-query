@@ -1,5 +1,5 @@
 import {
-  onUnmounted,
+  onScopeDispose,
   reactive,
   watchEffect,
   readonly,
@@ -134,7 +134,7 @@ export function useMutation<
     observer.setOptions(options);
   });
 
-  onUnmounted(() => {
+  onScopeDispose(() => {
     unsubscribe();
   });
 

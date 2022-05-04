@@ -2,7 +2,7 @@ import {
   computed,
   reactive,
   ref,
-  onUnmounted,
+  onScopeDispose,
   getCurrentInstance,
 } from "vue-demi";
 import { QueryObserver, setLogger } from "react-query/core";
@@ -214,13 +214,13 @@ describe("useQuery", () => {
     expect(status.value).toStrictEqual("success");
   });
 
-  test("should stop listening to changes on onUnmount", async () => {
-    const onUnmountedMock = onUnmounted as jest.MockedFunction<
-      typeof onUnmounted
+  test("should stop listening to changes on onScopeDispose", async () => {
+    const onScopeDisposeMock = onScopeDispose as jest.MockedFunction<
+      typeof onScopeDispose
     >;
-    onUnmountedMock.mockImplementationOnce((fn) => fn());
+    onScopeDisposeMock.mockImplementationOnce((fn) => fn());
 
-    const { status } = useQuery("onUnmounted", simpleFetcher);
+    const { status } = useQuery("onScopeDispose", simpleFetcher);
 
     expect(status.value).toStrictEqual("loading");
 
