@@ -33,13 +33,13 @@ describe("useIsFetching", () => {
     expect(isFetching.value).toStrictEqual(0);
   });
 
-  test("should stop listening to changes on onUnmount", async () => {
+  test("should stop listening to changes on onScopeDispose", async () => {
     const onScopeDisposeMock = onScopeDispose as jest.MockedFunction<
       typeof onScopeDispose
     >;
     onScopeDisposeMock.mockImplementation((fn) => fn());
 
-    const { status } = useQuery("onUnmounted", simpleFetcher);
+    const { status } = useQuery("onScopeDispose", simpleFetcher);
     const isFetching = useIsFetching();
 
     expect(status.value).toStrictEqual("loading");
