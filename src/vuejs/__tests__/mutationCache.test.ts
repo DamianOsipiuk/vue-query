@@ -18,7 +18,7 @@ describe("MutationCache", () => {
       const mutationCache = new MutationCache();
 
       mutationCache.find({
-        mutationKey: ref("baz"),
+        mutationKey: ref(["baz"]),
       });
 
       expect(MutationCacheOrigin.prototype.find).toBeCalledWith({
@@ -33,7 +33,7 @@ describe("MutationCache", () => {
       const mutationCache = new MutationCache();
 
       mutationCache.findAll({
-        mutationKey: ref("baz"),
+        mutationKey: ref(["baz"]),
       });
 
       expect(MutationCacheOrigin.prototype.findAll).toBeCalledWith({

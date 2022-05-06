@@ -5,7 +5,7 @@ import {
   onScopeDispose,
   getCurrentInstance,
 } from "vue-demi";
-import { QueryObserver, setLogger } from "react-query/core";
+import { QueryObserver } from "react-query/core";
 
 import {
   flushPromises,
@@ -21,16 +21,12 @@ jest.mock("../useQueryClient");
 jest.mock("../useBaseQuery");
 
 describe("useQuery", () => {
-  beforeAll(() => {
-    setLogger({ log: noop, warn: noop, error: noop });
-  });
-
   beforeEach(() => {
     jest.clearAllMocks();
   });
 
   test("should properly execute query", () => {
-    useQuery("key0", simpleFetcher, { staleTime: 1000 });
+    useQuery(["key0"], simpleFetcher, { staleTime: 1000 });
 
     expect(useBaseQuery).toBeCalledWith(QueryObserver, "key0", simpleFetcher, {
       staleTime: 1000,
@@ -38,7 +34,7 @@ describe("useQuery", () => {
   });
 
   test("should return loading status initially", () => {
-    const query = useQuery("key1", simpleFetcher);
+    const query = useQuery(["key1"], simpleFetcher);
 
     expect(query).toMatchObject({
       status: { value: "loading" },
@@ -49,7 +45,7 @@ describe("useQuery", () => {
   });
 
   test("should resolve to success and update reactive state: useQuery(key, dataFn)", async () => {
-    const query = useQuery("key2", getSimpleFetcherWithReturnData("result2"));
+    const query = useQuery(["key2"], getSimpleFetcherWithReturnData("result2"));
 
     await flushPromises();
 
@@ -65,7 +61,7 @@ describe("useQuery", () => {
 
   test("should resolve to success and update reactive state: useQuery(optionsObj)", async () => {
     const query = useQuery({
-      queryKey: "key31",
+      queryKey: ["key31"],
       queryFn: getSimpleFetcherWithReturnData("result31"),
       enabled: true,
     });
@@ -83,7 +79,7 @@ describe("useQuery", () => {
   });
 
   test("should resolve to success and update reactive state: useQuery(key, optionsObj)", async () => {
-    const query = useQuery("key32", {
+    const query = useQuery(["key32"], {
       queryFn: getSimpleFetcherWithReturnData("result32"),
       enabled: true,
     });
@@ -101,7 +97,7 @@ describe("useQuery", () => {
   });
 
   test("should reject and update reactive state", async () => {
-    const query = useQuery("key3", rejectFetcher);
+    const query = useQuery(["key3"], rejectFetcher);
 
     await flushPromises();
 
@@ -121,7 +117,7 @@ describe("useQuery", () => {
     const spy = jest.fn();
     const onSuccess = ref(noop);
     useQuery(
-      "key6",
+      ["key6"],
       simpleFetcher,
       reactive({
         onSuccess,
@@ -163,7 +159,7 @@ describe("useQuery", () => {
 
   test("should update query when an option is passed as Ref and it's changed", async () => {
     const enabled = ref(false);
-    const query = useQuery("key9", simpleFetcher, { enabled });
+    const query = useQuery(["key9"], simpleFetcher, { enabled });
 
     await flushPromises();
 
@@ -189,12 +185,12 @@ describe("useQuery", () => {
   });
 
   test("should properly execute dependant queries", async () => {
-    const { data } = useQuery("dependant1", simpleFetcher);
+    const { data } = useQuery(["dependant1"], simpleFetcher);
 
     const enabled = computed(() => !!data.value);
 
     const { status } = useQuery(
-      "dependant2",
+      ["dependant2"],
       simpleFetcher,
       reactive({
         enabled,
@@ -220,7 +216,7 @@ describe("useQuery", () => {
     >;
     onScopeDisposeMock.mockImplementationOnce((fn) => fn());
 
-    const { status } = useQuery("onScopeDispose", simpleFetcher);
+    const { status } = useQuery(["onScopeDispose"], simpleFetcher);
 
     expect(status.value).toStrictEqual("loading");
 
@@ -238,7 +234,7 @@ describe("useQuery", () => {
       const getCurrentInstanceSpy = getCurrentInstance as jest.Mock;
       getCurrentInstanceSpy.mockImplementation(() => ({ suspense: {} }));
 
-      const query = useQuery("suspense3", simpleFetcher);
+      const query = useQuery(["suspense3"], simpleFetcher);
       const result = query.suspense();
 
       expect(result).toBeInstanceOf(Promise);

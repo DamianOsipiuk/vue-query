@@ -1,22 +1,16 @@
-import { setLogger } from "react-query/core";
-
-import { noop, infiniteFetcher, flushPromises } from "./test-utils";
+import { infiniteFetcher, flushPromises } from "./test-utils";
 import { useInfiniteQuery } from "../useInfiniteQuery";
 
 jest.mock("../useQueryClient");
 
 describe("useQuery", () => {
-  beforeAll(() => {
-    setLogger({ log: noop, warn: noop, error: noop });
-  });
-
   beforeEach(() => {
     jest.clearAllMocks();
   });
 
   test("should properly execute infinite query", async () => {
     const { data, fetchNextPage, status } = useInfiniteQuery(
-      "infiniteQuery",
+      ["infiniteQuery"],
       infiniteFetcher
     );
 

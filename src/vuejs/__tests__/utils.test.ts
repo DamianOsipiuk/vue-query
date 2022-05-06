@@ -30,10 +30,10 @@ describe("utils", () => {
     });
 
     test("should merge query key with filters", () => {
-      const filters = { active: true };
+      const filters = { stale: true };
 
-      const result = parseFilterArgs("key", filters);
-      const expected = { ...filters, queryKey: "key" };
+      const result = parseFilterArgs(["key"], filters);
+      const expected = { ...filters, queryKey: ["key"] };
 
       expect(result).toEqual(expected);
     });
@@ -49,8 +49,8 @@ describe("utils", () => {
 
     test("should merge query key with options", () => {
       const options = { retry: false };
-      const result = parseMutationArgs("key", options);
-      const expected = { ...options, mutationKey: "key" };
+      const result = parseMutationArgs(["key"], options);
+      const expected = { ...options, mutationKey: ["key"] };
 
       expect(result).toEqual(expected);
     });
@@ -65,10 +65,10 @@ describe("utils", () => {
 
     test("should merge query key and fn with options", () => {
       const options = { retry: false };
-      const result = parseMutationArgs("key", successMutator, options);
+      const result = parseMutationArgs(["key"], successMutator, options);
       const expected = {
         ...options,
-        mutationKey: "key",
+        mutationKey: ["key"],
         mutationFn: successMutator,
       };
 
@@ -86,18 +86,18 @@ describe("utils", () => {
 
     test("should merge query key with options", () => {
       const options = { retry: false };
-      const result = parseQueryArgs("key", options);
-      const expected = { ...options, queryKey: "key" };
+      const result = parseQueryArgs(["key"], options);
+      const expected = { ...options, queryKey: ["key"] };
 
       expect(result).toEqual(expected);
     });
 
     test("should merge query key and fn with options", () => {
       const options = { retry: false };
-      const result = parseQueryArgs("key", simpleFetcher, options);
+      const result = parseQueryArgs(["key"], simpleFetcher, options);
       const expected = {
         ...options,
-        queryKey: "key",
+        queryKey: ["key"],
         queryFn: simpleFetcher,
       };
 
@@ -115,8 +115,8 @@ describe("utils", () => {
     test("should merge mutation key with filters", () => {
       const filters = { fetching: true };
 
-      const result = parseMutationFilterArgs("key", filters);
-      const expected = { ...filters, mutationKey: "key" };
+      const result = parseMutationFilterArgs(["key"], filters);
+      const expected = { ...filters, mutationKey: ["key"] };
 
       expect(result).toEqual(expected);
     });

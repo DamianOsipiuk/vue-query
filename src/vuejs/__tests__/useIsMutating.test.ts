@@ -1,7 +1,6 @@
 import { onScopeDispose } from "vue-demi";
-import { setLogger } from "react-query/core";
 
-import { flushPromises, noop, successMutator } from "./test-utils";
+import { flushPromises, successMutator } from "./test-utils";
 import { useMutation } from "../useMutation";
 import { useIsMutating } from "../useIsMutating";
 import { useQueryClient } from "../useQueryClient";
@@ -9,10 +8,6 @@ import { useQueryClient } from "../useQueryClient";
 jest.mock("../useQueryClient");
 
 describe("useIsMutating", () => {
-  beforeAll(() => {
-    setLogger({ log: noop, warn: noop, error: noop });
-  });
-
   beforeEach(() => {
     jest.clearAllMocks();
   });

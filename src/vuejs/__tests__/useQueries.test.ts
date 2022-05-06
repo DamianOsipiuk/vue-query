@@ -1,22 +1,16 @@
 import { onScopeDispose, reactive } from "vue-demi";
-import { setLogger } from "react-query/core";
 
 import {
   flushPromises,
   rejectFetcher,
   simpleFetcher,
   getSimpleFetcherWithReturnData,
-  noop,
 } from "./test-utils";
 import { useQueries } from "../useQueries";
 
 jest.mock("../useQueryClient");
 
 describe("useQueries", () => {
-  beforeAll(() => {
-    setLogger({ log: noop, warn: noop, error: noop });
-  });
-
   beforeEach(() => {
     jest.clearAllMocks();
   });
@@ -24,15 +18,15 @@ describe("useQueries", () => {
   test("should return result for each query", () => {
     const queries = [
       {
-        queryKey: "key1",
+        queryKey: ["key1"],
         queryFn: simpleFetcher,
       },
       {
-        queryKey: "key2",
+        queryKey: ["key2"],
         queryFn: simpleFetcher,
       },
     ];
-    const queriesState = useQueries(queries);
+    const queriesState = useQueries({ queries });
 
     expect(queriesState).toMatchObject([
       {
@@ -53,15 +47,15 @@ describe("useQueries", () => {
   test("should resolve to success and update reactive state", async () => {
     const queries = [
       {
-        queryKey: "key11",
+        queryKey: ["key11"],
         queryFn: simpleFetcher,
       },
       {
-        queryKey: "key12",
+        queryKey: ["key12"],
         queryFn: simpleFetcher,
       },
     ];
-    const queriesState = useQueries(queries);
+    const queriesState = useQueries({ queries });
 
     await flushPromises();
 
@@ -84,15 +78,15 @@ describe("useQueries", () => {
   test("should reject one of the queries and update reactive state", async () => {
     const queries = [
       {
-        queryKey: "key21",
+        queryKey: ["key21"],
         queryFn: rejectFetcher,
       },
       {
-        queryKey: "key22",
+        queryKey: ["key22"],
         queryFn: simpleFetcher,
       },
     ];
-    const queriesState = useQueries(queries);
+    const queriesState = useQueries({ queries });
 
     await flushPromises();
 
@@ -115,19 +109,19 @@ describe("useQueries", () => {
   test("should return state for new queries", async () => {
     const queries = reactive([
       {
-        queryKey: "key31",
+        queryKey: ["key31"],
         queryFn: getSimpleFetcherWithReturnData("value31"),
       },
       {
-        queryKey: "key32",
+        queryKey: ["key32"],
         queryFn: getSimpleFetcherWithReturnData("value32"),
       },
       {
-        queryKey: "key33",
+        queryKey: ["key33"],
         queryFn: getSimpleFetcherWithReturnData("value33"),
       },
     ]);
-    const queriesState = useQueries(queries);
+    const queriesState = useQueries({ queries });
 
     await flushPromises();
 
@@ -135,11 +129,11 @@ describe("useQueries", () => {
       0,
       queries.length,
       {
-        queryKey: "key31",
+        queryKey: ["key31"],
         queryFn: getSimpleFetcherWithReturnData("value31"),
       },
       {
-        queryKey: "key34",
+        queryKey: ["key34"],
         queryFn: getSimpleFetcherWithReturnData("value34"),
       }
     );
@@ -174,15 +168,15 @@ describe("useQueries", () => {
 
     const queries = [
       {
-        queryKey: "key41",
+        queryKey: ["key41"],
         queryFn: simpleFetcher,
       },
       {
-        queryKey: "key42",
+        queryKey: ["key42"],
         queryFn: simpleFetcher,
       },
     ];
-    const queriesState = useQueries(queries);
+    const queriesState = useQueries({ queries });
     await flushPromises();
 
     expect(queriesState).toMatchObject([

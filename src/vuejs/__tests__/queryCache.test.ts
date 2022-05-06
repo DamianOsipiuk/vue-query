@@ -18,7 +18,7 @@ describe("QueryCache", () => {
       const queryCache = new QueryCache();
 
       queryCache.find(["foo", ref("bar")], {
-        queryKey: ref("baz"),
+        queryKey: ref(["baz"]),
       });
 
       expect(QueryCacheOrigin.prototype.find).toBeCalledWith(["foo", "bar"], {
@@ -32,7 +32,7 @@ describe("QueryCache", () => {
       const queryCache = new QueryCache();
 
       queryCache.findAll(["foo", ref("bar")], {
-        queryKey: ref("baz"),
+        queryKey: ref(["baz"]),
       });
 
       expect(QueryCacheOrigin.prototype.findAll).toBeCalledWith(
@@ -47,7 +47,7 @@ describe("QueryCache", () => {
       const queryCache = new QueryCache();
 
       queryCache.findAll({
-        queryKey: ref("baz"),
+        queryKey: ref(["baz"]),
       });
 
       expect(QueryCacheOrigin.prototype.findAll).toBeCalledWith({

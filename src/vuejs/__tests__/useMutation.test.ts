@@ -1,20 +1,9 @@
-import { setLogger } from "react-query/core";
-
-import {
-  errorMutator,
-  flushPromises,
-  noop,
-  successMutator,
-} from "./test-utils";
+import { errorMutator, flushPromises, successMutator } from "./test-utils";
 import { useMutation } from "../useMutation";
 
 jest.mock("../useQueryClient");
 
 describe("useMutation", () => {
-  beforeAll(() => {
-    setLogger({ log: noop, warn: noop, error: noop });
-  });
-
   beforeEach(() => {
     jest.clearAllMocks();
   });
