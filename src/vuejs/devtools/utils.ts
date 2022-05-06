@@ -10,7 +10,7 @@ enum QueryState {
 }
 
 export function getQueryState(query: Query): QueryState {
-  if (query.isFetching()) {
+  if (query.state.fetchStatus === "fetching") {
     return QueryState.Fetching;
   }
   if (!query.getObserversCount()) {

@@ -12,7 +12,7 @@ import type {
   QueryObserverOptions,
   QueryObserverResult,
 } from "react-query/core";
-import type { QueryFunction } from "react-query/types/core";
+import type { QueryFunction } from "react-query/lib/core";
 import { useQueryClient } from "./useQueryClient";
 import { updateState, isQueryKey, cloneDeepUnref } from "./utils";
 import { WithQueryClientKey } from "./types";
@@ -54,7 +54,7 @@ export function useBaseQuery<
 ): UseQueryReturnType<TData, TError> {
   const options = getQueryUnreffedOptions();
   const queryClient = useQueryClient(options.queryClientKey);
-  const defaultedOptions = queryClient.defaultQueryObserverOptions(options);
+  const defaultedOptions = queryClient.defaultQueryOptions(options);
   const observer = new Observer(queryClient, defaultedOptions);
   const state = reactive(observer.getCurrentResult());
   const unsubscribe = observer.subscribe((result) => {
@@ -65,7 +65,7 @@ export function useBaseQuery<
     [() => arg1, () => arg2, () => arg3],
     () => {
       observer.setOptions(
-        queryClient.defaultQueryObserverOptions(getQueryUnreffedOptions())
+        queryClient.defaultQueryOptions(getQueryUnreffedOptions())
       );
     },
     { deep: true }

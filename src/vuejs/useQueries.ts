@@ -11,10 +11,7 @@ import {
   isReactive,
 } from "vue-demi";
 
-import type {
-  QueryFunction,
-  QueryObserverResult,
-} from "react-query/types/core";
+import type { QueryFunction, QueryObserverResult } from "react-query/lib/core";
 
 import { useQueryClient } from "./useQueryClient";
 import { UseQueryOptions } from "./useQuery";
@@ -135,15 +132,17 @@ export type UseQueriesResults<
 
 type UseQueriesOptionsArg<T extends any[]> = readonly [...UseQueriesOptions<T>];
 
-export function useQueries<T extends any[]>(
-  queries: Ref<UseQueriesOptionsArg<T>> | UseQueriesOptionsArg<T>
-): Readonly<UseQueriesResults<T>> {
+export function useQueries<T extends any[]>({
+  queries,
+}: {
+  queries: Ref<UseQueriesOptionsArg<T>> | UseQueriesOptionsArg<T>;
+}): Readonly<UseQueriesResults<T>> {
   const queryClientKey = (unref(queries) as UseQueriesOptionsArg<T>)[0]
     ?.queryClientKey;
   const queryClient = useQueryClient(queryClientKey);
   const defaultedQueries = (unref(queries) as UseQueriesOptionsArg<T>).map(
     (options) => {
-      return queryClient.defaultQueryObserverOptions(options);
+      return queryClient.defaultQueryOptions(options);
     }
   );
 
@@ -157,7 +156,7 @@ export function useQueries<T extends any[]>(
     watch(queries, () => {
       const defaulted = (unref(queries) as UseQueriesOptionsArg<T>).map(
         (options) => {
-          return queryClient.defaultQueryObserverOptions(options);
+          return queryClient.defaultQueryOptions(options);
         }
       );
       observer.setQueries(defaulted);

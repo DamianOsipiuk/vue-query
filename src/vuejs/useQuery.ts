@@ -1,5 +1,5 @@
 import { QueryObserver } from "react-query/core";
-import type { QueryFunction, QueryKey } from "react-query/types/core";
+import type { QueryFunction, QueryKey } from "react-query/lib/core";
 import { useBaseQuery, UseQueryReturnType } from "./useBaseQuery";
 import type { WithQueryClientKey, VueQueryObserverOptions } from "./types";
 

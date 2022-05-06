@@ -8,7 +8,6 @@ export {
   hydrate,
   dehydrate,
   focusManager,
-  setLogger,
 } from "react-query/core";
 
 export * from "./vuejs";

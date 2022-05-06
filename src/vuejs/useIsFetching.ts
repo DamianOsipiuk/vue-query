@@ -1,6 +1,6 @@
 import { onScopeDispose, Ref, ref, watchEffect } from "vue-demi";
-import type { QueryKey } from "react-query/types/core";
-import type { QueryFilters as QF } from "react-query/types/core/utils";
+import type { QueryKey } from "react-query/lib/core";
+import type { QueryFilters as QF } from "react-query/lib/core/utils";
 
 import { useQueryClient } from "./useQueryClient";
 import { parseFilterArgs } from "./utils";

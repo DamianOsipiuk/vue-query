@@ -16,7 +16,7 @@ import {
   MutationKey,
   MutationObserverOptions,
   MutateFunction,
-} from "react-query/types/core";
+} from "react-query/lib/core";
 import { parseMutationArgs, updateState } from "./utils";
 import { useQueryClient } from "./useQueryClient";
 import { WithQueryClientKey } from "./types";

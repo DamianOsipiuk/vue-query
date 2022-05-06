@@ -1,6 +1,6 @@
 import { onScopeDispose, Ref, ref } from "vue-demi";
-import type { MutationKey } from "react-query/types/core";
-import type { MutationFilters as MF } from "react-query/types/core/utils";
+import type { MutationKey } from "react-query/lib/core";
+import type { MutationFilters as MF } from "react-query/lib/core/utils";
 
 import { useQueryClient } from "./useQueryClient";
 import { parseMutationFilterArgs } from "./utils";

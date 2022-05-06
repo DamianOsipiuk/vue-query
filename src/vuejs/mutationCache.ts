@@ -1,6 +1,6 @@
 import { MutationCache as MC } from "react-query/core";
 import type { Mutation } from "react-query/core";
-import type { MutationFilters } from "react-query/types/core/utils";
+import type { MutationFilters } from "react-query/lib/core/utils";
 import type { MaybeRefDeep } from "./types";
 import { cloneDeepUnref } from "./utils";
 

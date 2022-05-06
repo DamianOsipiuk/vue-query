@@ -6,7 +6,7 @@ import type {
   QueryFunction,
   QueryObserverOptions,
   QueryKey,
-} from "react-query/types/core";
+} from "react-query/lib/core";
 import { isRef, reactive, toRefs, unref, UnwrapRef } from "vue-demi";
 import { QueryFilters } from "./useIsFetching";
 import { MutationFilters } from "./useIsMutating";

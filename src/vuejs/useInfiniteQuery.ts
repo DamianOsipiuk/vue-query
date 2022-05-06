@@ -5,7 +5,7 @@ import type {
   QueryFunction,
   QueryKey,
   InfiniteQueryObserverResult,
-} from "react-query/types/core";
+} from "react-query/lib/core";
 
 import { useBaseQuery, UseQueryReturnType } from "./useBaseQuery";
 

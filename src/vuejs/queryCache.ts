@@ -1,6 +1,6 @@
 import { QueryCache as QC } from "react-query/core";
 import type { Query, QueryKey } from "react-query/core";
-import type { QueryFilters } from "react-query/types/core/utils";
+import type { QueryFilters } from "react-query/lib/core/utils";
 import type { MaybeRefDeep } from "./types";
 import { cloneDeepUnref, isQueryKey } from "./utils";
 

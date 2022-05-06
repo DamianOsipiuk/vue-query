@@ -23,8 +23,8 @@ import type {
   QueryFilters,
   MutationFilters,
   Updater,
-} from "react-query/types/core/utils";
-import type { QueryState } from "react-query/types/core/query";
+} from "react-query/lib/core/utils";
+import { QueryState } from "react-query/lib/core/query";
 import type { MaybeRefDeep } from "./types";
 import { cloneDeepUnref, isQueryKey } from "./utils";
 import { QueryCache } from "./queryCache";
@@ -92,7 +92,7 @@ export class QueryClient extends QC {
     queryKey: MaybeRefDeep<QueryKey>,
     updater: Updater<TData | undefined, TData>,
     options?: MaybeRefDeep<SetDataOptions>
-  ): TData {
+  ): TData | undefined {
     return super.setQueryData(
       cloneDeepUnref(queryKey),
       updater,
