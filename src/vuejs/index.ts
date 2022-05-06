@@ -1,7 +1,6 @@
 /* istanbul ignore file */
 
 export { useQueryClient } from "./useQueryClient";
-export { useQueryProvider } from "./useQueryProvider";
 export { VueQueryPlugin } from "./vueQueryPlugin";
 
 export { QueryClient } from "./queryClient";

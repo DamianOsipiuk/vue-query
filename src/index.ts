@@ -11,4 +11,4 @@ export {
   setLogger,
 } from "react-query/core";
 
-export * from "./vue";
+export * from "./vuejs";

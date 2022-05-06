@@ -3,13 +3,18 @@
   "version": "1.0.0-semantic",
   "description": "Hooks for fetching, caching and updating asynchronous data in Vue",
   "main": "lib/index.js",
-  "module": "esm/index.js",
+  "module": "lib/index.mjs",
   "types": "lib/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./lib/index.mjs",
+      "default": "./lib/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "sideEffects": ["lib/index.js", "lib/index.mjs"],
   "files": [
-    "/devtools",
-    "/nuxt",
     "/lib",
-    "/esm",
     "/types"
   ],
   "scripts": {

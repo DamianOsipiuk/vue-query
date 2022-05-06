@@ -30,46 +30,11 @@ export default defineConfig([
     ...common,
   },
   {
-    input: "src/devtools/index.ts",
-    output: {
-      file: "lib/devtools.js",
-      format: "cjs",
-      sourcemap: true,
-    },
-    ...common,
-  },
-  {
-    input: "src/nuxt/index.ts",
-    output: {
-      file: "lib/nuxt.js",
-      format: "cjs",
-      sourcemap: true,
-    },
-    ...common,
-  },
-  {
     input: "src/index.ts",
     output: {
-      dir: "esm",
+      dir: "lib",
       format: "esm",
-      sourcemap: true,
-    },
-    ...common,
-  },
-  {
-    input: "src/devtools/index.ts",
-    output: {
-      file: "esm/devtools.js",
-      format: "esm",
-      sourcemap: true,
-    },
-    ...common,
-  },
-  {
-    input: "src/nuxt/index.ts",
-    output: {
-      file: "esm/nuxt.js",
-      format: "esm",
+      entryFileNames: "[name].mjs",
       sourcemap: true,
     },
     ...common,
