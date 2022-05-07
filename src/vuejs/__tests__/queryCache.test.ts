@@ -22,7 +22,7 @@ describe("QueryCache", () => {
       });
 
       expect(QueryCacheOrigin.prototype.find).toBeCalledWith(["foo", "bar"], {
-        queryKey: "baz",
+        queryKey: ["baz"],
       });
     });
   });
@@ -38,7 +38,7 @@ describe("QueryCache", () => {
       expect(QueryCacheOrigin.prototype.findAll).toBeCalledWith(
         ["foo", "bar"],
         {
-          queryKey: "baz",
+          queryKey: ["baz"],
         }
       );
     });
@@ -51,7 +51,7 @@ describe("QueryCache", () => {
       });
 
       expect(QueryCacheOrigin.prototype.findAll).toBeCalledWith({
-        queryKey: "baz",
+        queryKey: ["baz"],
       });
     });
   });

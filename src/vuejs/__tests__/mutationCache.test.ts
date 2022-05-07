@@ -23,7 +23,7 @@ describe("MutationCache", () => {
 
       expect(MutationCacheOrigin.prototype.find).toBeCalledWith({
         exact: true,
-        mutationKey: "baz",
+        mutationKey: ["baz"],
       });
     });
   });
@@ -37,7 +37,7 @@ describe("MutationCache", () => {
       });
 
       expect(MutationCacheOrigin.prototype.findAll).toBeCalledWith({
-        mutationKey: "baz",
+        mutationKey: ["baz"],
       });
     });
   });

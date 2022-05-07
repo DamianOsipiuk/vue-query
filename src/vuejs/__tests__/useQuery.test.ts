@@ -12,7 +12,6 @@ import {
   rejectFetcher,
   simpleFetcher,
   getSimpleFetcherWithReturnData,
-  noop,
 } from "./test-utils";
 import { useQuery } from "../useQuery";
 import { useBaseQuery } from "../useBaseQuery";
@@ -28,9 +27,14 @@ describe("useQuery", () => {
   test("should properly execute query", () => {
     useQuery(["key0"], simpleFetcher, { staleTime: 1000 });
 
-    expect(useBaseQuery).toBeCalledWith(QueryObserver, "key0", simpleFetcher, {
-      staleTime: 1000,
-    });
+    expect(useBaseQuery).toBeCalledWith(
+      QueryObserver,
+      ["key0"],
+      simpleFetcher,
+      {
+        staleTime: 1000,
+      }
+    );
   });
 
   test("should return loading status initially", () => {
@@ -115,7 +119,7 @@ describe("useQuery", () => {
 
   test("should update query on reactive options object change", async () => {
     const spy = jest.fn();
-    const onSuccess = ref(noop);
+    const onSuccess = ref(() => {});
     useQuery(
       ["key6"],
       simpleFetcher,
@@ -164,7 +168,7 @@ describe("useQuery", () => {
     await flushPromises();
 
     expect(query).toMatchObject({
-      status: { value: "idle" },
+      fetchStatus: { value: "idle" },
       data: { value: undefined },
     });
 
@@ -173,7 +177,7 @@ describe("useQuery", () => {
     await flushPromises();
 
     expect(query).toMatchObject({
-      status: { value: "loading" },
+      fetchStatus: { value: "fetching" },
       data: { value: undefined },
     });
 
@@ -189,7 +193,7 @@ describe("useQuery", () => {
 
     const enabled = computed(() => !!data.value);
 
-    const { status } = useQuery(
+    const { fetchStatus, status } = useQuery(
       ["dependant2"],
       simpleFetcher,
       reactive({
@@ -198,15 +202,16 @@ describe("useQuery", () => {
     );
 
     expect(data.value).toStrictEqual(undefined);
-    expect(status.value).toStrictEqual("idle");
+    expect(fetchStatus.value).toStrictEqual("idle");
 
     await flushPromises();
 
     expect(data.value).toStrictEqual("Some data");
-    expect(status.value).toStrictEqual("loading");
+    expect(fetchStatus.value).toStrictEqual("fetching");
 
     await flushPromises();
 
+    expect(fetchStatus.value).toStrictEqual("idle");
     expect(status.value).toStrictEqual("success");
   });
 

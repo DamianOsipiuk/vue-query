@@ -16,8 +16,7 @@ const config: Config.InitialOptions = {
     // Exclude types
     "!src/**/*.d.ts",
     // Exlude devtools
-    "!src/devtools/**/*",
-    "!src/vue/devtools/**/*",
+    "!src/vuejs/devtools/**/*",
   ],
 };
 

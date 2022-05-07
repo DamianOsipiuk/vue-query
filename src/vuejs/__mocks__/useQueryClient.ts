@@ -1,8 +1,9 @@
 import { QueryClient } from "../queryClient";
 
 const queryClient = new QueryClient({
+  logger: { log: () => {}, warn: () => {}, error: () => {} },
   defaultOptions: {
-    queries: { retry: 0, cacheTime: 10 },
+    queries: { retry: false, cacheTime: Infinity },
   },
 });
 

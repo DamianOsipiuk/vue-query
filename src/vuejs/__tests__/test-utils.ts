@@ -4,10 +4,6 @@ export function flushPromises(timeout = 0): Promise<unknown> {
   });
 }
 
-export function noop(): undefined {
-  return undefined;
-}
-
 export function simpleFetcher(): Promise<string> {
   return new Promise((resolve) => {
     setTimeout(() => {
