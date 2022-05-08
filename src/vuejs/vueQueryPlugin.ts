@@ -14,13 +14,11 @@ export interface AdditionalClient {
 interface ConfigOptions {
   queryClientConfig?: MaybeRefDeep<QueryClientConfig>;
   queryClientKey?: string;
-  additionalClients?: AdditionalClient[];
 }
 
 interface ClientOptions {
   queryClient?: QueryClient;
   queryClientKey?: string;
-  additionalClients?: AdditionalClient[];
 }
 
 export type VueQueryPluginOptions = ConfigOptions | ClientOptions;
@@ -42,9 +40,6 @@ export const VueQueryPlugin = {
 
     const cleanup = () => {
       client.unmount();
-      options.additionalClients?.forEach((additionalClient) => {
-        additionalClient.queryClient.unmount();
-      });
     };
 
     if (app.onUnmount) {
@@ -71,12 +66,6 @@ export const VueQueryPlugin = {
           }
           this._provided[clientKey] = client;
 
-          options.additionalClients?.forEach((additionalClient) => {
-            const key = getClientKey(additionalClient.queryClientKey);
-            this._provided[key] = additionalClient.queryClient;
-            additionalClient.queryClient.mount();
-          });
-
           if (process.env.NODE_ENV === "development") {
             setupDevtools(this, client);
           }
@@ -85,14 +74,9 @@ export const VueQueryPlugin = {
     } else {
       app.provide(clientKey, client);
 
-      options.additionalClients?.forEach((additionalClient) => {
-        const key = getClientKey(additionalClient.queryClientKey);
-        app.provide(key, additionalClient.queryClient);
-        additionalClient.queryClient.mount();
-      });
-    }
-    if (process.env.NODE_ENV === "development") {
-      setupDevtools(app, client);
+      if (process.env.NODE_ENV === "development") {
+        setupDevtools(app, client);
+      }
     }
   },
 };
