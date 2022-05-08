@@ -19,6 +19,10 @@ import { UseQueryOptions } from "./useQuery";
 // Avoid TS depth-limit error in case of large array literal
 type MAXIMUM_DEPTH = 20;
 
+type InvalidQueryFn = QueryFunction<
+  undefined | Promise<undefined> | void | Promise<void>
+>;
+
 type GetOptions<T> =
   // Part 1: responsible for applying explicit type parameter to function arguments, if object { queryFnData: TQueryFnData, error: TError, data: TData }
   T extends {
@@ -39,7 +43,9 @@ type GetOptions<T> =
     : T extends [infer TQueryFnData]
     ? UseQueryOptions<TQueryFnData>
     : // Part 3: responsible for inferring and enforcing type if no explicit parameter was provided
-    T extends {
+    T extends { queryFn?: InvalidQueryFn }
+    ? never | "queryFn must not return undefined or void"
+    : T extends {
         queryFn?: QueryFunction<infer TQueryFnData, infer TQueryKey>;
         select: (data: any) => infer TData;
       }
@@ -66,7 +72,7 @@ type GetResults<T> =
     ? QueryObserverResult<TQueryFnData>
     : // Part 3: responsible for mapping inferred type to results, if no explicit parameter was provided
     T extends {
-        queryFn?: QueryFunction<any, any>;
+        queryFn?: QueryFunction<unknown, any>;
         select: (data: any) => infer TData;
       }
     ? QueryObserverResult<TData>
@@ -94,7 +100,9 @@ export type UseQueriesOptions<
   ? T
   : // If T is *some* array but we couldn't assign unknown[] to it, then it must hold some known/homogenous type!
   // use this to infer the param types in the case of Array.map() argument
-  T extends UseQueryOptions<
+  T extends { queryFn: InvalidQueryFn }[]
+  ? (never | "queryFn must not return undefined or void")[]
+  : T extends UseQueryOptions<
       infer TQueryFnData,
       infer TError,
       infer TData,
