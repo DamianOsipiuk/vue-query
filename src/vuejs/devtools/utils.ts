@@ -7,11 +7,15 @@ enum QueryState {
   Fresh,
   Stale,
   Inactive,
+  Paused,
 }
 
 export function getQueryState(query: Query): QueryState {
   if (query.state.fetchStatus === "fetching") {
     return QueryState.Fetching;
+  }
+  if (query.state.fetchStatus === "paused") {
+    return QueryState.Paused;
   }
   if (!query.getObserversCount()) {
     return QueryState.Inactive;
@@ -28,6 +32,9 @@ export function getQueryStateLabel(query: Query): string {
 
   if (queryState === QueryState.Fetching) {
     return "fetching";
+  }
+  if (queryState === QueryState.Paused) {
+    return "paused";
   }
   if (queryState === QueryState.Stale) {
     return "stale";
@@ -54,6 +61,9 @@ export function getQueryStatusBg(query: Query): number {
 
   if (queryState === QueryState.Fetching) {
     return 0x006bff;
+  }
+  if (queryState === QueryState.Paused) {
+    return 0x8c49eb;
   }
   if (queryState === QueryState.Stale) {
     return 0xffb200;
