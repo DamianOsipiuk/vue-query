@@ -67,26 +67,15 @@ describe("VueQueryPlugin", () => {
         mount: jest.fn(),
         unmount: jest.fn(),
       } as unknown as QueryClient;
-      const customClient2 = {
-        mount: jest.fn(),
-        unmount: jest.fn(),
-      } as unknown as QueryClient;
       const originalUnmount = appMock.unmount;
       VueQueryPlugin.install?.(appMock, {
         queryClient: customClient,
-        additionalClients: [
-          {
-            queryClient: customClient2,
-            queryClientKey: "client2",
-          },
-        ],
       });
 
       appMock.unmount();
 
       expect(appMock.unmount).not.toEqual(originalUnmount);
       expect(customClient.unmount).toHaveBeenCalledTimes(1);
-      expect(customClient2.unmount).toHaveBeenCalledTimes(1);
       expect(originalUnmount).toHaveBeenCalledTimes(1);
     });
 
@@ -215,94 +204,6 @@ describe("VueQueryPlugin", () => {
         expect(appMock.provide).toHaveBeenCalledWith(
           VUE_QUERY_CLIENT,
           expect.objectContaining(config)
-        );
-      }
-    );
-  });
-
-  describe("when additional clients are provided", () => {
-    testIf(isVue2)(
-      "should provide those clients in addition to the default one",
-      () => {
-        const foo = "Foo";
-        const bar = "Bar";
-        const appMock = getAppMock();
-        const fooClient = {
-          mount: jest.fn(),
-          name: foo,
-        } as unknown as QueryClient;
-        const barClient = {
-          mount: jest.fn(),
-          name: bar,
-        } as unknown as QueryClient;
-        VueQueryPlugin.install?.(appMock, {
-          additionalClients: [
-            {
-              queryClient: fooClient,
-              queryClientKey: foo,
-            },
-            {
-              queryClient: barClient,
-              queryClientKey: bar,
-            },
-          ],
-        });
-
-        appMock._mixin.beforeCreate?.call(appMock);
-
-        expect(fooClient.mount).toHaveBeenCalled();
-        expect(barClient.mount).toHaveBeenCalled();
-        expect(appMock._provided).toMatchObject({
-          VUE_QUERY_CLIENT: expect.anything(),
-          [`${VUE_QUERY_CLIENT}:${foo}`]: fooClient,
-          [`${VUE_QUERY_CLIENT}:${bar}`]: barClient,
-        });
-      }
-    );
-
-    testIf(isVue3)(
-      "should provide those clients in addition to the default one",
-      () => {
-        const foo = "Foo";
-        const bar = "Bar";
-        const appMock = getAppMock();
-        const fooClient = {
-          mount: jest.fn(),
-          name: foo,
-        } as unknown as QueryClient;
-        const barClient = {
-          mount: jest.fn(),
-          name: bar,
-        } as unknown as QueryClient;
-        VueQueryPlugin.install?.(appMock, {
-          additionalClients: [
-            {
-              queryClient: fooClient,
-              queryClientKey: foo,
-            },
-            {
-              queryClient: barClient,
-              queryClientKey: bar,
-            },
-          ],
-        });
-
-        expect(fooClient.mount).toHaveBeenCalled();
-        expect(barClient.mount).toHaveBeenCalled();
-        expect(appMock.provide).toHaveBeenNthCalledWith(
-          1,
-          VUE_QUERY_CLIENT,
-          expect.anything()
-        );
-        expect(appMock.provide).toHaveBeenNthCalledWith(
-          2,
-          `${VUE_QUERY_CLIENT}:${foo}`,
-          fooClient
-        );
-        expect(appMock.provide).toHaveBeenNthCalledWith(
-          3,
-          `${VUE_QUERY_CLIENT}:${bar}`,
-          barClient
         );
       }
     );
