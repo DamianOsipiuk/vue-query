@@ -29,11 +29,21 @@ export type UseInfiniteQueryOptions<
   >
 >;
 
-type UseInfiniteQueryReturnType<TData, TError> = UseQueryReturnType<
+type InfiniteQueryReturnType<TData, TError> = UseQueryReturnType<
   TData,
   TError,
   InfiniteQueryObserverResult<TData, TError>
 >;
+type UseInfiniteQueryReturnType<TData, TError> = Omit<
+  InfiniteQueryReturnType<TData, TError>,
+  "fetchNextPage" | "fetchPreviousPage"
+> & {
+  fetchNextPage: InfiniteQueryObserverResult<TData, TError>["fetchNextPage"];
+  fetchPreviousPage: InfiniteQueryObserverResult<
+    TData,
+    TError
+  >["fetchPreviousPage"];
+};
 
 export function useInfiniteQuery<
   TQueryFnData = unknown,
@@ -85,10 +95,15 @@ export function useInfiniteQuery<
     | UseInfiniteQueryOptions<TQueryFnData, TError, TData, TQueryKey>,
   arg3?: UseInfiniteQueryOptions<TQueryFnData, TError, TData, TQueryKey>
 ): UseInfiniteQueryReturnType<TData, TError> {
-  return useBaseQuery(
+  const result = useBaseQuery(
     InfiniteQueryObserver as typeof QueryObserver,
     arg1,
     arg2,
     arg3
-  ) as UseInfiniteQueryReturnType<TData, TError>;
+  ) as InfiniteQueryReturnType<TData, TError>;
+  return {
+    ...result,
+    fetchNextPage: result.fetchNextPage.value,
+    fetchPreviousPage: result.fetchPreviousPage.value,
+  };
 }

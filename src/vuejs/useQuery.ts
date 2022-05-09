@@ -1,7 +1,18 @@
 import { QueryObserver } from "react-query/core";
-import type { QueryFunction, QueryKey } from "react-query/lib/core";
-import { useBaseQuery, UseQueryReturnType } from "./useBaseQuery";
+import type {
+  QueryFunction,
+  QueryKey,
+  QueryObserverResult,
+} from "react-query/lib/core";
+import { useBaseQuery, UseQueryReturnType as UQRT } from "./useBaseQuery";
 import type { WithQueryClientKey, VueQueryObserverOptions } from "./types";
+
+type UseQueryReturnType<TData, TError> = Omit<
+  UQRT<TData, TError>,
+  "refetch"
+> & {
+  refetch: QueryObserverResult<TData, TError>["refetch"];
+};
 
 export type UseQueryOptions<
   TQueryFnData = unknown,
@@ -58,5 +69,10 @@ export function useQuery<
     | UseQueryOptions<TQueryFnData, TError, TData, TQueryKey>,
   arg3?: UseQueryOptions<TQueryFnData, TError, TData, TQueryKey>
 ): UseQueryReturnType<TData, TError> {
-  return useBaseQuery(QueryObserver, arg1, arg2, arg3);
+  const result = useBaseQuery(QueryObserver, arg1, arg2, arg3);
+
+  return {
+    ...result,
+    refetch: result.refetch.value,
+  };
 }
