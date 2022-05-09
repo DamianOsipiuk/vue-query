@@ -25,7 +25,7 @@ describe("useQuery", () => {
     });
     expect(status.value).toStrictEqual("success");
 
-    fetchNextPage.value({ pageParam: 12 });
+    fetchNextPage({ pageParam: 12 });
 
     await flushPromises();
 

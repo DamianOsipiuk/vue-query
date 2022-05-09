@@ -8,7 +8,7 @@ jest.mock("react-query/core");
 const queryKeyRef = ["foo", ref("bar")];
 const queryKeyUnref = ["foo", "bar"];
 
-const fn = () => {};
+const fn = () => "mock";
 
 describe("QueryCache", () => {
   // beforeAll(() => {
