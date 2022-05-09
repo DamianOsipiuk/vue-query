@@ -12,7 +12,7 @@
     },
     "./package.json": "./package.json"
   },
-  "sideEffects": ["lib/index.js", "lib/index.mjs"],
+  "sideEffects": false,
   "files": [
     "/lib",
     "/types"
