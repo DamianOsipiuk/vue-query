@@ -26,7 +26,7 @@ export function useQuery<
   TData = TQueryFnData,
   TQueryKey extends QueryKey = QueryKey
 >(
-  queryKey: QueryKey,
+  queryKey: TQueryKey,
   options?: Omit<
     UseQueryOptions<TQueryFnData, TError, TData, TQueryKey>,
     "queryKey"
@@ -38,8 +38,8 @@ export function useQuery<
   TData = TQueryFnData,
   TQueryKey extends QueryKey = QueryKey
 >(
-  queryKey: QueryKey,
-  queryFn: QueryFunction<TQueryFnData>,
+  queryKey: TQueryKey,
+  queryFn: QueryFunction<TQueryFnData, TQueryKey>,
   options?: Omit<
     UseQueryOptions<TQueryFnData, TError, TData, TQueryKey>,
     "queryKey" | "queryFn"

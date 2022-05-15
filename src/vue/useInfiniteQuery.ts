@@ -50,7 +50,7 @@ export function useInfiniteQuery<
   TData = TQueryFnData,
   TQueryKey extends QueryKey = QueryKey
 >(
-  queryKey: QueryKey,
+  queryKey: TQueryKey,
   options?: Omit<
     UseInfiniteQueryOptions<TQueryFnData, TError, TData, TQueryKey>,
     "queryKey"
@@ -63,7 +63,7 @@ export function useInfiniteQuery<
   TData = TQueryFnData,
   TQueryKey extends QueryKey = QueryKey
 >(
-  queryKey: QueryKey,
+  queryKey: TQueryKey,
   queryFn: QueryFunction<TQueryFnData, TQueryKey>,
   options?: Omit<
     UseInfiniteQueryOptions<TQueryFnData, TError, TData, TQueryKey>,
