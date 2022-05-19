@@ -37,6 +37,7 @@ function getAppMock(withUnmountHook = false): TestApp {
 describe("VueQueryPlugin", () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    window.__VUE_QUERY_CONTEXT__ = undefined;
   });
 
   describe("devtools", () => {
@@ -306,5 +307,35 @@ describe("VueQueryPlugin", () => {
         );
       }
     );
+  });
+
+  describe("when context sharing is enabled", () => {
+    test("should create context if it does not exist", () => {
+      const appMock = getAppMock();
+      VueQueryPlugin.install?.(appMock, { contextSharing: true });
+
+      expect(window.__VUE_QUERY_CONTEXT__).toBeTruthy();
+    });
+
+    test("should create context with options if it does not exist", () => {
+      const appMock = getAppMock();
+      VueQueryPlugin.install?.(appMock, {
+        contextSharing: true,
+        queryClientConfig: { defaultOptions: { queries: { staleTime: 5000 } } },
+      });
+
+      expect(
+        window.__VUE_QUERY_CONTEXT__?.getDefaultOptions().queries?.staleTime
+      ).toEqual(5000);
+    });
+
+    test("should use existing context", () => {
+      const customClient = { mount: jest.fn() } as unknown as QueryClient;
+      window.__VUE_QUERY_CONTEXT__ = customClient;
+      const appMock = getAppMock();
+      VueQueryPlugin.install?.(appMock, { contextSharing: true });
+
+      expect(customClient.mount).toHaveBeenCalledTimes(1);
+    });
   });
 });

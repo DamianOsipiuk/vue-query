@@ -9,6 +9,7 @@ const config: Config.InitialOptions = {
   moduleNameMapper: {
     "^vue-query": "<rootDir>/src/index.ts",
   },
+  testEnvironment: "jsdom",
   testPathIgnorePatterns: ["test-utils.ts"],
   collectCoverage: true,
   collectCoverageFrom: [
