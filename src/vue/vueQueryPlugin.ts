@@ -6,6 +6,12 @@ import { getClientKey } from "./utils";
 import { setupDevtools } from "./devtools/devtools";
 import { MaybeRefDeep } from "./types";
 
+declare global {
+  interface Window {
+    __VUE_QUERY_CONTEXT__?: QueryClient;
+  }
+}
+
 export interface AdditionalClient {
   queryClient: QueryClient;
   queryClientKey: string;
@@ -15,12 +21,14 @@ interface ConfigOptions {
   queryClientConfig?: MaybeRefDeep<QueryClientConfig>;
   queryClientKey?: string;
   additionalClients?: AdditionalClient[];
+  contextSharing?: boolean;
 }
 
 interface ClientOptions {
   queryClient?: QueryClient;
   queryClientKey?: string;
   additionalClients?: AdditionalClient[];
+  contextSharing?: boolean;
 }
 
 export type VueQueryPluginOptions = ConfigOptions | ClientOptions;
@@ -33,9 +41,24 @@ export const VueQueryPlugin = {
     if ("queryClient" in options && options.queryClient) {
       client = options.queryClient;
     } else {
-      const clientConfig =
-        "queryClientConfig" in options ? options.queryClientConfig : undefined;
-      client = new QueryClient(clientConfig);
+      if (options.contextSharing && typeof window !== "undefined") {
+        if (!window.__VUE_QUERY_CONTEXT__) {
+          const clientConfig =
+            "queryClientConfig" in options
+              ? options.queryClientConfig
+              : undefined;
+          client = new QueryClient(clientConfig);
+          window.__VUE_QUERY_CONTEXT__ = client;
+        } else {
+          client = window.__VUE_QUERY_CONTEXT__;
+        }
+      } else {
+        const clientConfig =
+          "queryClientConfig" in options
+            ? options.queryClientConfig
+            : undefined;
+        client = new QueryClient(clientConfig);
+      }
     }
 
     client.mount();
