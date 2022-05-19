@@ -27,7 +27,7 @@ export default defineComponent({
 
     const { refetch, data, suspense } = useQuery("todos", fetcher, {
       // If you do not want data to be refetched on the client, set a staleTime to high enough time
-      staleTime: 1000,
+      staleTime: 5000,
     });
 
     onServerPrefetch(async () => {

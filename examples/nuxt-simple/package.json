@@ -11,7 +11,7 @@
   "dependencies": {
     "@nuxtjs/composition-api": "^0.28.0",
     "nuxt": "^2.0.0",
-    "vue-query": "^1.5.1"
+    "vue-query": ">=1.0.0"
   },
   "devDependencies": {
     "babel-eslint": "^10.0.1",
