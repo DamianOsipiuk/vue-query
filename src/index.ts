@@ -1,13 +1,8 @@
 /* istanbul ignore file */
 
-export {
-  QueryObserver,
-  QueriesObserver,
-  InfiniteQueryObserver,
-  MutationObserver,
-  hydrate,
-  dehydrate,
-  focusManager,
-} from "react-query/core";
+import { QueryCache, MutationCache, QueryClient } from "./vuejs";
 
+export * from "react-query/core";
 export * from "./vuejs";
+
+export { QueryCache, MutationCache, QueryClient };
