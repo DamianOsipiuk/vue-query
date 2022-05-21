@@ -2,6 +2,7 @@
 
   - [Overview](/)
   - [Installation](getting-started/installation.md)
+  - [Quick Start](getting-started/quick-start.md)
   - [DevTools](getting-started/devtools.md)
   - [TypeScript](getting-started/typescript.md)
 

@@ -9,7 +9,7 @@ All main concepts are inherited from the main package. Please also check the [re
 
 ### Motivation
 
-Out of the box Vue does not provide optinionated way of interacting with server data. So developers end up building custom solutions that tend to end up either over-complicated, feature lacking or using global state management libraries that are not designed for this kind of usage.
+Out of the box, Vue applications **do not** come with an opinionated way of fetching or updating data from your components so developers end up building their own ways of fetching data. This usually means component-based state, or using more general purpose state management libraries to store and provide asynchronous data throughout their apps.
 
 While most traditional state management libraries are great for working with client state, they are **not so great at working with async or server state**. This is because **server state is totally different**. For starters, server state:
 
@@ -18,7 +18,7 @@ While most traditional state management libraries are great for working with cli
 - Implies shared ownership and can be changed by other people without your knowledge
 - Can potentially become "out of date" in your applications if you're not careful
 
-Once you grasp the nature of server state in your application, even more challenges will arise as you go, for example:
+Once you grasp the nature of server state in your application, **even more challenges will arise** as you go, for example:
 
 - Caching... (possibly the hardest thing to do in programming)
 - Deduping multiple requests for the same data into a single request
