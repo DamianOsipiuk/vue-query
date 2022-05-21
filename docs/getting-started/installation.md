@@ -32,7 +32,7 @@ import { defineComponent } from "vue";
 import { useQuery } from "vue-query";
 
 function useTodosQuery() {
-  return useQuery("todos", fetchTodoList);
+  return useQuery(["todos"], fetchTodoList);
 }
 
 export default defineComponent({
