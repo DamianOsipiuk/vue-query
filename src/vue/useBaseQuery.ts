@@ -5,6 +5,7 @@ import {
   ToRefs,
   reactive,
   watch,
+  UnwrapRef,
 } from "vue-demi";
 import type {
   QueryObserver,
@@ -16,8 +17,8 @@ import type { QueryFunction } from "react-query/types/core";
 import { useQueryClient } from "./useQueryClient";
 import { updateState, isQueryKey, cloneDeepUnref } from "./utils";
 import { WithQueryClientKey } from "./types";
-import { UseQueryOptions } from "./useQuery";
-import { UseInfiniteQueryOptions } from "./useInfiniteQuery";
+import type { UseQueryOptions } from "./useQuery";
+import type { UseInfiniteQueryOptions } from "./useInfiniteQuery";
 
 export type UseQueryReturnType<
   TData,
@@ -48,7 +49,7 @@ export function useBaseQuery<
     | TQueryKey
     | UseQueryOptionsGeneric<TQueryFnData, TError, TData, TQueryKey>,
   arg2:
-    | QueryFunction<TQueryFnData, TQueryKey>
+    | QueryFunction<TQueryFnData, UnwrapRef<TQueryKey>>
     | UseQueryOptionsGeneric<TQueryFnData, TError, TData, TQueryKey> = {},
   arg3: UseQueryOptionsGeneric<TQueryFnData, TError, TData, TQueryKey> = {}
 ): UseQueryReturnType<TData, TError> {

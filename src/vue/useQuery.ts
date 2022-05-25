@@ -1,3 +1,4 @@
+import type { UnwrapRef } from "vue-demi";
 import { QueryObserver } from "react-query/core";
 import type { QueryFunction, QueryKey } from "react-query/types/core";
 import { useBaseQuery, UseQueryReturnType } from "./useBaseQuery";
@@ -39,7 +40,7 @@ export function useQuery<
   TQueryKey extends QueryKey = QueryKey
 >(
   queryKey: TQueryKey,
-  queryFn: QueryFunction<TQueryFnData, TQueryKey>,
+  queryFn: QueryFunction<TQueryFnData, UnwrapRef<TQueryKey>>,
   options?: Omit<
     UseQueryOptions<TQueryFnData, TError, TData, TQueryKey>,
     "queryKey" | "queryFn"
@@ -54,7 +55,7 @@ export function useQuery<
 >(
   arg1: TQueryKey | UseQueryOptions<TQueryFnData, TError, TData, TQueryKey>,
   arg2?:
-    | QueryFunction<TQueryFnData, TQueryKey>
+    | QueryFunction<TQueryFnData, UnwrapRef<TQueryKey>>
     | UseQueryOptions<TQueryFnData, TError, TData, TQueryKey>,
   arg3?: UseQueryOptions<TQueryFnData, TError, TData, TQueryKey>
 ): UseQueryReturnType<TData, TError> {
