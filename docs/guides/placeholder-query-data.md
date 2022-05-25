@@ -18,7 +18,7 @@ There are a few ways to supply placeholder data for a query to the cache before 
 ```js
 const placeholderTodos = [...];
 
-const { data, isLoading } = useQuery("todos", () => fetch("/todos"), {
+const { data, isLoading } = useQuery(["todos"], () => fetch("/todos"), {
   placeholderData: placeholderTodos,
 });
 ```
@@ -28,7 +28,7 @@ const { data, isLoading } = useQuery("todos", () => fetch("/todos"), {
 ```js
 const placeholderTodos = () => generateFakeTodos();
 
-const { data, isLoading } = useQuery("todos", () => fetch("/todos"), {
+const { data, isLoading } = useQuery(["todos"], () => fetch("/todos"), {
   placeholderData: placeholderTodos,
 });
 ```
