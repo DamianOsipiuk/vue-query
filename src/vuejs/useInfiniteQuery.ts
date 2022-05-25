@@ -1,5 +1,5 @@
 import { InfiniteQueryObserver } from "react-query/core";
-
+import type { UnwrapRef } from "vue-demi";
 import type {
   QueryObserver,
   QueryFunction,
@@ -74,7 +74,7 @@ export function useInfiniteQuery<
   TQueryKey extends QueryKey = QueryKey
 >(
   queryKey: TQueryKey,
-  queryFn: QueryFunction<TQueryFnData, TQueryKey>,
+  queryFn: QueryFunction<TQueryFnData, UnwrapRef<TQueryKey>>,
   options?: Omit<
     UseInfiniteQueryOptions<TQueryFnData, TError, TData, TQueryKey>,
     "queryKey" | "queryFn"
@@ -91,7 +91,7 @@ export function useInfiniteQuery<
     | TQueryKey
     | UseInfiniteQueryOptions<TQueryFnData, TError, TData, TQueryKey>,
   arg2?:
-    | QueryFunction<TQueryFnData, TQueryKey>
+    | QueryFunction<TQueryFnData, UnwrapRef<TQueryKey>>
     | UseInfiniteQueryOptions<TQueryFnData, TError, TData, TQueryKey>,
   arg3?: UseInfiniteQueryOptions<TQueryFnData, TError, TData, TQueryKey>
 ): UseInfiniteQueryReturnType<TData, TError> {
