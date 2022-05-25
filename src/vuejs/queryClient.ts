@@ -91,7 +91,7 @@ export class QueryClient extends QC {
 
   setQueryData<TData>(
     queryKey: MaybeRefDeep<QueryKey>,
-    updater: Updater<TData | undefined, TData>,
+    updater: Updater<TData | undefined, TData | undefined>,
     options?: MaybeRefDeep<SetDataOptions>
   ): TData | undefined {
     return super.setQueryData(
