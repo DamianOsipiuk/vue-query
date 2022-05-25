@@ -9,7 +9,7 @@ This example very briefly illustrates the 3 core concepts of Vue Query:
 import { useQueryClient, useQuery, useMutation } from "vue-query";
 
 // Access QueryClient instance
-const queryClient = useQueryClient()
+const queryClient = useQueryClient();
 
 // Query
 const { isLoading, isError, data, error } = useQuery(["todos"], getTodos);
@@ -17,16 +17,16 @@ const { isLoading, isError, data, error } = useQuery(["todos"], getTodos);
 // Mutation
 const mutation = useMutation(postTodo, {
   onSuccess: () => {
-  // Invalidate and refetch
-  queryClient.invalidateQueries(['todos'])
+    // Invalidate and refetch
+    queryClient.invalidateQueries(["todos"]);
   },
-})
+});
 
 function onButtonClick() {
   mutation.mutate({
     id: Date.now(),
-    title: 'Do Laundry',
-  })
+    title: "Do Laundry",
+  });
 }
 </script>
 
@@ -37,9 +37,7 @@ function onButtonClick() {
   <ul v-else>
     <li v-for="todo in data" :key="todo.id">{{ todo.title }}</li>
   </ul>
-  <button @click="onButtonClick">
-    Add Todo
-  </button>
+  <button @click="onButtonClick">Add Todo</button>
 </template>
 ```
 

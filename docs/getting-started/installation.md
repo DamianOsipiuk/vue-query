@@ -12,11 +12,11 @@ yarn add vue-query
 
 Before starting using Vue Query, you need to initialize it using `VueQueryPlugin`
 
-   ```ts
-   import { VueQueryPlugin } from "vue-query";
+```ts
+import { VueQueryPlugin } from "vue-query";
 
-   app.use(VueQueryPlugin);
-   ```
+app.use(VueQueryPlugin);
+```
 
 ### Use of Composition API with `<script setup>`
 
