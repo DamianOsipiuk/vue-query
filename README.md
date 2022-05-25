@@ -20,7 +20,9 @@ Based on [react-query](https://github.com/tannerlinsley/react-query)
 
 Visit https://vue-query.vercel.app
 
-For topics not covered in `vue-query` docs visit [react-query docs](https://react-query.tanstack.com/reference/useQuery) as most of the concepts and APIs are the same.
+Visit https://vue-query-next.vercel.app for V2 documentation
+
+For topics not covered in `vue-query docs` visit [react-query docs](https://react-query.tanstack.com/reference/useQuery) as most of the concepts and APIs are the same.
 
 # Quick Features
 
