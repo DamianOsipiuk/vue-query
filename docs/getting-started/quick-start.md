@@ -1,8 +1,8 @@
 This example very briefly illustrates the 3 core concepts of Vue Query:
 
-- [Queries](../guides/queries)
-- [Mutations](../guides/mutations)
-- [Query Invalidation](../guides/query-invalidation)
+- [Queries](guides/queries)
+- [Mutations](guides/mutations)
+- [Query Invalidation](guides/query-invalidation)
 
 ```vue
 <script setup>

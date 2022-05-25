@@ -1,4 +1,4 @@
-!> Please read about [queryKey variables](./query-keys?id=if-your-query-function-depends-on-a-variable-include-it-in-your-query-key) first to avoid common pitfalls of Vue reactivity system.
+!> Please read about [queryKey variables](guides/query-keys?id=if-your-query-function-depends-on-a-variable-include-it-in-your-query-key) first to avoid common pitfalls of Vue reactivity system.
 
 A query function can be literally any function that `returns a promise`. The promise that is returned should either `resolve the data` or `throw an error`.
 
@@ -62,13 +62,13 @@ function fetchTodoList({ queryKey }) {
 
 The `QueryFunctionContext` is the object passed to each query function. It consists of:
 
-- `queryKey: QueryKey`: [Query Keys](./query-keys.md)
+- `queryKey: QueryKey`: [Query Keys](guides/query-keys.md)
 - `pageParam: unknown | undefined`
-  - only for [Infinite Queries](./infinite-queries.md)
+  - only for [Infinite Queries](guides/infinite-queries.md)
   - the page parameter used to fetch the current page
 - `signal?: AbortSignal`
   - [AbortSignal](https://developer.mozilla.org/en-US/docs/Web/API/AbortSignal) instance provided by react-query
-  - Can be used for [Query Cancellation](./query-cancellation.md)
+  - Can be used for [Query Cancellation](guides/query-cancellation.md)
 - `meta?: Record<string, unknown>`
   - an optional field you can fill with additional information about your query
 
