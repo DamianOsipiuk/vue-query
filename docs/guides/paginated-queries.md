@@ -21,7 +21,48 @@ By setting `keepPreviousData` to `true` we get a few new things:
 - When the new data arrives, the previous `data` is seamlessly swapped to show the new data.
 - `isPreviousData` is available to know what data the query is currently providing to you.
 
-<!-- TODO: add example -->
+```vue
+<script setup lang="ts">
+import { ref, Ref } from "vue";
+import { useQuery } from "vue-query";
+
+const fetcher = (page: Ref<number>) => async () =>
+  await fetch(
+    `https://jsonplaceholder.typicode.com/posts?_page=${page.value}&_limit=10`
+  ).then((response) => response.json());
+
+const page = ref(1);
+const { isLoading, isError, data, error, isPreviousData } = useQuery(
+  ["posts", page],
+  fetcher(page),
+  { keepPreviousData: true }
+);
+const prevPage = () => {
+  page.value = Math.max(page.value - 1, 1);
+};
+const nextPage = () => {
+  if (!isPreviousData.value) {
+    page.value = page.value + 1;
+  }
+};
+</script>
+
+<template>
+  <h1>Posts</h1>
+  <p>Current Page: {{ page }} | Previous data: {{ isPreviousData }}</p>
+  <button @click="prevPage">Prev Page</button>
+  <button @click="nextPage">Next Page</button>
+  <div v-if="isLoading">Loading...</div>
+  <div v-else-if="isError">An error has occurred: {{ error }}</div>
+  <div v-else-if="data">
+    <ul>
+      <li v-for="item in data" :key="item.id">
+        {{ item.title }}
+      </li>
+    </ul>
+  </div>
+</template>
+```
 
 ### Lagging Infinite Query results with `keepPreviousData`
 

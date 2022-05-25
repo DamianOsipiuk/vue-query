@@ -16,15 +16,21 @@ There are a few ways to supply placeholder data for a query to the cache before 
 ### Placeholder Data as a Value
 
 ```js
-function useTodosQuery() {
-  const placeholderTodos = [...];
+const placeholderTodos = [...];
 
-  return useQuery("todos", () => fetch("/todos"), {
-    placeholderData: placeholderTodos,
-  });
-}
+const { data, isLoading } = useQuery("todos", () => fetch("/todos"), {
+  placeholderData: placeholderTodos,
+});
+```
 
-const { data, isLoading } = useTodosQuery();
+### Placeholder Data as a Function
+
+```js
+const placeholderTodos = () => generateFakeTodos();
+
+const { data, isLoading } = useQuery("todos", () => fetch("/todos"), {
+  placeholderData: placeholderTodos,
+});
 ```
 
 ### Placeholder Data from Cache
