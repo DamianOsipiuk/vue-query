@@ -4,12 +4,12 @@ If this is the case, you can use the `prefetchQuery` method to prefetch the resu
 ```js
 const prefetchTodos = async () => {
   // The results of this query will be cached like a normal query
-  await queryClient.prefetchQuery("todos", fetchTodos);
+  await queryClient.prefetchQuery(["todos"], fetchTodos);
 };
 ```
 
 - If data for this query is already in the cache and **not invalidated**, the data will not be fetched
-- If a `staleTime` is passed eg. `prefetchQuery('todos', fn, { staleTime: 5000 })` and the data is older than the specified `staleTime`, the query will be fetched
+- If a `staleTime` is passed eg. `prefetchQuery(['todos'], fn, { staleTime: 5000 })` and the data is older than the specified `staleTime`, the query will be fetched
 - If no instances of `useQuery` appear for a prefetched query, it will be deleted and garbage collected after the time specified in `cacheTime`.
 
 ### Manually Priming a Query
@@ -18,5 +18,5 @@ Alternatively, if you already have the data for your query synchronously availab
 You can just use the [Query Client's `setQueryData` method](https://react-query.tanstack.com/reference/QueryClient#queryclientsetquerydata) to directly add or update a query's cached result by key.
 
 ```js
-queryClient.setQueryData("todos", todos);
+queryClient.setQueryData(["todos"], todos);
 ```

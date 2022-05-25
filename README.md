@@ -40,13 +40,14 @@ For topics not covered in `vue-query` docs visit [react-query docs](https://reac
 # Quick Start
 
 1. Install `vue-query`
-    ```bash
-    npm install vue-query
-    # or
-    yarn add vue-query
-    ```
 
-    > If you are using Vue 2.x, make sure to also setup [@vue/composition-api](https://github.com/vuejs/composition-api)
+   ```bash
+   npm install vue-query
+   # or
+   yarn add vue-query
+   ```
+
+   > If you are using Vue 2.x, make sure to also setup [@vue/composition-api](https://github.com/vuejs/composition-api)
 
 2. Initialize **Vue Query** via **VueQueryPlugin**
 

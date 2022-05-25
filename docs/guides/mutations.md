@@ -6,11 +6,9 @@ Here's an example of a mutation that adds a new todo to the server:
 <script setup>
 import { useMutation } from "vue-query";
 
-function useAddTodoMutation() {
-  return useMutation((newTodo) => axios.post("/todos", newTodo));
-}
-
-const { isLoading, isError, error, isSuccess, mutate } = useAddTodoMutation();
+const { isLoading, isError, error, isSuccess, mutate } = useMutation(
+  (newTodo) => axios.post("/todos", newTodo)
+);
 
 function addTodo() {
   mutate({ id: new Date(), title: "Do Laundry" });
@@ -49,11 +47,9 @@ It's sometimes the case that you need to clear the `error` or `data` of a mutati
 <script>
 import { useMutation } from "vue-query";
 
-function useAddTodoMutation() {
-  return useMutation((newTodo) => axios.post("/todos", newTodo));
-}
-
-const { error, mutate, reset } = useAddTodoMutation();
+const { error, mutate, reset } = useMutation((newTodo) =>
+  axios.post("/todos", newTodo)
+);
 
 function addTodo() {
   mutate({ id: new Date(), title: "Do Laundry" });
@@ -71,7 +67,7 @@ function addTodo() {
 
 ### Mutation Side Effects
 
-`useMutation` comes with some helper options that allow quick and easy side-effects at any stage during the mutation lifecycle. These come in handy for both [invalidating and refetching queries after mutations](https://react-query.tanstack.com/guides/invalidations-from-mutations) and even [optimistic updates](https://react-query.tanstack.com/guides/optimistic-updates)
+`useMutation` comes with some helper options that allow quick and easy side-effects at any stage during the mutation lifecycle. These come in handy for both [invalidating and refetching queries after mutations](guides/invalidations-from-mutations) and even [optimistic updates](guides/optimistic-updates)
 
 ```js
 function useAddTodoMutation() {
@@ -186,30 +182,30 @@ Mutations can be persisted to storage if needed and resumed at a later point. Th
 const queryClient = new QueryClient();
 
 // Define the "addTodo" mutation
-queryClient.setMutationDefaults("addTodo", {
+queryClient.setMutationDefaults(["addTodo"], {
   mutationFn: addTodo,
   onMutate: async (variables) => {
     // Cancel current queries for the todos list
-    await queryClient.cancelQueries("todos");
+    await queryClient.cancelQueries(["todos"]);
 
     // Create optimistic todo
     const optimisticTodo = { id: uuid(), title: variables.title };
 
     // Add optimistic todo to todos list
-    queryClient.setQueryData("todos", (old) => [...old, optimisticTodo]);
+    queryClient.setQueryData(["todos"], (old) => [...old, optimisticTodo]);
 
     // Return context with the optimistic todo
     return { optimisticTodo };
   },
   onSuccess: (result, variables, context) => {
     // Replace optimistic todo in the todos list with the result
-    queryClient.setQueryData("todos", (old) =>
+    queryClient.setQueryData(["todos"], (old) =>
       old.map((todo) => (todo.id === context.optimisticTodo.id ? result : todo))
     );
   },
   onError: (error, variables, context) => {
     // Remove optimistic todo from the todos list
-    queryClient.setQueryData("todos", (old) =>
+    queryClient.setQueryData(["todos"], (old) =>
       old.filter((todo) => todo.id !== context.optimisticTodo.id)
     );
   },
@@ -217,7 +213,7 @@ queryClient.setMutationDefaults("addTodo", {
 });
 
 // Start mutation in some component:
-const mutation = useMutation("addTodo");
+const mutation = useMutation(["addTodo"]);
 mutation.mutate({ title: "title" });
 
 // If the mutation has been paused because the device is for example offline,
@@ -230,3 +226,5 @@ hydrate(queryClient, state);
 // Resume the paused mutations:
 queryClient.resumePausedMutations();
 ```
+
+<!-- TODO: add Persisting Offline mutations section -->

@@ -6,17 +6,16 @@ To do this, queries also supply you with an `isFetching` boolean that you can us
 <script setup>
 import { useQuery } from "vue-query";
 
-function useTodosQuery() {
-  return useQuery("todos", fetchTodoList);
-}
-
-const { isLoading, isError, data, error, isFetching } = useTodosQuery();
+const { isLoading, isError, data, error, isFetching } = useQuery(
+  ["todos"],
+  fetchTodoList
+);
 </script>
 
 <template>
   <span v-if="isLoading">Loading...</span>
   <span v-else-if="isError">Error: {{ error.message }}</span>
-  <div v-else>
+  <div v-else-if="data">
     <span v-if="isFetching">Refreshing...</span>
     <ul>
       <li v-for="todo in data" :key="todo.id">{{ todo.title }}</li>

@@ -11,7 +11,7 @@ You can configure retries both on a global level and an individual query level.
 import { useQuery } from "vue-query";
 
 // Make a specific query retry a certain number of times
-const result = useQuery("todos", fetchTodos, {
+const result = useQuery(["todos"], fetchTodos, {
   retry: 10, // Will retry failed requests 10 times before displaying an error
 });
 ```
@@ -32,11 +32,11 @@ new QueryClient({
 });
 ```
 
-Though it is not recommended, you can obviously override the `retryDelay` function/integer in both the Provider and individual query options.  
+Though it is not recommended, you can obviously override the `retryDelay` function/integer in both the Plugin and individual query options.  
 If set to an integer instead of a function the delay will always be the same amount of time:
 
 ```js
-const result = useQuery("todos", fetchTodos, {
+const result = useQuery(["todos"], fetchTodos, {
   retryDelay: 1000, // Will always wait 1000ms to retry, regardless of how many retries
 });
 ```

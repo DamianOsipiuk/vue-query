@@ -1,4 +1,4 @@
-!> Please read about [queryKey variables](/guides/query-keys?id=if-your-query-function-depends-on-a-variable-include-it-in-your-query-key) first to avoid common pitfalls of Vue reactivity system.
+!> Please read about [queryKey variables](guides/query-keys?id=if-your-query-function-depends-on-a-variable-include-it-in-your-query-key) first to avoid common pitfalls of Vue reactivity system.
 
 A query function can be literally any function that `returns a promise`. The promise that is returned should either `resolve the data` or `throw an error`.
 
@@ -28,7 +28,7 @@ const { error } = useQuery(["todos", todoId], async () => {
 });
 ```
 
-### Usage with fetch and other clients that do not throw by default
+### Usage with `fetch` and other clients that do not throw by default
 
 While most utilities like `axios` or `graphql-request` automatically throw errors for unsuccessful HTTP calls, some utilities like `fetch` do not throw errors by default. If that's the case, you'll need to throw them on your own. Here is a simple way to do that with the popular `fetch` API:
 
@@ -44,7 +44,7 @@ useQuery(["todos", todoId], async () => {
 
 ### Query Function Variables
 
-Query keys are not just for uniquely identifying the data you are fetching, but are also conveniently passed into your query function and while not always necessary, this makes it possible to extract your query functions if needed:
+Query keys are not just for uniquely identifying the data you are fetching, but are also conveniently passed into your query function as part of the QueryFunctionContext. While not always necessary, this makes it possible to extract your query functions if needed:
 
 ```js
 function useTodos(status, page) {
@@ -53,11 +53,24 @@ function useTodos(status, page) {
 
 // Access the key, status and page variables in your query function!
 function fetchTodoList({ queryKey }) {
-  const status = queryKey[1].status;
-  const page = queryKey[1].page;
+  const [_key, { status, page }] = queryKey;
   return new Promise();
 }
 ```
+
+#### QueryFunctionContext
+
+The `QueryFunctionContext` is the object passed to each query function. It consists of:
+
+- `queryKey: QueryKey`: [Query Keys](guides/query-keys.md)
+- `pageParam: unknown | undefined`
+  - only for [Infinite Queries](guides/infinite-queries.md)
+  - the page parameter used to fetch the current page
+- `signal?: AbortSignal`
+  - [AbortSignal](https://developer.mozilla.org/en-US/docs/Web/API/AbortSignal) instance provided by react-query
+  - Can be used for [Query Cancellation](guides/query-cancellation.md)
+- `meta?: Record<string, unknown>`
+  - an optional field you can fill with additional information about your query
 
 ### Using a Query Object instead of parameters
 

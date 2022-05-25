@@ -6,7 +6,7 @@ There are many ways to supply initial data for a query to the cache before you n
   - [Prefetch the data using `queryClient.prefetchQuery`](guides/prefetching)
   - [Manually place the data into the cache using `queryClient.setQueryData`](guides/prefetching?id=manually-priming-a-query)
 
-### Using initialData to prepopulate a query
+### Using `initialData` to prepopulate a query
 
 There may be times when you already have the initial data for a query available in your app and can simply provide it directly to your query.  
 If and when this is the case, you can use the `config.initialData` option to set the initial data for a query and skip the initial loading state!
@@ -14,15 +14,11 @@ If and when this is the case, you can use the `config.initialData` option to set
 !> IMPORTANT: `initialData` is persisted to the cache, so it is not recommended to provide placeholder, partial or incomplete data to this option and instead use `placeholderData`
 
 ```js
-function useTodosQuery() {
-  const initialTodos = [...];
+const initialTodos = [...];
 
-  return useQuery("todos", () => fetch("/todos"), {
-    initialData: initialTodos,
-  });
-}
-
-const { data, isLoading } = useTodosQuery();
+const { data, isLoading } = return useQuery(["todos"], () => fetch("/todos"), {
+  initialData: initialTodos,
+});
 ```
 
 ### `staleTime` and `initialDataUpdatedAt`
@@ -33,29 +29,23 @@ By default, `initialData` is treated as totally fresh, as if it were just fetche
 
   ```js
   // Will show initialTodos immediately, but also immediately refetch todos after mount
-  function useTodosQuery() {
-    const initialTodos = [...];
+  const initialTodos = [...];
 
-    return useQuery("todos", () => fetch("/todos"), {
-      initialData: initialTodos,
-    });
-  }
-
-  const { data, isLoading } = useTodosQuery();
+  const { data, isLoading } = return useQuery(["todos"], () => fetch("/todos"), {
+    initialData: initialTodos,
+  });
   ```
 
 - If you configure your query observer with `initialData` and a `staleTime` of `1000 ms`, the data will be considered fresh for that same amount of time, as if it was just fetched from your query function.
 
   ```js
   // Show initialTodos immediately, but won't refetch until another interaction event is encountered after 1000 ms
-  function useTodosQuery() {
-    const initialTodos = [...];
+  const initialTodos = [...];
 
-    return useQuery("todos", () => fetch("/todos"), {
-      initialData: initialTodos,
-      staleTime: 1000,
-    });
-  }
+  const result = useQuery(["todos"], () => fetch("/todos"), {
+    initialData: initialTodos,
+    staleTime: 1000,
+  });
   ```
 
 - So what if your `initialData` isn't totally fresh?  
@@ -65,16 +55,14 @@ By default, `initialData` is treated as totally fresh, as if it were just fetche
 
   ```js
   // Show initialTodos immeidately, but won't refetch until another interaction event is encountered after 1000 ms
-  function useTodosQuery() {
-    const initialTodos = [...];
+  const initialTodos = [...];
 
-    return useQuery("todos", () => fetch("/todos"), {
-      initialData: initialTodos,
-      staleTime: 60 * 1000 // 1 minute
-      // This could be 10 seconds ago or 10 minutes ago
-      initialDataUpdatedAt: initialTodosUpdatedTimestamp // eg. 1608412420052
-    });
-  }
+  const result = useQuery(["todos"], () => fetch("/todos"), {
+    initialData: initialTodos,
+    staleTime: 60 * 1000 // 1 minute
+    // This could be 10 seconds ago or 10 minutes ago
+    initialDataUpdatedAt: initialTodosUpdatedTimestamp // eg. 1608412420052
+  });
   ```
 
   This option allows the staleTime to be used for its original purpose, determining how fresh the data needs to be, while also allowing the data to be refetched on mount if the `initialData` is older than the `staleTime`.  

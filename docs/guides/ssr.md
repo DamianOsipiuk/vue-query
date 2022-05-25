@@ -5,6 +5,7 @@ Vue Query supports prefetching multiple queries on the server and then _dehydrat
 ### Nuxt 3
 
 First create `vue-query.ts` file in your `plugins` directory with the following content:
+
 ```ts
 import {
   VueQueryPlugin,
@@ -38,6 +39,7 @@ export default (nuxt) => {
 ```
 
 Now you are ready to prefetch some data in your pages with `onServerPrefetch`.
+
 - Prefetch all the queries that you need with `queryClient.prefetchQuery` or `suspense`
 
 ```ts
@@ -80,6 +82,7 @@ export default (context) => {
 ```
 
 Add this plugin to your `nuxt.config.js`
+
 ```js
 module.exports = {
   ...

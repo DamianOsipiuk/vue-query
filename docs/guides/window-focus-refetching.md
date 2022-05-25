@@ -24,7 +24,7 @@ createApp(App).use(VueQueryPlugin, vueQueryPluginOptions).mount("#app");
 ### Disabling Per-Query
 
 ```js
-useQuery("todos", fetchTodos, { refetchOnWindowFocus: false });
+useQuery(["todos"], fetchTodos, { refetchOnWindowFocus: false });
 ```
 
 ## Custom Window Focus Event
@@ -74,3 +74,7 @@ focusManager.setFocused(true);
 // Fallback to the default focus check
 focusManager.setFocused(undefined);
 ```
+
+### Pitfalls & Caveats
+
+Some browser internal dialogue windows, such as spawned by `alert()` or file upload dialogues (as created by `<input type="file" />`) might also trigger focus refetching after they close. This can result in unwanted side effects, as the refetching might trigger component unmounts or remounts before your file upload handler is executed.
