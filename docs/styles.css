@@ -24,3 +24,12 @@ body .docsify-pagination-container {
 .markdown-section strong {
   filter: brightness(130%);
 }
+
+.token.deleted {
+  color: rgb(219, 44, 111);
+  text-decoration: none;
+}
+
+.token.inserted {
+  color: rgb(54, 172, 170);
+}
