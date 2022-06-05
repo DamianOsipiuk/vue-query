@@ -1,12 +1,12 @@
-import { onScopeDispose, Ref, ref, watchEffect } from "vue-demi";
+import { onScopeDispose, Ref, ref, watch } from "vue-demi";
 import type { QueryKey } from "react-query/lib/core";
 import type { QueryFilters as QF } from "react-query/lib/core/utils";
 
 import { useQueryClient } from "./useQueryClient";
-import { parseFilterArgs } from "./utils";
-import type { WithQueryClientKey } from "./types";
+import { cloneDeepUnref, isQueryKey } from "./utils";
+import type { MaybeRefDeep, WithQueryClientKey } from "./types";
 
-export type QueryFilters = WithQueryClientKey<QF>;
+export type QueryFilters = MaybeRefDeep<WithQueryClientKey<QF>>;
 
 export function useIsFetching(filters?: QueryFilters): Ref<number>;
 export function useIsFetching(
@@ -17,26 +17,42 @@ export function useIsFetching(
   arg1?: QueryKey | QueryFilters,
   arg2?: QueryFilters
 ): Ref<number> {
-  const filters: Ref<QueryFilters> = ref({});
-  const parsedFilters = parseFilterArgs(arg1, arg2);
-  filters.value = parsedFilters;
+  const filters = ref(parseFilterArgs(arg1, arg2));
+  const queryClient = useQueryClient(filters.value.queryClientKey);
 
-  const queryClient = useQueryClient(parsedFilters.queryClientKey);
-
-  const isFetching = ref(queryClient.isFetching(filters.value));
+  const isFetching = ref(queryClient.isFetching(filters));
 
   const unsubscribe = queryClient.getQueryCache().subscribe(() => {
-    isFetching.value = queryClient.isFetching(filters.value);
+    isFetching.value = queryClient.isFetching(filters);
   });
 
-  watchEffect(() => {
-    const parsedFiltersUpdate = parseFilterArgs(arg1, arg2);
-    filters.value = parsedFiltersUpdate;
-  });
+  watch(
+    [() => arg1, () => arg2],
+    () => {
+      filters.value = parseFilterArgs(arg1, arg2);
+      isFetching.value = queryClient.isFetching(filters);
+    },
+    { deep: true }
+  );
 
   onScopeDispose(() => {
     unsubscribe();
   });
 
   return isFetching;
+}
+
+export function parseFilterArgs(
+  arg1?: QueryKey | QueryFilters,
+  arg2: QueryFilters = {}
+) {
+  let options: QueryFilters;
+
+  if (isQueryKey(arg1)) {
+    options = { ...arg2, queryKey: arg1 };
+  } else {
+    options = arg1 || {};
+  }
+
+  return cloneDeepUnref(options) as WithQueryClientKey<QF>;
 }

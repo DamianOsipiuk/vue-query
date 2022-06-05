@@ -1,10 +1,8 @@
-import { successMutator, simpleFetcher } from "./test-utils";
+import { successMutator } from "./test-utils";
 import {
   isQueryKey,
-  parseFilterArgs,
   parseMutationArgs,
   parseMutationFilterArgs,
-  parseQueryArgs,
   updateState,
   cloneDeep,
   cloneDeepUnref,
@@ -15,23 +13,6 @@ describe("utils", () => {
   describe("isQueryKey", () => {
     test("should detect an array as query key", () => {
       expect(isQueryKey(["string", "array"])).toEqual(true);
-    });
-  });
-
-  describe("parseFilterArgs", () => {
-    test("should default to empty filters", () => {
-      const result = parseFilterArgs(undefined);
-
-      expect(result).toEqual({});
-    });
-
-    test("should merge query key with filters", () => {
-      const filters = { stale: true };
-
-      const result = parseFilterArgs(["key"], filters);
-      const expected = { ...filters, queryKey: ["key"] };
-
-      expect(result).toEqual(expected);
     });
   });
 
@@ -66,35 +47,6 @@ describe("utils", () => {
         ...options,
         mutationKey: ["key"],
         mutationFn: successMutator,
-      };
-
-      expect(result).toEqual(expected);
-    });
-  });
-
-  describe("parseQueryArgs", () => {
-    test("should return the same instance of options", () => {
-      const options = { retry: false };
-      const result = parseQueryArgs(options);
-
-      expect(result).toStrictEqual(options);
-    });
-
-    test("should merge query key with options", () => {
-      const options = { retry: false };
-      const result = parseQueryArgs(["key"], options);
-      const expected = { ...options, queryKey: ["key"] };
-
-      expect(result).toEqual(expected);
-    });
-
-    test("should merge query key and fn with options", () => {
-      const options = { retry: false };
-      const result = parseQueryArgs(["key"], simpleFetcher, options);
-      const expected = {
-        ...options,
-        queryKey: ["key"],
-        queryFn: simpleFetcher,
       };
 
       expect(result).toEqual(expected);

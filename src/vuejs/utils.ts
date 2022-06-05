@@ -3,12 +3,9 @@ import type {
   MutationFunction,
   MutationKey,
   MutationOptions,
-  QueryFunction,
-  QueryObserverOptions,
   QueryKey,
 } from "react-query/lib/core";
-import { isRef, reactive, toRefs, unref, UnwrapRef } from "vue-demi";
-import { QueryFilters } from "./useIsFetching";
+import { isRef, unref, UnwrapRef } from "vue-demi";
 import { MutationFilters } from "./useIsMutating";
 
 export const VUE_QUERY_CLIENT = "VUE_QUERY_CLIENT";
@@ -20,58 +17,6 @@ export function getClientKey(key?: string) {
 
 export function isQueryKey(value: unknown): value is QueryKey {
   return Array.isArray(value);
-}
-
-// This Function is Deprecated. It's not used internally anymore.
-export function parseQueryArgs<
-  TQueryFnData = unknown,
-  TError = unknown,
-  TData = TQueryFnData,
-  TQueryKey extends QueryKey = QueryKey,
-  TOptions = QueryObserverOptions<
-    TQueryFnData,
-    TError,
-    TData,
-    TQueryFnData,
-    TQueryKey
-  >
->(
-  arg1: QueryKey | TOptions,
-  arg2: QueryFunction<TQueryFnData, TQueryKey> | TOptions = {} as TOptions,
-  arg3: TOptions = {} as TOptions
-): TOptions {
-  let options;
-
-  if (!isQueryKey(arg1)) {
-    // `useQuery(optionsObj)`
-    options = arg1;
-  } else if (typeof arg2 === "function") {
-    // `useQuery(queryKey, queryFn, optionsObj?)`
-    options = {
-      ...toRefs(reactive(arg3 as unknown as object)),
-      queryKey: arg1,
-      queryFn: arg2,
-    };
-  } else {
-    // `useQuery(queryKey, optionsObj?)`
-    options = {
-      ...toRefs(reactive(arg2 as unknown as object)),
-      queryKey: arg1,
-    };
-  }
-
-  return reactive(options as object) as unknown as TOptions;
-}
-
-export function parseFilterArgs<TFilters extends QueryFilters>(
-  arg1?: QueryKey | TFilters,
-  arg2?: TFilters
-): TFilters {
-  if (isQueryKey(arg1)) {
-    return Object.assign(arg2 || ({} as TFilters), { queryKey: arg1 });
-  }
-
-  return arg1 || ({} as TFilters);
 }
 
 export function parseMutationArgs<
