@@ -12,7 +12,6 @@ const common = {
     "vue",
     "vue-demi",
     "match-sorter",
-    "@nuxtjs/composition-api",
   ],
   watch: {
     include: "src/**",

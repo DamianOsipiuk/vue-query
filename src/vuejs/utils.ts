@@ -19,7 +19,7 @@ export function getClientKey(key?: string) {
 }
 
 export function isQueryKey(value: unknown): value is QueryKey {
-  return typeof value === "string" || Array.isArray(value);
+  return Array.isArray(value);
 }
 
 // This Function is Deprecated. It's not used internally anymore.
@@ -68,7 +68,7 @@ export function parseFilterArgs<TFilters extends QueryFilters>(
   arg2?: TFilters
 ): TFilters {
   if (isQueryKey(arg1)) {
-    return Object.assign(arg2, { queryKey: arg1 });
+    return Object.assign(arg2 || ({} as TFilters), { queryKey: arg1 });
   }
 
   return arg1 || ({} as TFilters);
@@ -103,7 +103,7 @@ export function parseMutationFilterArgs(
   arg2?: MutationFilters
 ): MutationFilters | undefined {
   if (isQueryKey(arg1)) {
-    return Object.assign(arg2, {
+    return Object.assign(arg2 || ({} as MutationFilters), {
       mutationKey: arg1,
     });
   }

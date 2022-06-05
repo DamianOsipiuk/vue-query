@@ -103,19 +103,19 @@ export class QueryClient extends QC {
 
   setQueriesData<TData>(
     queryKey: MaybeRefDeep<QueryKey>,
-    updater: Updater<TData | undefined, TData>,
+    updater: Updater<TData | undefined, TData | undefined>,
     options?: MaybeRefDeep<SetDataOptions>
-  ): [QueryKey, TData][];
+  ): [QueryKey, TData | undefined][];
   setQueriesData<TData>(
     filters: MaybeRefDeep<QueryFilters>,
-    updater: Updater<TData | undefined, TData>,
+    updater: Updater<TData | undefined, TData | undefined>,
     options?: MaybeRefDeep<SetDataOptions>
-  ): [QueryKey, TData][];
+  ): [QueryKey, TData | undefined][];
   setQueriesData<TData>(
     queryKeyOrFilters: MaybeRefDeep<QueryKey | QueryFilters>,
-    updater: Updater<TData | undefined, TData>,
+    updater: Updater<TData | undefined, TData | undefined>,
     options?: MaybeRefDeep<SetDataOptions>
-  ): [QueryKey, TData][] {
+  ): [QueryKey, TData | undefined][] {
     const arg1Unreffed = cloneDeepUnref(queryKeyOrFilters);
     const arg3Unreffed = cloneDeepUnref(options) as SetDataOptions;
     if (isQueryKey(arg1Unreffed)) {

@@ -13,10 +13,6 @@ import { reactive, ref } from "vue-demi";
 
 describe("utils", () => {
   describe("isQueryKey", () => {
-    test("should detect string as query key", () => {
-      expect(isQueryKey("string")).toEqual(true);
-    });
-
     test("should detect an array as query key", () => {
       expect(isQueryKey(["string", "array"])).toEqual(true);
     });
