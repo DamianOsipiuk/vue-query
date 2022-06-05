@@ -12,13 +12,7 @@ export { useInfiniteQuery } from "./useInfiniteQuery";
 export { useMutation } from "./useMutation";
 export { useIsFetching } from "./useIsFetching";
 export { useIsMutating } from "./useIsMutating";
-export {
-  VUE_QUERY_CLIENT,
-  parseFilterArgs,
-  parseMutationArgs,
-  parseQueryArgs,
-  parseMutationFilterArgs,
-} from "./utils";
+export { VUE_QUERY_CLIENT } from "./utils";
 
 export type { UseQueryReturnType } from "./useBaseQuery";
 export type { UseQueryOptions } from "./useQuery";
