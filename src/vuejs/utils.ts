@@ -1,12 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import type {
-  MutationFunction,
-  MutationKey,
-  MutationOptions,
-  QueryKey,
-} from "react-query/lib/core";
+import type { QueryKey } from "react-query/lib/core";
 import { isRef, unref, UnwrapRef } from "vue-demi";
-import { MutationFilters } from "./useIsMutating";
 
 export const VUE_QUERY_CLIENT = "VUE_QUERY_CLIENT";
 
@@ -17,42 +11,6 @@ export function getClientKey(key?: string) {
 
 export function isQueryKey(value: unknown): value is QueryKey {
   return Array.isArray(value);
-}
-
-export function parseMutationArgs<
-  TOptions extends MutationOptions<any, any, any, any>
->(
-  arg1: MutationKey | MutationFunction<any, any> | TOptions,
-  arg2: MutationFunction<any, any> | TOptions = {} as TOptions,
-  arg3: TOptions = {} as TOptions
-): TOptions {
-  if (isQueryKey(arg1)) {
-    if (typeof arg2 === "function") {
-      return Object.assign(arg3, {
-        mutationKey: arg1,
-        mutationFn: arg2,
-      }) as TOptions;
-    }
-    return Object.assign(arg2, { mutationKey: arg1 }) as TOptions;
-  }
-
-  if (typeof arg1 === "function") {
-    return Object.assign(arg2, { mutationFn: arg1 }) as TOptions;
-  }
-
-  return arg1;
-}
-
-export function parseMutationFilterArgs(
-  arg1?: QueryKey | MutationFilters,
-  arg2?: MutationFilters
-): MutationFilters | undefined {
-  if (isQueryKey(arg1)) {
-    return Object.assign(arg2 || ({} as MutationFilters), {
-      mutationKey: arg1,
-    });
-  }
-  return arg1;
 }
 
 export function updateState(

@@ -1,5 +1,7 @@
+import { reactive } from "vue-demi";
 import { errorMutator, flushPromises, successMutator } from "./test-utils";
-import { useMutation } from "../useMutation";
+import { parseMutationArgs, useMutation } from "../useMutation";
+import { useQueryClient } from "../useQueryClient";
 
 jest.mock("../useQueryClient");
 
@@ -68,6 +70,26 @@ describe("useMutation", () => {
       data: { value: "Mock data" },
       error: { value: null },
     });
+  });
+
+  test("should update reactive options", async () => {
+    const queryClient = useQueryClient();
+    const mutationCache = queryClient.getMutationCache();
+    const options = reactive({ mutationKey: ["foo"] });
+    const mutation = useMutation(
+      (params: string) => successMutator(params),
+      options
+    );
+
+    options.mutationKey = ["bar"];
+    await flushPromises();
+    mutation.mutate("xyz");
+
+    await flushPromises();
+
+    const mutations = mutationCache.find({ mutationKey: ["bar"] });
+
+    expect(mutations?.options.mutationKey).toEqual(["bar"]);
   });
 
   test("should reset state after invoking mutation.reset", async () => {
@@ -229,6 +251,43 @@ describe("useMutation", () => {
         data: { value: undefined },
         error: { value: Error("Some error") },
       });
+    });
+  });
+
+  describe("parseMutationArgs", () => {
+    test("should return the same instance of options", () => {
+      const options = { retry: false };
+      const result = parseMutationArgs(options);
+
+      expect(result).toEqual(options);
+    });
+
+    test("should merge query key with options", () => {
+      const options = { retry: false };
+      const result = parseMutationArgs(["key"], options);
+      const expected = { ...options, mutationKey: ["key"] };
+
+      expect(result).toEqual(expected);
+    });
+
+    test("should merge query fn with options", () => {
+      const options = { retry: false };
+      const result = parseMutationArgs(successMutator, options);
+      const expected = { ...options, mutationFn: successMutator };
+
+      expect(result).toEqual(expected);
+    });
+
+    test("should merge query key and fn with options", () => {
+      const options = { retry: false };
+      const result = parseMutationArgs(["key"], successMutator, options);
+      const expected = {
+        ...options,
+        mutationKey: ["key"],
+        mutationFn: successMutator,
+      };
+
+      expect(result).toEqual(expected);
     });
   });
 });

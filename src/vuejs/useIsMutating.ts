@@ -1,12 +1,12 @@
-import { onScopeDispose, Ref, ref } from "vue-demi";
+import { onScopeDispose, Ref, ref, watch } from "vue-demi";
 import type { MutationKey } from "react-query/lib/core";
 import type { MutationFilters as MF } from "react-query/lib/core/utils";
 
 import { useQueryClient } from "./useQueryClient";
-import { parseMutationFilterArgs } from "./utils";
-import type { WithQueryClientKey } from "./types";
+import { cloneDeepUnref, isQueryKey } from "./utils";
+import type { MaybeRefDeep, WithQueryClientKey } from "./types";
 
-export type MutationFilters = WithQueryClientKey<MF>;
+export type MutationFilters = MaybeRefDeep<WithQueryClientKey<MF>>;
 
 export function useIsMutating(filters?: MutationFilters): Ref<number>;
 export function useIsMutating(
@@ -17,8 +17,8 @@ export function useIsMutating(
   arg1?: MutationKey | MutationFilters,
   arg2?: Omit<MutationFilters, "mutationKey">
 ): Ref<number> {
-  const filters = parseMutationFilterArgs(arg1, arg2);
-  const queryClient = useQueryClient(filters?.queryClientKey);
+  const filters = ref(parseMutationFilterArgs(arg1, arg2));
+  const queryClient = useQueryClient(filters.value.queryClientKey);
 
   const isMutating = ref(queryClient.isMutating(filters));
 
@@ -26,9 +26,33 @@ export function useIsMutating(
     isMutating.value = queryClient.isMutating(filters);
   });
 
+  watch(
+    [() => arg1, () => arg2],
+    () => {
+      filters.value = parseMutationFilterArgs(arg1, arg2);
+      isMutating.value = queryClient.isMutating(filters);
+    },
+    { deep: true }
+  );
+
   onScopeDispose(() => {
     unsubscribe();
   });
 
   return isMutating;
+}
+
+export function parseMutationFilterArgs(
+  arg1?: MutationKey | MutationFilters,
+  arg2: MutationFilters = {}
+) {
+  let options: MutationFilters;
+
+  if (isQueryKey(arg1)) {
+    options = { ...arg2, mutationKey: arg1 };
+  } else {
+    options = arg1 || {};
+  }
+
+  return cloneDeepUnref(options) as WithQueryClientKey<MF>;
 }

@@ -1,72 +1,10 @@
-import { successMutator } from "./test-utils";
-import {
-  isQueryKey,
-  parseMutationArgs,
-  parseMutationFilterArgs,
-  updateState,
-  cloneDeep,
-  cloneDeepUnref,
-} from "../utils";
+import { isQueryKey, updateState, cloneDeep, cloneDeepUnref } from "../utils";
 import { reactive, ref } from "vue-demi";
 
 describe("utils", () => {
   describe("isQueryKey", () => {
     test("should detect an array as query key", () => {
       expect(isQueryKey(["string", "array"])).toEqual(true);
-    });
-  });
-
-  describe("parseMutationArgs", () => {
-    test("should return the same instance of options", () => {
-      const options = { retry: false };
-      const result = parseMutationArgs(options);
-
-      expect(result).toEqual(options);
-    });
-
-    test("should merge query key with options", () => {
-      const options = { retry: false };
-      const result = parseMutationArgs(["key"], options);
-      const expected = { ...options, mutationKey: ["key"] };
-
-      expect(result).toEqual(expected);
-    });
-
-    test("should merge query fn with options", () => {
-      const options = { retry: false };
-      const result = parseMutationArgs(successMutator, options);
-      const expected = { ...options, mutationFn: successMutator };
-
-      expect(result).toEqual(expected);
-    });
-
-    test("should merge query key and fn with options", () => {
-      const options = { retry: false };
-      const result = parseMutationArgs(["key"], successMutator, options);
-      const expected = {
-        ...options,
-        mutationKey: ["key"],
-        mutationFn: successMutator,
-      };
-
-      expect(result).toEqual(expected);
-    });
-  });
-
-  describe("parseMutationFilterArgs", () => {
-    test("should default to empty filters", () => {
-      const result = parseMutationFilterArgs(undefined);
-
-      expect(result).toEqual(undefined);
-    });
-
-    test("should merge mutation key with filters", () => {
-      const filters = { fetching: true };
-
-      const result = parseMutationFilterArgs(["key"], filters);
-      const expected = { ...filters, mutationKey: ["key"] };
-
-      expect(result).toEqual(expected);
     });
   });
 

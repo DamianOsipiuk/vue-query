@@ -1,10 +1,10 @@
 import {
   onScopeDispose,
   reactive,
-  watchEffect,
   readonly,
   ToRefs,
   toRefs,
+  watch,
 } from "vue-demi";
 import {
   MutateOptions,
@@ -17,7 +17,7 @@ import {
   MutationObserverOptions,
   MutateFunction,
 } from "react-query/lib/core";
-import { parseMutationArgs, updateState } from "./utils";
+import { cloneDeepUnref, isQueryKey, updateState } from "./utils";
 import { useQueryClient } from "./useQueryClient";
 import { WithQueryClientKey } from "./types";
 
@@ -113,12 +113,13 @@ export function useMutation<
 ): UseMutationReturnType<TData, TError, TVariables, TContext> {
   const options = parseMutationArgs(arg1, arg2, arg3);
   const queryClient = useQueryClient(options.queryClientKey);
-  const observer = new MutationObserver(queryClient, options);
+  const defaultedOptions = queryClient.defaultMutationOptions(options);
+  const observer = new MutationObserver(queryClient, defaultedOptions);
 
   const state = reactive(observer.getCurrentResult());
 
-  const unsubscribe = observer.subscribe(() => {
-    updateState(state, observer.getCurrentResult());
+  const unsubscribe = observer.subscribe((result) => {
+    updateState(state, result);
   });
 
   const mutate = (
@@ -130,9 +131,15 @@ export function useMutation<
     });
   };
 
-  watchEffect(() => {
-    observer.setOptions(options);
-  });
+  watch(
+    [() => arg1, () => arg2, () => arg3],
+    () => {
+      observer.setOptions(
+        queryClient.defaultMutationOptions(parseMutationArgs(arg1, arg2, arg3))
+      );
+    },
+    { deep: true }
+  );
 
   onScopeDispose(() => {
     unsubscribe();
@@ -147,4 +154,41 @@ export function useMutation<
     mutate,
     mutateAsync: state.mutate,
   };
+}
+
+export function parseMutationArgs<
+  TData = unknown,
+  TError = unknown,
+  TVariables = void,
+  TContext = unknown
+>(
+  arg1:
+    | MutationKey
+    | MutationFunction<TData, TVariables>
+    | UseMutationOptions<TData, TError, TVariables, TContext>,
+  arg2?:
+    | MutationFunction<TData, TVariables>
+    | UseMutationOptions<TData, TError, TVariables, TContext>,
+  arg3?: UseMutationOptions<TData, TError, TVariables, TContext>
+): UseMutationOptions<TData, TError, TVariables, TContext> {
+  let options = arg1;
+
+  if (isQueryKey(arg1)) {
+    if (typeof arg2 === "function") {
+      options = { ...arg3, mutationKey: arg1, mutationFn: arg2 };
+    } else {
+      options = { ...arg2, mutationKey: arg1 };
+    }
+  }
+
+  if (typeof arg1 === "function") {
+    options = { ...arg2, mutationFn: arg1 };
+  }
+
+  return cloneDeepUnref(options) as UseMutationOptions<
+    TData,
+    TError,
+    TVariables,
+    TContext
+  >;
 }

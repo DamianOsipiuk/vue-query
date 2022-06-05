@@ -28,29 +28,6 @@ describe("useIsFetching", () => {
     expect(isFetching.value).toStrictEqual(0);
   });
 
-  test("should properly update filters", async () => {
-    const filter = reactive({ stale: false });
-    useQuery(
-      ["isFetching"],
-      () =>
-        new Promise((resolve) => {
-          setTimeout(() => {
-            return resolve("Some data");
-          }, 100);
-        })
-    );
-    const isFetching = useIsFetching(filter);
-
-    expect(isFetching.value).toStrictEqual(0);
-
-    filter.stale = true;
-    await flushPromises();
-
-    expect(isFetching.value).toStrictEqual(1);
-
-    await flushPromises(100);
-  });
-
   test("should stop listening to changes on onScopeDispose", async () => {
     const onScopeDisposeMock = onScopeDispose as jest.MockedFunction<
       typeof onScopeDispose
@@ -74,6 +51,29 @@ describe("useIsFetching", () => {
     expect(isFetching.value).toStrictEqual(1);
 
     onScopeDisposeMock.mockReset();
+  });
+
+  test("should properly update filters", async () => {
+    const filter = reactive({ stale: false });
+    useQuery(
+      ["isFetching"],
+      () =>
+        new Promise((resolve) => {
+          setTimeout(() => {
+            return resolve("Some data");
+          }, 100);
+        })
+    );
+    const isFetching = useIsFetching(filter);
+
+    expect(isFetching.value).toStrictEqual(0);
+
+    filter.stale = true;
+    await flushPromises();
+
+    expect(isFetching.value).toStrictEqual(1);
+
+    await flushPromises(100);
   });
 
   describe("parseFilterArgs", () => {
