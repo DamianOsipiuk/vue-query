@@ -10,9 +10,10 @@ import type { WithQueryClientKey, VueQueryObserverOptions } from "./types";
 
 type UseQueryReturnType<TData, TError> = Omit<
   UQRT<TData, TError>,
-  "refetch"
+  "refetch" | "remove"
 > & {
   refetch: QueryObserverResult<TData, TError>["refetch"];
+  remove: QueryObserverResult<TData, TError>["remove"];
 };
 
 export type UseQueryOptions<
@@ -75,5 +76,6 @@ export function useQuery<
   return {
     ...result,
     refetch: result.refetch.value,
+    remove: result.remove.value,
   };
 }

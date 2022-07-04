@@ -36,13 +36,15 @@ type InfiniteQueryReturnType<TData, TError> = UseQueryReturnType<
 >;
 type UseInfiniteQueryReturnType<TData, TError> = Omit<
   InfiniteQueryReturnType<TData, TError>,
-  "fetchNextPage" | "fetchPreviousPage"
+  "fetchNextPage" | "fetchPreviousPage" | "refetch" | "remove"
 > & {
   fetchNextPage: InfiniteQueryObserverResult<TData, TError>["fetchNextPage"];
   fetchPreviousPage: InfiniteQueryObserverResult<
     TData,
     TError
   >["fetchPreviousPage"];
+  refetch: InfiniteQueryObserverResult<TData, TError>["refetch"];
+  remove: InfiniteQueryObserverResult<TData, TError>["remove"];
 };
 
 export function useInfiniteQuery<
@@ -105,5 +107,7 @@ export function useInfiniteQuery<
     ...result,
     fetchNextPage: result.fetchNextPage.value,
     fetchPreviousPage: result.fetchPreviousPage.value,
+    refetch: result.refetch.value,
+    remove: result.remove.value,
   };
 }

@@ -23,7 +23,7 @@ import { WithQueryClientKey } from "./types";
 
 type MutationResult<TData, TError, TVariables, TContext> = Omit<
   MutationObserverResult<TData, TError, TVariables, TContext>,
-  "mutate"
+  "mutate" | "reset"
 >;
 
 export type UseMutationOptions<TData, TError, TVariables, TContext> =
@@ -49,6 +49,7 @@ export type UseMutationReturnType<
 > = ToRefs<Readonly<Result>> & {
   mutate: MutateSyncFunction<TData, TError, TVariables, TContext>;
   mutateAsync: MutateFunction<TData, TError, TVariables, TContext>;
+  reset: MutationObserverResult<TData, TError, TVariables, TContext>["reset"];
 };
 
 export function useMutation<
@@ -153,6 +154,7 @@ export function useMutation<
     ...resultRefs,
     mutate,
     mutateAsync: state.mutate,
+    reset: state.reset,
   };
 }
 

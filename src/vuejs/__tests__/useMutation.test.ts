@@ -99,7 +99,7 @@ describe("useMutation", () => {
 
     await flushPromises(10);
 
-    mutation.reset.value();
+    mutation.reset();
 
     expect(mutation).toMatchObject({
       isIdle: { value: true },
