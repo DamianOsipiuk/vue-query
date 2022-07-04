@@ -12,6 +12,7 @@ const common = {
     "vue",
     "vue-demi",
     "match-sorter",
+    "@vue/devtools-api",
   ],
   watch: {
     include: "src/**",
