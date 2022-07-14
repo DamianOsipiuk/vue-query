@@ -78,7 +78,6 @@ export const VueQueryPlugin = {
     /* istanbul ignore next */
     if (isVue2) {
       // Workaround for Vue2 calling mixin multiple times
-      let devtoolsRegistered = false;
       app.mixin({
         beforeCreate() {
           // HACK: taken from provide(): https://github.com/vuejs/composition-api/blob/master/src/apis/inject.ts#L30
@@ -92,10 +91,9 @@ export const VueQueryPlugin = {
 
           this._provided[clientKey] = client;
 
-          if (!devtoolsRegistered) {
+          if (this.$options.VueQueryPlugin) {
             if (process.env.NODE_ENV === "development") {
               setupDevtools(this, client);
-              devtoolsRegistered = true;
             }
           }
         },
