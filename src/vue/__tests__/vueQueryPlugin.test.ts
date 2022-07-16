@@ -49,7 +49,7 @@ describe("VueQueryPlugin", () => {
       expect(setupDevtoolsMock).toHaveBeenCalledTimes(0);
     });
 
-    test("should setup devtools", () => {
+    testIf(isVue3)("should setup devtools", () => {
       const envCopy = process.env.NODE_ENV;
       process.env.NODE_ENV = "development";
       const setupDevtoolsMock = setupDevtools as jest.Mock;
