@@ -13,6 +13,7 @@ interface TestApp extends App {
   _unmount: Function;
   _mixin: ComponentOptions;
   _provided: Record<string, any>;
+  $root: TestApp;
 }
 
 const testIf = (condition: boolean) => (condition ? test : test.skip);
@@ -56,6 +57,7 @@ describe("VueQueryPlugin", () => {
       const appMock = getAppMock();
       VueQueryPlugin.install?.(appMock);
 
+      appMock.$root = appMock;
       appMock._mixin.beforeCreate?.call(appMock);
       process.env.NODE_ENV = envCopy;
 
