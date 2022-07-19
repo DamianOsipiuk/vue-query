@@ -1,11 +1,11 @@
-import { InfiniteQueryObserver } from "react-query/core";
+import { InfiniteQueryObserver } from "@tanstack/query-core";
 import type { UnwrapRef } from "vue-demi";
 import type {
   QueryObserver,
   QueryFunction,
   QueryKey,
   InfiniteQueryObserverResult,
-} from "react-query/lib/core";
+} from "@tanstack/query-core";
 
 import { useBaseQuery, UseQueryReturnType } from "./useBaseQuery";
 

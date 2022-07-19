@@ -8,7 +8,7 @@ const common = {
   plugins: [resolve(), typescript(), vue(), postcss()],
   external: [
     "vue-query",
-    "react-query/core",
+    "@tanstack/query-core",
     "vue",
     "vue-demi",
     "match-sorter",

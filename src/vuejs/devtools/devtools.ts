@@ -1,6 +1,6 @@
 import { CustomInspectorNode, setupDevtoolsPlugin } from "@vue/devtools-api";
 import { matchSorter } from "match-sorter";
-import type { Query } from "react-query/core";
+import type { Query } from "@tanstack/query-core";
 import { QueryClient } from "../queryClient";
 import {
   getQueryStateLabel,

@@ -1,4 +1,4 @@
-import { QueryClient as QC } from "react-query/core";
+import { QueryClient as QC } from "@tanstack/query-core";
 import type {
   QueryKey,
   QueryClientConfig,
@@ -18,13 +18,11 @@ import type {
   QueryObserverOptions,
   MutationKey,
   MutationObserverOptions,
-} from "react-query/core";
-import type {
   QueryFilters,
   MutationFilters,
-  Updater,
-} from "react-query/lib/core/utils";
-import { QueryState } from "react-query/lib/core/query";
+} from "@tanstack/query-core";
+import type { QueryState } from "@tanstack/query-core/src/query";
+import type { Updater } from "@tanstack/query-core/src/utils";
 import type { MaybeRefDeep } from "./types";
 import { cloneDeepUnref, isQueryKey } from "./utils";
 import { QueryCache } from "./queryCache";

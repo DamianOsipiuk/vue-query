@@ -1,8 +1,20 @@
 /* istanbul ignore file */
 
-import { QueryCache, MutationCache, QueryClient } from "./vuejs";
+import {
+  QueryCache,
+  MutationCache,
+  QueryClient,
+  MutationFilters,
+  QueryFilters,
+} from "./vuejs";
 
-export * from "react-query/core";
+export * from "@tanstack/query-core";
 export * from "./vuejs";
 
-export { QueryCache, MutationCache, QueryClient };
+export {
+  QueryCache,
+  MutationCache,
+  QueryClient,
+  MutationFilters,
+  QueryFilters,
+};

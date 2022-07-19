@@ -1,9 +1,9 @@
 import { ref } from "vue-demi";
-import { QueryClient as QueryClientOrigin } from "react-query/core";
+import { QueryClient as QueryClientOrigin } from "@tanstack/query-core";
 
 import { QueryClient } from "../queryClient";
 
-jest.mock("react-query/core");
+jest.mock("@tanstack/query-core");
 
 const queryKeyRef = ["foo", ref("bar")];
 const queryKeyUnref = ["foo", "bar"];

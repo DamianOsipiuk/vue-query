@@ -1,6 +1,5 @@
 import { onScopeDispose, Ref, ref, watch } from "vue-demi";
-import type { MutationKey } from "react-query/lib/core";
-import type { MutationFilters as MF } from "react-query/lib/core/utils";
+import type { MutationKey, MutationFilters as MF } from "@tanstack/query-core";
 
 import { useQueryClient } from "./useQueryClient";
 import { cloneDeepUnref, isQueryKey } from "./utils";

@@ -1,4 +1,4 @@
-import type { Query } from "react-query/core";
+import type { Query } from "@tanstack/query-core";
 
 type SortFn = (a: Query, b: Query) => number;
 

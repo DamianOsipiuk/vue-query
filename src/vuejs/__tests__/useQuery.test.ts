@@ -5,7 +5,7 @@ import {
   onScopeDispose,
   getCurrentInstance,
 } from "vue-demi";
-import { QueryObserver } from "react-query/core";
+import { QueryObserver } from "@tanstack/query-core";
 
 import {
   flushPromises,

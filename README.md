@@ -14,13 +14,13 @@ Hooks for fetching, caching and updating asynchronous data in Vue.
 
 Support for Vue 2.x via [vue-demi](https://github.com/vueuse/vue-demi)
 
-Based on [react-query](https://github.com/tannerlinsley/react-query)
+Based on [TanStack/query](https://github.com/TanStack/query)
 
 # Documentation
 
 Visit https://vue-query.vercel.app
 
-For topics not covered in `vue-query` docs visit [react-query docs](https://react-query.tanstack.com/reference/useQuery) as most of the concepts and APIs are the same.
+For topics not covered in `vue-query` docs visit [TanStack/query docs](https://tanstack.com/query/v4/docs/reference/useQuery) as most of the concepts and APIs are the same.
 
 # Quick Features
 
