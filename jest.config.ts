@@ -2,10 +2,7 @@ import type { Config } from "@jest/types";
 
 const config: Config.InitialOptions = {
   preset: "ts-jest",
-  transform: {
-    "^.+\\.vue$": "@vue/vue3-jest",
-  },
-  moduleFileExtensions: ["js", "ts", "vue"],
+  moduleFileExtensions: ["js", "ts"],
   moduleNameMapper: {
     "^vue-query": "<rootDir>/src/index.ts",
   },
@@ -13,7 +10,7 @@ const config: Config.InitialOptions = {
   testPathIgnorePatterns: ["test-utils.ts"],
   collectCoverage: true,
   collectCoverageFrom: [
-    "src/**/*.{ts,vue}",
+    "src/**/*.ts",
     // Exclude types
     "!src/**/*.d.ts",
     // Exlude devtools

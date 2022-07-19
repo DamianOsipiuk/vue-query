@@ -6,17 +6,15 @@ import {
   toRefs,
   watch,
 } from "vue-demi";
-import {
+import { MutationObserver } from "@tanstack/query-core";
+import type {
   MutateOptions,
-  MutationObserver,
-  MutationObserverResult,
-} from "react-query/core";
-import {
   MutationFunction,
   MutationKey,
   MutationObserverOptions,
   MutateFunction,
-} from "react-query/lib/core";
+  MutationObserverResult,
+} from "@tanstack/query-core";
 import { cloneDeepUnref, isQueryKey, updateState } from "./utils";
 import { useQueryClient } from "./useQueryClient";
 import { WithQueryClientKey } from "./types";

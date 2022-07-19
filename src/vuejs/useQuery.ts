@@ -1,10 +1,10 @@
 import type { UnwrapRef } from "vue-demi";
-import { QueryObserver } from "react-query/core";
+import { QueryObserver } from "@tanstack/query-core";
 import type {
   QueryFunction,
   QueryKey,
   QueryObserverResult,
-} from "react-query/lib/core";
+} from "@tanstack/query-core";
 import { useBaseQuery, UseQueryReturnType as UQRT } from "./useBaseQuery";
 import type { WithQueryClientKey, VueQueryObserverOptions } from "./types";
 

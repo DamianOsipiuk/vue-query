@@ -2,7 +2,7 @@ import type {
   QueryKey,
   QueryObserverOptions,
   InfiniteQueryObserverOptions,
-} from "react-query/core";
+} from "@tanstack/query-core";
 import { Ref, UnwrapRef } from "vue-demi";
 
 export type MaybeRef<T> = Ref<T> | T;
@@ -18,7 +18,7 @@ export type MaybeRefDeep<T> = T extends Function
 
 export type WithQueryClientKey<T> = T & { queryClientKey?: string };
 
-// A Vue version of QueriesObserverOptions from "react-query/types/core"
+// A Vue version of QueriesObserverOptions from "@tanstack/query-core"
 // Accept refs as options
 export type VueQueryObserverOptions<
   TQueryFnData = unknown,
@@ -52,7 +52,7 @@ export type VueQueryObserverOptions<
       >;
 };
 
-// A Vue version of InfiniteQueryObserverOptions from "react-query/types/core"
+// A Vue version of InfiniteQueryObserverOptions from "@tanstack/query-core"
 // Accept refs as options
 export type VueInfiniteQueryObserverOptions<
   TQueryFnData = unknown,

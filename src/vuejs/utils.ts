@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import type { QueryKey } from "react-query/lib/core";
+import type { QueryKey } from "@tanstack/query-core";
 import { isRef, unref, UnwrapRef } from "vue-demi";
 
 export const VUE_QUERY_CLIENT = "VUE_QUERY_CLIENT";

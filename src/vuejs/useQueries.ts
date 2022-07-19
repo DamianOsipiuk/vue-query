@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { QueriesObserver } from "react-query/core";
+import { QueriesObserver } from "@tanstack/query-core";
 import {
   onScopeDispose,
   reactive,
@@ -11,7 +11,7 @@ import {
   isReactive,
 } from "vue-demi";
 
-import type { QueryFunction, QueryObserverResult } from "react-query/lib/core";
+import type { QueryFunction, QueryObserverResult } from "@tanstack/query-core";
 
 import { useQueryClient } from "./useQueryClient";
 import { UseQueryOptions } from "./useQuery";

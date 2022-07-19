@@ -1,14 +1,12 @@
 import { defineConfig } from "rollup";
 import resolve from "@rollup/plugin-node-resolve";
-import postcss from "rollup-plugin-postcss";
 import typescript from "rollup-plugin-typescript2";
-import vue from "rollup-plugin-vue";
 
 const common = {
-  plugins: [resolve(), typescript(), vue(), postcss()],
+  plugins: [resolve(), typescript()],
   external: [
     "vue-query",
-    "react-query/core",
+    "@tanstack/query-core",
     "vue",
     "vue-demi",
     "match-sorter",

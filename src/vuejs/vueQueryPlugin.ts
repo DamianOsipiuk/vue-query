@@ -1,5 +1,5 @@
 import { isVue2 } from "vue-demi";
-import type { QueryClientConfig } from "react-query/lib/core";
+import type { QueryClientConfig } from "@tanstack/query-core";
 
 import { QueryClient } from "./queryClient";
 import { getClientKey } from "./utils";

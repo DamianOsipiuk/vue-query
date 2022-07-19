@@ -1,6 +1,5 @@
 import { onScopeDispose, Ref, ref, watch } from "vue-demi";
-import type { QueryKey } from "react-query/lib/core";
-import type { QueryFilters as QF } from "react-query/lib/core/utils";
+import type { QueryKey, QueryFilters as QF } from "@tanstack/query-core";
 
 import { useQueryClient } from "./useQueryClient";
 import { cloneDeepUnref, isQueryKey } from "./utils";

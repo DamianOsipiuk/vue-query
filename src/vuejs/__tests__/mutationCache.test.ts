@@ -1,5 +1,5 @@
 import { ref } from "vue-demi";
-import { MutationCache as MutationCacheOrigin } from "react-query/core";
+import { MutationCache as MutationCacheOrigin } from "@tanstack/query-core";
 
 import { MutationCache } from "../mutationCache";
 

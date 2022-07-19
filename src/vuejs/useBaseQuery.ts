@@ -12,8 +12,8 @@ import type {
   QueryKey,
   QueryObserverOptions,
   QueryObserverResult,
-} from "react-query/core";
-import type { QueryFunction } from "react-query/lib/core";
+  QueryFunction,
+} from "@tanstack/query-core";
 import { useQueryClient } from "./useQueryClient";
 import { updateState, isQueryKey, cloneDeepUnref } from "./utils";
 import { WithQueryClientKey } from "./types";
