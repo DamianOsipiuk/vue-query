@@ -8,7 +8,7 @@
   },
   "dependencies": {
     "vue": "3.2.27",
-    "vue-query": ">=1.0.0"
+    "vue-query": "^1.25.2"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "2.0.1",
