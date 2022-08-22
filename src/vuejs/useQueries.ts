@@ -5,7 +5,6 @@ import {
   reactive,
   readonly,
   watch,
-  unref,
   Ref,
   isRef,
   isReactive,
@@ -15,6 +14,7 @@ import type { QueryFunction, QueryObserverResult } from "@tanstack/query-core";
 
 import { useQueryClient } from "./useQueryClient";
 import { UseQueryOptions } from "./useQuery";
+import { cloneDeepUnref } from "./utils";
 
 // Avoid TS depth-limit error in case of large array literal
 type MAXIMUM_DEPTH = 20;
@@ -137,28 +137,28 @@ export function useQueries<T extends any[]>({
 }: {
   queries: Ref<UseQueriesOptionsArg<T>> | UseQueriesOptionsArg<T>;
 }): Readonly<UseQueriesResults<T>> {
-  const queryClientKey = (unref(queries) as UseQueriesOptionsArg<T>)[0]
-    ?.queryClientKey;
+  const unreffedQueries = cloneDeepUnref(queries) as UseQueriesOptionsArg<T>;
+
+  const queryClientKey = unreffedQueries[0]?.queryClientKey;
   const queryClient = useQueryClient(queryClientKey);
-  const defaultedQueries = (unref(queries) as UseQueriesOptionsArg<T>).map(
-    (options) => {
-      return queryClient.defaultQueryOptions(options);
-    }
-  );
+  const defaultedQueries = unreffedQueries.map((options) => {
+    return queryClient.defaultQueryOptions(options);
+  });
 
   const observer = new QueriesObserver(queryClient, defaultedQueries);
   const state = reactive(observer.getCurrentResult());
+
   const unsubscribe = observer.subscribe((result) => {
     state.splice(0, state.length, ...result);
   });
 
   if (isRef(queries) || isReactive(queries)) {
     watch(queries, () => {
-      const defaulted = (unref(queries) as UseQueriesOptionsArg<T>).map(
-        (options) => {
-          return queryClient.defaultQueryOptions(options);
-        }
-      );
+      const defaulted = (
+        cloneDeepUnref(queries) as UseQueriesOptionsArg<T>
+      ).map((options) => {
+        return queryClient.defaultQueryOptions(options);
+      });
       observer.setQueries(defaulted);
     });
   }
