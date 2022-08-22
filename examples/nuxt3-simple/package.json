@@ -6,7 +6,7 @@
     "start": "node .output/server/index.mjs"
   },
   "devDependencies": {
-    "nuxt": "npm:nuxt3@latest"
+    "nuxt": "^3.0.0-rc.8"
   },
   "dependencies": {
     "vue-query": ">=1.0.0"

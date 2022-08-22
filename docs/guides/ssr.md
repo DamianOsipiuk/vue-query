@@ -7,18 +7,17 @@ Vue Query supports prefetching multiple queries on the server and then _dehydrat
 First create `vue-query.ts` file in your `plugins` directory with the following content:
 
 ```ts
-import {
-  VueQueryPlugin,
-  VueQueryPluginOptions,
-  QueryClient,
-  hydrate,
-  dehydrate,
-} from "vue-query";
+import type { DehydratedState, VueQueryPluginOptions } from "vue-query";
+import { VueQueryPlugin, QueryClient, hydrate, dehydrate } from "vue-query";
+// Nuxt 3 app aliases
+import { useState } from "#app";
 
-export default (nuxt) => {
+export default defineNuxtPlugin((nuxt) => {
+  const vueQueryState = useState<DehydratedState | null>("vue-query");
+
   // Modify your Vue Query global settings here
   const queryClient = new QueryClient({
-    defaultOptions: { queries: { staleTime: 1000 } },
+    defaultOptions: { queries: { staleTime: 5000 } },
   });
   const options: VueQueryPluginOptions = { queryClient };
 
@@ -26,16 +25,17 @@ export default (nuxt) => {
 
   if (process.server) {
     nuxt.hooks.hook("app:rendered", () => {
-      nuxt.nuxtState["vue-query"] = dehydrate(queryClient);
+      vueQueryState.value = dehydrate(queryClient);
     });
   }
 
   if (process.client) {
     nuxt.hooks.hook("app:created", () => {
-      hydrate(queryClient, nuxt.nuxtState["vue-query"]);
+      hydrate(queryClient, vueQueryState.value);
     });
   }
-};
+});
+
 ```
 
 Now you are ready to prefetch some data in your pages with `onServerPrefetch`.
@@ -67,7 +67,7 @@ import { VueQueryPlugin, QueryClient, hydrate } from "vue-query";
 export default (context) => {
   // Modify your Vue Query global settings here
   const queryClient = new QueryClient({
-    defaultOptions: { queries: { staleTime: 1000 } },
+    defaultOptions: { queries: { staleTime: 5000 } },
   });
   const options = { queryClient };
 

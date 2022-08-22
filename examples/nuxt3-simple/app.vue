@@ -10,7 +10,7 @@ const fetcher = async () =>
     response.json()
   );
 
-const { data, suspense } = useQuery("test", fetcher);
+const { data, suspense } = useQuery(["test"], fetcher);
 
 await suspense();
 </script>

@@ -1,12 +1,11 @@
-import {
-  VueQueryPlugin,
-  VueQueryPluginOptions,
-  QueryClient,
-  hydrate,
-  dehydrate,
-} from "vue-query";
+import type { DehydratedState, VueQueryPluginOptions } from "vue-query";
+import { VueQueryPlugin, QueryClient, hydrate, dehydrate } from "vue-query";
+// Nuxt 3 app aliases
+import { useState } from "#app";
 
-export default (nuxt) => {
+export default defineNuxtPlugin((nuxt) => {
+  const vueQueryState = useState<DehydratedState | null>("vue-query");
+
   // Modify your Vue Query global settings here
   const queryClient = new QueryClient({
     defaultOptions: { queries: { staleTime: 5000 } },
@@ -15,17 +14,15 @@ export default (nuxt) => {
 
   nuxt.vueApp.use(VueQueryPlugin, options);
 
-  // @ts-expect-error Nuxt process variable
   if (process.server) {
     nuxt.hooks.hook("app:rendered", () => {
-      nuxt.nuxtState["vue-query"] = dehydrate(queryClient);
+      vueQueryState.value = dehydrate(queryClient);
     });
   }
 
-  // @ts-expect-error Nuxt process variable
   if (process.client) {
     nuxt.hooks.hook("app:created", () => {
-      hydrate(queryClient, nuxt.nuxtState["vue-query"]);
+      hydrate(queryClient, vueQueryState.value);
     });
   }
-};
+});
