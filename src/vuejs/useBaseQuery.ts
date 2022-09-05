@@ -76,9 +76,31 @@ export function useBaseQuery<
     unsubscribe();
   });
 
+  const suspense = () => {
+    return new Promise<QueryObserverResult<TData, TError>>((resolve) => {
+      const run = () => {
+        const newOptions = queryClient.defaultQueryOptions(
+          getQueryUnreffedOptions()
+        );
+        if (newOptions.enabled) {
+          const optimisticResult = observer.getOptimisticResult(newOptions);
+          if (optimisticResult.isStale) {
+            resolve(observer.fetchOptimistic(defaultedOptions));
+          } else {
+            resolve(optimisticResult);
+          }
+        }
+      };
+
+      run();
+
+      watch([() => arg1, () => arg2, () => arg3], run, { deep: true });
+    });
+  };
+
   return {
     ...(toRefs(readonly(state)) as UseQueryReturnType<TData, TError>),
-    suspense: () => observer.fetchOptimistic(defaultedOptions),
+    suspense,
   };
 
   /**
