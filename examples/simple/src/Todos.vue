@@ -15,10 +15,10 @@ const fetcher = async (): Promise<Todo[]> =>
   );
 
 export default defineComponent({
-  name: "Todos",
+  name: "TodoList",
   setup() {
     const { isLoading, isError, isFetching, data, error, refetch } = useQuery(
-      "todos",
+      ["todos"],
       fetcher
     );
 

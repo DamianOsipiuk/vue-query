@@ -15,12 +15,12 @@ const todoFetcher = async (): Promise<Todo[]> =>
   );
 
 export default defineComponent({
-  name: "Content",
+  name: "ContentList",
   async setup() {
     const { isLoading, isError, isFetching, data, error, refetch, suspense } =
-      useQuery("todos", todoFetcher);
-    useQuery("todos2", todoFetcher);
-    useQuery("todos3", todoFetcher);
+      useQuery(["todos"], todoFetcher);
+    useQuery(["todos2"], todoFetcher);
+    useQuery(["todos3"], todoFetcher);
 
     await suspense();
 

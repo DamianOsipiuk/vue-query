@@ -15,14 +15,14 @@ const todoFetcher = async (): Promise<Todo[]> =>
   );
 
 export default defineComponent({
-  name: "Page",
+  name: "PageList",
 
   props: {
     title: String,
   },
   setup() {
     const { isLoading, isError, isFetching, data, error, refetch } = useQuery(
-      "todos",
+      ["todos"],
       todoFetcher,
       {
         retry: 0,

@@ -2,7 +2,7 @@
 import { defineComponent } from "@vue/composition-api";
 import { useQuery } from "vue-query";
 
-import { Post } from "./types";
+import type { Post } from "./types";
 
 const fetcher = async (): Promise<Post[]> =>
   await fetch("https://jsonplaceholder.typicode.com/posts").then((response) =>
@@ -10,7 +10,7 @@ const fetcher = async (): Promise<Post[]> =>
   );
 
 export default defineComponent({
-  name: "Posts",
+  name: "PostsList",
   props: {
     isVisited: {
       type: Function,
@@ -20,7 +20,7 @@ export default defineComponent({
   emits: ["setPostId"],
   setup() {
     const { isLoading, isError, isFetching, data, error, refetch } = useQuery(
-      "posts",
+      ["posts"],
       fetcher
     );
 

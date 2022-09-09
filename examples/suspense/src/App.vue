@@ -1,11 +1,11 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 
-import Content from "./Content.vue";
+import ContentList from "./Content.vue";
 
 export default defineComponent({
   name: "App",
-  components: { Content },
+  components: { ContentList },
 });
 </script>
 
@@ -17,7 +17,7 @@ export default defineComponent({
   </p>
   <Suspense>
     <template #default>
-      <Content />
+      <ContentList />
     </template>
     <template #fallback>
       <div>Loading...</div>

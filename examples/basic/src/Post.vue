@@ -10,7 +10,7 @@ const fetcher = async (id: number): Promise<Post> =>
   );
 
 export default defineComponent({
-  name: "Post",
+  name: "PostDetails",
   props: {
     postId: {
       type: Number,

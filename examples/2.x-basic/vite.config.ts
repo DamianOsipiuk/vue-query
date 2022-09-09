@@ -5,5 +5,8 @@ import { createVuePlugin } from "vite-plugin-vue2";
 export default defineConfig({
   plugins: [createVuePlugin()],
   // For dev purpose, when using `npm link`. This breaks codesandbox somehow.
-  // optimizeDeps: { exclude: ["vue-query", "vue-demi"] },
+  optimizeDeps: {
+    // include: ["remove-accents"],
+    // exclude: ["vue-query", "vue-demi"],
+  },
 });

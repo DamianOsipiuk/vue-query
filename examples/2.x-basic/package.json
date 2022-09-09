@@ -9,12 +9,12 @@
   "dependencies": {
     "@vue/composition-api": "1.4.4",
     "vue": "2.6.14",
-    "vue-query": ">=1.0.0",
+    "vue-query": "2.0.0-beta.7",
     "vue-template-compiler": "2.6.14"
   },
   "devDependencies": {
-    "typescript": "4.5.5",
-    "vite": "2.6.14",
-    "vite-plugin-vue2": "1.9.2"
+    "typescript": "4.8.3",
+    "vite": "3.1.0",
+    "vite-plugin-vue2": "2.0.2"
   }
 }
