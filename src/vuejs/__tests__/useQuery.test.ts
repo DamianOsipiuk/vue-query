@@ -20,10 +20,6 @@ jest.mock("../useQueryClient");
 jest.mock("../useBaseQuery");
 
 describe("useQuery", () => {
-  beforeEach(() => {
-    jest.clearAllMocks();
-  });
-
   test("should properly execute query", () => {
     useQuery(["key0"], simpleFetcher, { staleTime: 1000 });
 
@@ -239,10 +235,47 @@ describe("useQuery", () => {
       const getCurrentInstanceSpy = getCurrentInstance as jest.Mock;
       getCurrentInstanceSpy.mockImplementation(() => ({ suspense: {} }));
 
-      const query = useQuery(["suspense3"], simpleFetcher);
+      const query = useQuery(["suspense"], simpleFetcher);
       const result = query.suspense();
 
       expect(result).toBeInstanceOf(Promise);
+    });
+
+    test("should resolve after being enabled", () => {
+      const getCurrentInstanceSpy = getCurrentInstance as jest.Mock;
+      getCurrentInstanceSpy.mockImplementation(() => ({ suspense: {} }));
+
+      let afterTimeout = false;
+      const isEnabeld = ref(false);
+      const query = useQuery(["suspense"], simpleFetcher, {
+        enabled: isEnabeld,
+      });
+
+      setTimeout(() => {
+        afterTimeout = true;
+        isEnabeld.value = true;
+      }, 200);
+
+      return query.suspense().then((result) => {
+        expect(afterTimeout).toBe(true);
+      });
+    });
+
+    test("should resolve immidiately when stale without refetching", () => {
+      const getCurrentInstanceSpy = getCurrentInstance as jest.Mock;
+      getCurrentInstanceSpy.mockImplementation(() => ({ suspense: {} }));
+
+      const fetcherSpy = jest.fn(() => simpleFetcher());
+
+      // let afterTimeout = false;
+      const query = useQuery(["suspense"], simpleFetcher, {
+        staleTime: 10000,
+        initialData: "foo",
+      });
+
+      return query.suspense().then(() => {
+        expect(fetcherSpy).toHaveBeenCalledTimes(0);
+      });
     });
   });
 });

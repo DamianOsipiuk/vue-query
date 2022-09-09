@@ -16,6 +16,7 @@ const config: Config.InitialOptions = {
     // Exlude devtools
     "!src/vuejs/devtools/**/*",
   ],
+  clearMocks: true,
 };
 
 export default config;

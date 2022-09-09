@@ -4,10 +4,6 @@ import { useInfiniteQuery } from "../useInfiniteQuery";
 jest.mock("../useQueryClient");
 
 describe("useQuery", () => {
-  beforeEach(() => {
-    jest.clearAllMocks();
-  });
-
   test("should properly execute infinite query", async () => {
     const { data, fetchNextPage, status } = useInfiniteQuery(
       ["infiniteQuery"],

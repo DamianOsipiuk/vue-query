@@ -9,10 +9,6 @@ describe("QueryCache", () => {
     jest.spyOn(QueryCacheOrigin.prototype, "findAll");
   });
 
-  beforeEach(() => {
-    jest.clearAllMocks();
-  });
-
   describe("find", () => {
     test("should properly unwrap parameters", async () => {
       const queryCache = new QueryCache();

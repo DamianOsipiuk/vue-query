@@ -7,10 +7,6 @@ import { parseFilterArgs, useIsFetching } from "../useIsFetching";
 jest.mock("../useQueryClient");
 
 describe("useIsFetching", () => {
-  beforeEach(() => {
-    jest.clearAllMocks();
-  });
-
   test("should properly return isFetching state", async () => {
     const { isFetching: isFetchingQuery } = useQuery(
       ["isFetching1"],

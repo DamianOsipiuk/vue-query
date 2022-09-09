@@ -6,10 +6,6 @@ import { useQueryClient } from "../useQueryClient";
 jest.mock("../useQueryClient");
 
 describe("useMutation", () => {
-  beforeEach(() => {
-    jest.clearAllMocks();
-  });
-
   test("should be in idle state initially", () => {
     const mutation = useMutation((params) => successMutator(params));
 

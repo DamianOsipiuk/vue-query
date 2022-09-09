@@ -11,10 +11,6 @@ import { useQueries } from "../useQueries";
 jest.mock("../useQueryClient");
 
 describe("useQueries", () => {
-  beforeEach(() => {
-    jest.clearAllMocks();
-  });
-
   test("should return result for each query", () => {
     const queries = [
       {

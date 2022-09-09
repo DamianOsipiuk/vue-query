@@ -37,7 +37,6 @@ function getAppMock(withUnmountHook = false): TestApp {
 
 describe("VueQueryPlugin", () => {
   beforeEach(() => {
-    jest.clearAllMocks();
     window.__VUE_QUERY_CONTEXT__ = undefined;
   });
 

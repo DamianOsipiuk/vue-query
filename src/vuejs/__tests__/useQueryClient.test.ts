@@ -8,7 +8,6 @@ describe("useQueryClient", () => {
 
   beforeEach(() => {
     jest.restoreAllMocks();
-    jest.clearAllMocks();
   });
 
   test("should return queryClient when it is provided in the context", () => {
