@@ -1,14 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { QueriesObserver } from "@tanstack/query-core";
-import {
-  onScopeDispose,
-  reactive,
-  readonly,
-  watch,
-  Ref,
-  isRef,
-  isReactive,
-} from "vue-demi";
+import { onScopeDispose, reactive, readonly, watch, Ref } from "vue-demi";
 
 import type { QueryFunction, QueryObserverResult } from "@tanstack/query-core";
 
@@ -139,7 +131,7 @@ export function useQueries<T extends any[]>({
 }): Readonly<UseQueriesResults<T>> {
   const unreffedQueries = cloneDeepUnref(queries) as UseQueriesOptionsArg<T>;
 
-  const queryClientKey = unreffedQueries[0]?.queryClientKey;
+  const queryClientKey = unreffedQueries[0].queryClientKey;
   const queryClient = useQueryClient(queryClientKey);
   const defaultedQueries = unreffedQueries.map((options) => {
     return queryClient.defaultQueryOptions(options);
@@ -152,16 +144,18 @@ export function useQueries<T extends any[]>({
     state.splice(0, state.length, ...result);
   });
 
-  if (isRef(queries) || isReactive(queries)) {
-    watch(queries, () => {
+  watch(
+    () => queries,
+    () => {
       const defaulted = (
         cloneDeepUnref(queries) as UseQueriesOptionsArg<T>
       ).map((options) => {
         return queryClient.defaultQueryOptions(options);
       });
       observer.setQueries(defaulted);
-    });
-  }
+    },
+    { deep: true }
+  );
 
   onScopeDispose(() => {
     unsubscribe();
