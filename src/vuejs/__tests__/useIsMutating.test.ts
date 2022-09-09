@@ -8,10 +8,6 @@ import { useQueryClient } from "../useQueryClient";
 jest.mock("../useQueryClient");
 
 describe("useIsMutating", () => {
-  beforeEach(() => {
-    jest.clearAllMocks();
-  });
-
   test("should properly return isMutating state", async () => {
     const mutation = useMutation((params: string) => successMutator(params));
     const mutation2 = useMutation((params: string) => successMutator(params));

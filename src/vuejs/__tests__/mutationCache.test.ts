@@ -9,10 +9,6 @@ describe("MutationCache", () => {
     jest.spyOn(MutationCacheOrigin.prototype, "findAll");
   });
 
-  beforeEach(() => {
-    jest.clearAllMocks();
-  });
-
   describe("find", () => {
     test("should properly unwrap parameters", async () => {
       const mutationCache = new MutationCache();
