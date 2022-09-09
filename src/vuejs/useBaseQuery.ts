@@ -82,7 +82,7 @@ export function useBaseQuery<
         const newOptions = queryClient.defaultQueryOptions(
           getQueryUnreffedOptions()
         );
-        if (newOptions.enabled) {
+        if (newOptions.enabled !== false) {
           const optimisticResult = observer.getOptimisticResult(newOptions);
           if (optimisticResult.isStale) {
             resolve(observer.fetchOptimistic(defaultedOptions));
