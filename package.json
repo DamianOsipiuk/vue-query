@@ -46,9 +46,9 @@
   "homepage": "https://github.com/DamianOsipiuk/vue-query#readme",
   "dependencies": {
     "@vue/devtools-api": "^6.2.1",
-    "@tanstack/query-core": "^4.2.3",
+    "@tanstack/query-core": "^4.3.1",
     "match-sorter": "^6.3.1",
-    "vue-demi": "^0.13.5"
+    "vue-demi": "^0.13.11"
   },
   "peerDependencies": {
     "@vue/composition-api": "^1.1.2",
