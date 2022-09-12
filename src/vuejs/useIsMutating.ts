@@ -17,7 +17,8 @@ export function useIsMutating(
   arg2?: Omit<MutationFilters, "mutationKey">
 ): Ref<number> {
   const filters = ref(parseMutationFilterArgs(arg1, arg2));
-  const queryClient = useQueryClient(filters.value.queryClientKey);
+  const queryClient =
+    filters.value.queryClient ?? useQueryClient(filters.value.queryClientKey);
 
   const isMutating = ref(queryClient.isMutating(filters));
 

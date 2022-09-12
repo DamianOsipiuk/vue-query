@@ -132,7 +132,8 @@ export function useQueries<T extends any[]>({
   const unreffedQueries = cloneDeepUnref(queries) as UseQueriesOptionsArg<T>;
 
   const queryClientKey = unreffedQueries[0].queryClientKey;
-  const queryClient = useQueryClient(queryClientKey);
+  const optionsQueryClient = unreffedQueries[0].queryClient;
+  const queryClient = optionsQueryClient ?? useQueryClient(queryClientKey);
   const defaultedQueries = unreffedQueries.map((options) => {
     return queryClient.defaultQueryOptions(options);
   });
