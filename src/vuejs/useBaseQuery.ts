@@ -54,7 +54,8 @@ export function useBaseQuery<
   arg3: UseQueryOptionsGeneric<TQueryFnData, TError, TData, TQueryKey> = {}
 ): UseQueryReturnType<TData, TError> {
   const options = getQueryUnreffedOptions();
-  const queryClient = useQueryClient(options.queryClientKey);
+  const queryClient =
+    options.queryClient ?? useQueryClient(options.queryClientKey);
   const defaultedOptions = queryClient.defaultQueryOptions(options);
   const observer = new Observer(queryClient, defaultedOptions);
   const state = reactive(observer.getCurrentResult());

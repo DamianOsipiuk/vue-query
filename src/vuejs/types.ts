@@ -4,6 +4,7 @@ import type {
   InfiniteQueryObserverOptions,
 } from "@tanstack/query-core";
 import { Ref, UnwrapRef } from "vue-demi";
+import type { QueryClient } from "vue-query";
 
 export type MaybeRef<T> = Ref<T> | T;
 export type MaybeRefDeep<T> = T extends Function
@@ -16,7 +17,10 @@ export type MaybeRefDeep<T> = T extends Function
         : T
     >;
 
-export type WithQueryClientKey<T> = T & { queryClientKey?: string };
+export type WithQueryClientKey<T> = T & {
+  queryClientKey?: string;
+  queryClient?: QueryClient;
+};
 
 // A Vue version of QueriesObserverOptions from "@tanstack/query-core"
 // Accept refs as options
