@@ -1,5 +1,5 @@
 <script lang="ts">
-import { defineComponent, toRaw } from "@vue/composition-api";
+import { defineComponent, toRaw } from "vue";
 import { useQuery } from "vue-query";
 
 import { Post } from "./types";

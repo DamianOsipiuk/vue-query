@@ -1,5 +1,5 @@
 <script lang="ts">
-import { defineComponent } from "@vue/composition-api";
+import { defineComponent } from "vue";
 import { useQuery } from "vue-query";
 
 import { Post } from "./types";
@@ -20,7 +20,7 @@ export default defineComponent({
   emits: ["setPostId"],
   setup() {
     const { isLoading, isError, isFetching, data, error, refetch } = useQuery(
-      "posts",
+      ["posts"],
       fetcher
     );
 

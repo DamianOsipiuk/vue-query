@@ -1,14 +1,13 @@
-import Vue from "vue";
-import VueCompositionApi, { createApp, h } from "@vue/composition-api";
+import Vue, { h } from "vue";
 import { VueQueryPlugin } from "vue-query";
 
 import App from "./App.vue";
 
-Vue.use(VueCompositionApi);
 Vue.use(VueQueryPlugin);
 
-createApp({
-  render() {
+const app = new Vue({
+  el: "#app",
+  render: () => {
     return h(App);
   },
-}).mount("#app");
+});

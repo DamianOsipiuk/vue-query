@@ -1,5 +1,5 @@
 <script lang="ts">
-import { defineComponent, ref } from "@vue/composition-api";
+import { defineComponent, ref } from "vue";
 
 import Posts from "./Posts.vue";
 import Post from "./Post.vue";
