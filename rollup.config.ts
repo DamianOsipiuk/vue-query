@@ -1,9 +1,20 @@
 import { defineConfig } from "rollup";
-import resolve from "@rollup/plugin-node-resolve";
-import typescript from "rollup-plugin-typescript2";
+import babel from "@rollup/plugin-babel";
+import commonJS from "@rollup/plugin-commonjs";
+import nodeResolve from "@rollup/plugin-node-resolve";
+
+const babelPlugin = babel({
+  babelHelpers: "bundled",
+  exclude: /node_modules/,
+  extensions: [".ts", ".tsx"],
+});
 
 const common = {
-  plugins: [resolve(), typescript()],
+  plugins: [
+    commonJS(),
+    babelPlugin,
+    nodeResolve({ extensions: [".ts", ".tsx"] }),
+  ],
   external: [
     "vue-query",
     "@tanstack/query-core",
@@ -19,22 +30,23 @@ const common = {
 };
 export default defineConfig([
   {
+    ...common,
     input: "src/index.ts",
     output: {
-      dir: "lib",
       format: "cjs",
+      file: `./lib/index.js`,
       sourcemap: true,
+      exports: "named",
     },
-    ...common,
   },
   {
+    ...common,
     input: "src/index.ts",
     output: {
-      dir: "lib",
       format: "esm",
-      entryFileNames: "[name].mjs",
       sourcemap: true,
+      dir: "lib",
+      entryFileNames: "[name].mjs",
     },
-    ...common,
   },
 ]);

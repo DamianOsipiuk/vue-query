@@ -20,9 +20,9 @@ import type {
   MutationObserverOptions,
   QueryFilters,
   MutationFilters,
+  QueryState,
+  Updater,
 } from "@tanstack/query-core";
-import type { QueryState } from "@tanstack/query-core/src/query";
-import type { Updater } from "@tanstack/query-core/src/utils";
 import type { MaybeRefDeep } from "./types";
 import { cloneDeepUnref, isQueryKey } from "./utils";
 import { QueryCache } from "./queryCache";
