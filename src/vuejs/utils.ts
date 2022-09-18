@@ -56,7 +56,7 @@ export function cloneDeepUnref<T>(obj: T): UnwrapRef<T> {
   }) as UnwrapRef<typeof obj>;
 }
 
-function isPlainObject(value: unknown): boolean {
+function isPlainObject(value: unknown): value is Object {
   if (Object.prototype.toString.call(value) !== "[object Object]") {
     return false;
   }

@@ -2,10 +2,11 @@
   "compilerOptions": {
     "baseUrl": ".",
     "outDir": "lib",
-    "target": "ES2017",
-    "module": "ESNext",
+    "target": "ES2020",
+    "module": "ES2020",
     "moduleResolution": "node",
     "declaration": true,
+    "emitDeclarationOnly": true,
     "removeComments": false,
     "strict": true,
     "noUnusedLocals": true,
@@ -13,7 +14,7 @@
     "noFallthroughCasesInSwitch": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
-    "skipLibCheck": true,
+    "skipLibCheck": false,
     "paths": {
       "vue-query": ["src/index.ts"]
     }

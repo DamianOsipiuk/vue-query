@@ -256,7 +256,7 @@ describe("useQuery", () => {
         isEnabeld.value = true;
       }, 200);
 
-      return query.suspense().then((result) => {
+      return query.suspense().then(() => {
         expect(afterTimeout).toBe(true);
       });
     });
