@@ -9,7 +9,7 @@ All main concepts are inherited from the main package. Please also check the [re
 
 ### Motivation
 
-Out of the box Vue does not provide optinionated way of interacting with server data. So developers end up building custom solutions that tend to end up either over-complicated, feature lacking or using global state management libraries that are not designed for this kind of usage.
+Out of the box Vue does not provide opinionated way of interacting with server data. So developers end up building custom solutions that tend to end up either over-complicated, feature lacking or using global state management libraries that are not designed for this kind of usage.
 
 While most traditional state management libraries are great for working with client state, they are **not so great at working with async or server state**. This is because **server state is totally different**. For starters, server state:
 
