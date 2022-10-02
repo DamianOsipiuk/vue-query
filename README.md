@@ -8,6 +8,13 @@
 [![build status](https://img.shields.io/github/workflow/status/DamianOsipiuk/vue-query/CI/main)](https://github.com/DamianOsipiuk/vue-query/actions/workflows/ci.yml?query=branch%3Amain)
 [![codecov](https://codecov.io/gh/DamianOsipiuk/vue-query/branch/main/graph/badge.svg?token=X8FK0O5CTG)](https://codecov.io/gh/DamianOsipiuk/vue-query)
 
+# :warning: Package migration :warning:
+This package was migrated to be a part of https://github.com/TanStack/query.
+
+If you are still on `v1` make sure to follow [migration guide](https://vue-query-next.vercel.app/#/guides/migrating-to-vue-query-2) first and then switch to `@tanstack/vue-query`.
+
+If you are already on `v2`, just swap `vue-query` for `@tanstack/vue-query` in both of your `package.json` and `import` statements. Everything should still work as before.
+
 # Vue Query
 
 Hooks for fetching, caching and updating asynchronous data in Vue.
