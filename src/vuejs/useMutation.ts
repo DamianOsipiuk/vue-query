@@ -17,17 +17,15 @@ import type {
 } from "@tanstack/query-core";
 import { cloneDeepUnref, isQueryKey, updateState } from "./utils";
 import { useQueryClient } from "./useQueryClient";
-import { WithQueryClientKey } from "./types";
+import { WithQueryClientKey, MaybeRefDeep } from "./types";
 
-type MutationResult<TData, TError, TVariables, TContext> = Omit<
+type MutationResult<TData = unknown, TError = unknown, TVariables = void, TContext = unknown> = Omit<
   MutationObserverResult<TData, TError, TVariables, TContext>,
   "mutate" | "reset"
 >;
 
-export type UseMutationOptions<TData, TError, TVariables, TContext> =
-  WithQueryClientKey<
-    MutationObserverOptions<TData, TError, TVariables, TContext>
-  >;
+export type UseMutationOptions<TData = unknown, TError = unknown, TVariables = void, TContext = unknown> =
+  WithQueryClientKey<MaybeRefDeep<MutationObserverOptions<TData, TError, TVariables, TContext>>>;
 
 type MutateSyncFunction<
   TData = unknown,
