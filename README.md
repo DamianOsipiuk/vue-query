@@ -15,6 +15,15 @@ If you are still on `v1` make sure to follow [migration guide](https://vue-query
 
 If you are already on `v2`, just swap `vue-query` for `@tanstack/vue-query` in both of your `package.json` and `import` statements. Everything should still work as before.
 
+steps to move to `@tanstack/vue-query` from `vue-query` v2
+
+1. delete your `node_modules`
+2. delete your `lock` file
+3. remove `vue-query` from your package-json
+4. install deps
+5. install `@tanstack/vue-query`
+6. change all `vue-query` import to `@tanstack/vue-query`
+
 # Vue Query
 
 Hooks for fetching, caching and updating asynchronous data in Vue.
