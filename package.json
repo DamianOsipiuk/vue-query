@@ -44,7 +44,7 @@
     "@vue/devtools-api": "^6.1.4",
     "match-sorter": "^6.3.1",
     "react-query": "^3.39.0",
-    "vue-demi": "0.10.1"
+    "vue-demi": "^0.10.1"
   },
   "peerDependencies": {
     "@nuxtjs/composition-api": "^0.28.0",
