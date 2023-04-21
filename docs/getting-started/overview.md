@@ -1,3 +1,12 @@
+# Package migration
+This package was migrated to be a part of https://github.com/TanStack/query.
+
+If you are still on `v1` make sure to follow [migration guide](https://vue-query-next.vercel.app/#/guides/migrating-to-vue-query-2) first and then switch to `@tanstack/vue-query`.
+
+If you are already on `v2`, just swap `vue-query` for `@tanstack/vue-query` in both of your `package.json` and `import` statements. Everything should still work as before.
+
+# Overview 
+
 [Vue Query](https://github.com/DamianOsipiuk/vue-query) package provides hooks for fetching, caching and updating asynchronous data in Vue.
 
 Support for Vue 2.x and 3.x is provided via [vue-demi](https://github.com/vueuse/vue-demi) package
